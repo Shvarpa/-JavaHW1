@@ -11,9 +11,7 @@ public class Jeep extends LandVehicle implements Commercial,Motorized {
 		}
 		return false;
 	}
-	public String getLicenses() {
-		return this.license;
-	}
+	public String getLicenses() {return license;}
 	
 	private double avgFuelConsumption; //Motorized Interface
 	private double avgMotorLifespan;

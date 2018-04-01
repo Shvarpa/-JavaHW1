@@ -1,15 +1,12 @@
 package base;
 
+import java.util.Arrays;
+
 public interface Commercial {
-	static final String[] possibleLicenses= {"MINI","LIMIT","UNLIMIT"};
+	static final String[] possibleLicense= {"MINI","LIMIT","UNLIMIT"};
 	
 	static boolean checkLicenseInput(String license) {
-		for(int i=0;i<possibleLicenses.length;i++) {
-			if (license.equals(possibleLicenses[i])){
-				return true;
-			}
-		}
-		return false;
+		return Arrays.asList(Commercial.possibleLicense).contains(license);
 	}
 	
 	public String getLicenses();
