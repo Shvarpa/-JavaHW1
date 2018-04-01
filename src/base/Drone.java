@@ -18,6 +18,4 @@ public abstract class Drone extends AirVehicle implements NonMotorized{
 		super(model,seats,speed,vehicleUse);
 		setEnergyRating(energyRating);
 	}
-	
-	
 }
