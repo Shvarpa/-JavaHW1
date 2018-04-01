@@ -6,7 +6,7 @@ public abstract class Vehicle {
 	private int seats;
 	private float speed;
 	
-	public boolean moveDistance(float distance)
+	protected boolean moveDistance(float distance)
 	{
 		if (distance>0) {
 			totalDistance+=distance; 
@@ -15,7 +15,7 @@ public abstract class Vehicle {
 		else return false;
 	}
 	
-	public Vehicle(String model, int seats, float speed) {
+	protected Vehicle(String model, int seats, float speed) {
 		//might need to add totalDistance as default 0 
 		this.model=model;
 		this.totalDistance=0;
