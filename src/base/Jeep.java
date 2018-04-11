@@ -2,24 +2,26 @@ package base;
 
 public class Jeep extends LandVehicle implements Commercial,Motorized {
 	
-	private String license;//Commercial Interface
+	private String licence;//Commercial Interface
 	
-	private boolean setLicense(String license) {
-		if (Commercial.checkLicenseInput(license)) {
-			this.license=license;
+	public String getLicence() {return licence;}
+	
+	private boolean setLicense(String licence) {
+		if (Commercial.checkLicenseInput(licence)) {
+			this.licence=licence;
 			return true;
 		}
 		return false;
 	}
-	public String getLicenses() {return license;}
 	
 	private double avgFuelConsumption; //Motorized Interface
 	private double avgMotorLifespan;
 	
-	private void setAvgFuelConsumption(double avgFuelConsumption) {this.avgFuelConsumption=avgFuelConsumption;}
 	public double getAvgFuelConsumption() {return this.avgFuelConsumption;}
-	private void setAvgMotorLifespan(double avgMotorLifespan) {this.avgMotorLifespan=avgMotorLifespan;}
 	public double getAvgMotorLifespan() {return avgMotorLifespan;}
+	
+	private void setAvgFuelConsumption(double avgFuelConsumption) {this.avgFuelConsumption=avgFuelConsumption;}
+	private void setAvgMotorLifespan(double avgMotorLifespan) {this.avgMotorLifespan=avgMotorLifespan;}
 	
 	public Jeep(String model, float speed,double avgFuelConsumption,double avgMotorLifespan) {
 		super(model,5,speed,4,"Dirt");
@@ -27,5 +29,8 @@ public class Jeep extends LandVehicle implements Commercial,Motorized {
 		setAvgFuelConsumption(avgFuelConsumption);
 		setAvgMotorLifespan(avgMotorLifespan);
 	}
+	
+	public String toString() {return super.toString()+" "+Commercial.toString(this)+" "+Motorized.toString(this);}
+	public boolean equals(Jeep other) {return super.equals(other) && Commercial.equals(this, other) && Motorized.equals(this, other);}
 	
 }

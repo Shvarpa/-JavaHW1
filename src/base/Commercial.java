@@ -3,11 +3,15 @@ package base;
 import java.util.Arrays;
 
 public interface Commercial {
-	static final String[] possibleLicense= {"MINI","LIMIT","UNLIMIT"};
+	static final String[] possibleLicences= {"MINI","LIMIT","UNLIMIT"};
 	
-	static boolean checkLicenseInput(String license) {
-		return Arrays.asList(Commercial.possibleLicense).contains(license);
+	static String toString(Commercial self) {return "has "+self.getLicence()+" licence.";}
+	static boolean equals(Commercial self,Commercial other) {return self.getLicence().equals(other.getLicence());}
+	
+	
+	static boolean checkLicenseInput(String Licence) {
+		return Arrays.asList(Commercial.possibleLicences).contains(Licence);
 	}
 	
-	public String getLicenses();
+	public String getLicence();
 }

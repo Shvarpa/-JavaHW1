@@ -6,12 +6,17 @@ public abstract class Vehicle {
 	private int seats;
 	private float speed;
 	
+	
 	public String getModel() {return this.model;}
 	public double getTotalDistance() {return this.totalDistance;}
 	public int getSeats() {return this.seats;}
 	public float getSpeed() {return this.speed;}
-
 	
+	private void setModel(String model) {this.model=model;}
+	private void setTotalDistance(double totalDistance) {this.totalDistance=totalDistance;}
+	private void setSeats(int seats){this.seats=seats;}
+	private void setSpeed(float speed){this.speed=speed;}
+
 	protected boolean moveDistance(float distance)
 	{
 		if (distance>0) {
@@ -22,11 +27,10 @@ public abstract class Vehicle {
 	}
 	
 	protected Vehicle(String model, int seats, float speed) {
-		//might need to add totalDistance as default 0 
-		this.model=model;
-		this.totalDistance=0;
-		this.seats=seats;
-		this.speed=speed;
+		setModel(model);
+		setTotalDistance(0);
+		setSeats(seats);
+		setSpeed(speed);
 	}
 	
 	public String toString() {
