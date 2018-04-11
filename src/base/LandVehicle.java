@@ -30,11 +30,6 @@ public abstract class LandVehicle extends Vehicle {
 		setRoadType(roadType);
 	}
 	
-	public String toString() {
-		return super.toString()+" has "+this.wheels+" wheels, can ride on "+this.roadType+" roads.";
-	}
-	
-	public boolean equals(LandVehicle other) {
-		return super.equals(other) && this.wheels==other.getWheels() && this.roadType.equals(other.getRoadType());
-	}
+	public String toString() {return super.toString()+" has "+this.wheels+" wheels, can ride on "+this.roadType+" roads.";}
+	public boolean equals(LandVehicle other) {return super.equals(other) && this.wheels==other.getWheels() && this.roadType.equals(other.getRoadType());}
 }

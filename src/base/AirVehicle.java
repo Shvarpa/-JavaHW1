@@ -25,11 +25,6 @@ public abstract class AirVehicle extends Vehicle{
 		setVehicleUse(vehicleUse);
 	}
 	
-	public String toString() {
-		return super.toString()+" intended for "+this.vehicleUse+" use.";
-	}
-	
-	public boolean equals(AirVehicle other) {
-		return super.equals(other) && this.vehicleUse.equals(other.getVehicleUse());
-	}
+	public String toString() {return super.toString()+" intended for "+this.vehicleUse+" use.";}
+	public boolean equals(AirVehicle other) {return super.equals(other) && this.vehicleUse.equals(other.getVehicleUse());}
 }

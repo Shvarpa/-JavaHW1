@@ -14,6 +14,10 @@ public class Frigate extends SeaVehicle implements Motorized {
 		super(model,seats,speed,withWindDiraction,"Israel");
 		setAvgFuelConsumption(500);
 		setAvgMotorLifespan(4);
-	}	
+	}
+	
+	public String toString() {return super.toString()+" "+Motorized.toString(this);}
+	public boolean equals(Frigate other) {return super.equals(other) && Motorized.equals(this, other);}
+	
 }
 

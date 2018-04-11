@@ -20,8 +20,5 @@ public abstract class SeaVehicle extends Vehicle {
 		String wind=(this.withWindDiraction ?"with" :"against");
 		return super.toString()+" Under "+this.flag+" flag, "+wind+" the wind";
 	}
-	
-	public boolean equals(SeaVehicle other) {
-		return super.equals(other) && this.withWindDiraction==other.getWithWindDiraction() && this.flag.equals(other.getFlag());
-	}
+	public boolean equals(SeaVehicle other) {return super.equals(other) && this.withWindDiraction==other.getWithWindDiraction() && this.flag.equals(other.getFlag());}
 }
