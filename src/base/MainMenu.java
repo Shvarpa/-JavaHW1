@@ -1,10 +1,24 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-
+import base.Jeep;
 public class MainMenu {
+	
+	static ClassDict possibleVehicleTypes=new ClassDict();
+	static {
+		try {
+		possibleVehicleTypes.put("Jeep", Class.forName("Jeep"));
+		possibleVehicleTypes.put("Frigate", Class.forName("Frigate"));
+		possibleVehicleTypes.put("SpyDrone", Class.forName("SpyDrone"));
+		possibleVehicleTypes.put("PlayDrone", Class.forName("PlayDrone"));
+		} catch (ClassNotFoundException e) {
+			// impossible code
+			e.printStackTrace();
+		}
+	}
 	
 	private List<Vehicle> vehicleDatabase;
 	private List<SeaVehicle> seaVehicleDatabase;

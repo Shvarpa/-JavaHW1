@@ -3,10 +3,12 @@ package base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class StringRange extends ArrayList<String>{	
 	
 	public StringRange(String[] range) {super(Arrays.asList(range));}
+	public StringRange(Set<String> range) {super(range);}
 	public StringRange(List<String> range) {super(range);}
 	
 	public boolean containsIgnoreCaps(String other) {
