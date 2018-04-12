@@ -1,5 +1,6 @@
 package base;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,18 +8,7 @@ import java.util.Scanner;
 import base.Jeep;
 public class MainMenu {
 	
-	static ClassDict possibleVehicleTypes=new ClassDict();
-	static {
-		try {
-		possibleVehicleTypes.put("Jeep", Class.forName("Jeep"));
-		possibleVehicleTypes.put("Frigate", Class.forName("Frigate"));
-		possibleVehicleTypes.put("SpyDrone", Class.forName("SpyDrone"));
-		possibleVehicleTypes.put("PlayDrone", Class.forName("PlayDrone"));
-		} catch (ClassNotFoundException e) {
-			// impossible code
-			e.printStackTrace();
-		}
-	}
+	static final StringRange possibleVehicleTypes=new StringRange(Arrays.asList("Jeep","Frigate","SpyDrone","PlayDrone"));
 	
 	private List<Vehicle> vehicleDatabase;
 	private List<SeaVehicle> seaVehicleDatabase;
@@ -47,10 +37,62 @@ public class MainMenu {
 		return true;
 	}
 	
-//	private Vehicle inputVehicle() {
-//		Scanner input=new Scanner(System.in);
-//		System.out.println("what is the vehicle's type?");
-//	}
+	static Scanner in=new Scanner(System.in);
+	private String input(String msg) {
+		System.out.println(msg);
+		return in.next();
+	}
+	
+	private Jeep inputJeep() throws ClassCastException {
+		List<Object> parameters=new ArrayList<>(); 
+		parameters.add(input("model (String):"));
+		parameters.add(Float.parseFloat(input("speed (float):")));
+		parameters.add(Double.parseDouble(input("average fuel consumption (double):")));
+		parameters.add(Double.parseDouble(input("average motor lifespan (double):")));
+		return new Jeep(parameters);
+	}
+	
+	private Frigate inputFrigate() throws ClassCastException {
+		List<Object> parameters=new ArrayList<>(); 
+		parameters.add(input("model (String):"));
+		parameters.add(Integer.parseInt(input("seats (int):")));
+		parameters.add(Float.parseFloat(input("speed (float):")));
+		parameters.add(Boolean.parseBoolean(input("with wind diraction? (boolean):")));
+		return new Frigate(parameters);
+	}
+	
+	private SpyDrone inputSpyDrone() throws ClassCastException {
+		String parameters=input("energy source (String):");
+		return new SpyDrone(parameters);
+	}
+	
+	private PlayDrone inputPlayDrone() throws ClassCastException {
+		return new PlayDrone();
+	}
+	
+	private Object inputVehicle() {
+		String type;
+		Vehicle result;
+		do {
+		type=input("what is the vehicle's type?");
+		if (!possibleVehicleTypes.containsIgnoreCaps(type)) {
+			System.out.println("this type is undefined. ("+possibleVehicleTypes.toString()+")");
+			continue;
+			}
+		type=possibleVehicleTypes.FixCaps(type);
+		switch(type) {
+		case "Jeep": try {result=inputJeep();}
+		break;
+		case "Frigate": try {result=inputFrigate();}
+		break;
+		case "SpyDrone": try {result=inputSpyDrone();}
+		break;
+		case "PlayDrone": try {result=inputPlayDrone();}
+		break;
+		}
+		
+		}while(true);
+	}
 	
 	private void addVehicle(Vehicle newVehicle) {
 		

@@ -1,5 +1,7 @@
 package base;
 
+import java.util.List;
+
 public class Jeep extends LandVehicle implements Commercial,Motorized {
 	
 	private String licence;//Commercial Interface
@@ -30,6 +32,10 @@ public class Jeep extends LandVehicle implements Commercial,Motorized {
 		setAvgMotorLifespan(avgMotorLifespan);
 	}
 	
+	public Jeep(List<Object> parameters) throws ClassCastException {
+		this((String)parameters.get(0),(float)parameters.get(1),(double)parameters.get(2),(double)parameters.get(3));
+	}
+
 	public String toString() {return super.toString()+" "+Commercial.toString(this)+" "+Motorized.toString(this);}
 	public boolean equals(Jeep other) {return super.equals(other) && Commercial.equals(this, other) && Motorized.equals(this, other);}
 	
