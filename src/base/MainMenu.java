@@ -7,6 +7,9 @@ import java.util.Scanner;
 public class MainMenu {
 	
 	private List<Vehicle> vehicleDatabase;
+	private List<SeaVehicle> seaVehicleDatabase;
+	private List<AirVehicle> airVehicleDatabase;
+	private List<LandVehicle> landVehicleDatabase;
 	
 	private boolean selectOption() {
 		Scanner in=new Scanner(System.in);
@@ -31,20 +34,27 @@ public class MainMenu {
 	}
 	
 //	private Vehicle inputVehicle() {
-//		
+//		Scanner input=new Scanner(System.in);
+//		System.out.println("what is the vehicle's type?");
 //	}
-	private void addVehicle(Vehicle newVehicle) {}
+	
+	private void addVehicle(Vehicle newVehicle) {
+		
+	}
 	
 	
 	public MainMenu() {
 		vehicleDatabase=new ArrayList<>();
+		seaVehicleDatabase=new ArrayList<>();
+		airVehicleDatabase=new ArrayList<>();
+		landVehicleDatabase=new ArrayList<>();
 	}
 	
 	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		System.out.print(("yes".equals("yes")?"True": "False"));
 	}
 
 }

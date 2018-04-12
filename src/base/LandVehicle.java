@@ -3,10 +3,18 @@ package base;
 import java.util.Arrays;
 
 public abstract class LandVehicle extends Vehicle {
-	private static String[] possibleRoadType= {"dirt","constructed"};
+	private static StringRange possibleRoadType= new StringRange(Arrays.asList("dirt","constructed"));
 	
 	private static boolean checkRoadTypeInput(String roadType) {
-		return Arrays.asList(LandVehicle.possibleRoadType).contains(roadType);
+		return LandVehicle.possibleRoadType.containsIgnoreCaps(roadType);
+	}
+	
+	private boolean setRoadType(String roadType) {
+		if (LandVehicle.checkRoadTypeInput(roadType)) {
+			this.roadType=LandVehicle.possibleRoadType.FixCaps(roadType);
+			return true;
+		}
+		return false;
 	}
 	
 	private int wheels;
@@ -15,15 +23,7 @@ public abstract class LandVehicle extends Vehicle {
 	public int getWheels() {return this.wheels;}
 	public String getRoadType() {return this.roadType;}	
 	private void setWheels(int wheels) {this.wheels=wheels;}
-	private boolean setRoadType(String roadType) {
-		if (LandVehicle.checkRoadTypeInput(roadType)) {
-			this.roadType=roadType;
-			return true;
-		}
-		return false;
-	}
-		
-		
+
 	protected LandVehicle(String model, int seats, float speed,int wheels, String roadType) {
 		super(model,seats,speed);
 		setWheels(wheels);

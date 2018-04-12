@@ -3,6 +3,7 @@ package base;
 public abstract class Drone extends AirVehicle implements NonMotorized{
 	
 	private String energyRating; //NonMotorized Interface
+	private String energySource;
 	
 	private boolean setEnergyRating(String energyRating) {
 		if(NonMotorized.checkEnergyRatingInput(energyRating)) {
@@ -12,10 +13,18 @@ public abstract class Drone extends AirVehicle implements NonMotorized{
 		return false;
 	}
 	
-	public String getEnergyRating() {return energyRating;}
+	private boolean setEnergySource(String energySource) {
+		this.energySource=energySource;
+		return true;
+	}
 	
-	protected Drone(String model, int seats, float speed,String vehicleUse,String energyRating) {
+	public String getEnergyRating() {return energyRating;}
+	public String getEnergySource() {return energySource;}
+
+	
+	protected Drone(String model, int seats, float speed,String vehicleUse,String energySource,String energyRating) {
 		super(model,seats,speed,vehicleUse);
+		setEnergySource(energySource);
 		setEnergyRating(energyRating);
 	}
 	

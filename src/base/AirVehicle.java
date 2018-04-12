@@ -4,17 +4,17 @@ import java.util.Arrays;
 
 public abstract class AirVehicle extends Vehicle{
 	private String vehicleUse;
-	static String[] possibleVehicleUse= {"Army","Civilian"};
+	static final StringRange possibleVehicleUse= new StringRange(Arrays.asList("Army","Civilian"));
 	
 	public String getVehicleUse() {return this.vehicleUse;}
 	
 	private static boolean checkVehicleUseInput(String vehicleUse) {
-		return Arrays.asList(AirVehicle.possibleVehicleUse).contains(vehicleUse);
+		return AirVehicle.possibleVehicleUse.containsIgnoreCaps(vehicleUse);
 	}
 	
 	private boolean setVehicleUse(String vehicleUse) {
 		if (AirVehicle.checkVehicleUseInput(vehicleUse)) {
-			this.vehicleUse=vehicleUse;
+			this.vehicleUse=AirVehicle.possibleVehicleUse.FixCaps(vehicleUse);
 			return true;
 		}
 		return false;
