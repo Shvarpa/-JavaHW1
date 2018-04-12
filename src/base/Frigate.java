@@ -1,5 +1,7 @@
 package base;
 
+import java.util.List;
+
 public class Frigate extends SeaVehicle implements Motorized {	
 
 	private double avgFuelConsumption; //Motorized Interface
@@ -14,6 +16,10 @@ public class Frigate extends SeaVehicle implements Motorized {
 		super(model,seats,speed,withWindDiraction,"Israel");
 		setAvgFuelConsumption(500);
 		setAvgMotorLifespan(4);
+	}
+	
+	public Frigate(List<Object> parameters) throws ClassCastException{
+		this((String)parameters.get(0),(int)parameters.get(1),(float)parameters.get(2),(boolean)parameters.get(4));
 	}
 	
 	public String toString() {return super.toString()+" "+Motorized.toString(this);}
