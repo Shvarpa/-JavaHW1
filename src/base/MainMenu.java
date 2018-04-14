@@ -44,7 +44,6 @@ public class MainMenu {
 	}
 	
 	private Jeep inputJeep() throws ClassCastException {
-		List<Object> parameters=new ArrayList<>(); 
 		String model=input("model (String):");
 		float speed=Float.parseFloat(input("speed (float):"));
 		double avgFuelConsumption=Double.parseDouble(input("average fuel consumption (double):"));
@@ -53,7 +52,6 @@ public class MainMenu {
 	}
 	
 	private Frigate inputFrigate() throws ClassCastException {
-		List<Object> parameters=new ArrayList<>(); 
 		String model=input("model (String):");
 		int seats=Integer.parseInt(input("seats (int):"));
 		float speed=Float.parseFloat(input("speed (float):"));
