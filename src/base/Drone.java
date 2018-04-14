@@ -1,6 +1,6 @@
 package base;
 
-public abstract class Drone extends AirVehicle implements NonMotorized{
+public abstract class Drone extends AirVehicle implements NonMotorized, Inputable{
 	
 	private String energyRating; //NonMotorized Interface
 	private String energySource;

@@ -48,7 +48,6 @@ public class MainMenu {
 		return in.next();
 	}
 		
-		
 	private Vehicle inputVehicle() {
 		String type;
 		do {
