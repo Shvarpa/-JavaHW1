@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Scanner;
 import base.Jeep;
 public class MainMenu {
-	
 	static final StringRange possibleVehicleTypes=new StringRange(Arrays.asList("Jeep","Frigate","SpyDrone","PlayDrone"));
 	
 	private List<Vehicle> vehicleDatabase;
 	private List<SeaVehicle> seaVehicleDatabase;
 	private List<AirVehicle> airVehicleDatabase;
 	private List<LandVehicle> landVehicleDatabase;
+	
+	
 	
 	private boolean selectOption() {
 		Scanner in=new Scanner(System.in);
@@ -68,32 +69,38 @@ public class MainMenu {
 		return new PlayDrone();
 	}
 	
-	private Object inputVehicle() {
+	private Vehicle inputVehicle() {
 		String type;
-		Vehicle result;
 		do {
-		type=input("what is the vehicle's type?");
+		type=input("what is the vehicle's type? (type 'exit' to return)");
+		if (type=="exit") {return null;}
 		if (!possibleVehicleTypes.containsIgnoreCaps(type)) {
 			System.out.println("this type is undefined. ("+possibleVehicleTypes.toString()+")");
 			continue;
 			}
 		type=possibleVehicleTypes.FixCaps(type);
 		switch(type) {
-		case "Jeep": try {result=inputJeep();}
-		break;
-		case "Frigate": try {result=inputFrigate();}
-		break;
-		case "SpyDrone": try {result=inputSpyDrone();}
-		break;
-		case "PlayDrone": try {result=inputPlayDrone();}
-		break;
+		case "Jeep": return inputJeep();
+		case "Frigate":return inputFrigate();
+		case "SpyDrone":return inputSpyDrone();
+		case "PlayDrone":return inputPlayDrone();
 		}
-		
+
 		}while(true);
 	}
 	
 	private void addVehicle(Vehicle newVehicle) {
-		
+		Vehicle nVehicle=inputVehicle();
+		if (nVehicle!=null) {
+			this.vehicleDatabase.add(nVehicle);
+			if (nVehicle instanceof SeaVehicle) {this.seaVehicleDatabase.add((SeaVehicle) nVehicle);}
+			else if (nVehicle instanceof LandVehicle) {this.landVehicleDatabase.add((LandVehicle) nVehicle);}
+			else if (nVehicle instanceof AirVehicle) {this.airVehicleDatabase.add((AirVehicle) nVehicle);}
+			else;
+		}
+		else {
+			System.out.println("bad vehicle input, returning");
+		}
 	}
 	
 	
@@ -108,7 +115,6 @@ public class MainMenu {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.print(("yes".equals("yes")?"True": "False"));
 	}
 
 }
