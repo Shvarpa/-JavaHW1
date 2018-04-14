@@ -18,9 +18,6 @@ public class Frigate extends SeaVehicle implements Motorized {
 		setAvgMotorLifespan(4);
 	}
 	
-	public Frigate(List<Object> parameters) throws ClassCastException{
-		this((String)parameters.get(0),(int)parameters.get(1),(float)parameters.get(2),(boolean)parameters.get(4));
-	}
 	
 	public String toString() {return super.toString()+" "+Motorized.toString(this);}
 	public boolean equals(Frigate other) {return super.equals(other) && Motorized.equals(this, other);}

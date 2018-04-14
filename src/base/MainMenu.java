@@ -45,25 +45,25 @@ public class MainMenu {
 	
 	private Jeep inputJeep() throws ClassCastException {
 		List<Object> parameters=new ArrayList<>(); 
-		parameters.add(input("model (String):"));
-		parameters.add(Float.parseFloat(input("speed (float):")));
-		parameters.add(Double.parseDouble(input("average fuel consumption (double):")));
-		parameters.add(Double.parseDouble(input("average motor lifespan (double):")));
-		return new Jeep(parameters);
+		String model=input("model (String):");
+		float speed=Float.parseFloat(input("speed (float):"));
+		double avgFuelConsumption=Double.parseDouble(input("average fuel consumption (double):"));
+		double avgMotorLifespan=Double.parseDouble(input("average motor lifespan (double):"));
+		return new Jeep(model,speed,avgFuelConsumption,avgMotorLifespan);
 	}
 	
 	private Frigate inputFrigate() throws ClassCastException {
 		List<Object> parameters=new ArrayList<>(); 
-		parameters.add(input("model (String):"));
-		parameters.add(Integer.parseInt(input("seats (int):")));
-		parameters.add(Float.parseFloat(input("speed (float):")));
-		parameters.add(Boolean.parseBoolean(input("with wind diraction? (boolean):")));
-		return new Frigate(parameters);
+		String model=input("model (String):");
+		int seats=Integer.parseInt(input("seats (int):"));
+		float speed=Float.parseFloat(input("speed (float):"));
+		boolean withWindDiraction=Boolean.parseBoolean(input("with wind diraction? (boolean):"));
+		return new Frigate(model,seats,speed,withWindDiraction);
 	}
 	
 	private SpyDrone inputSpyDrone() throws ClassCastException {
-		String parameters=input("energy source (String):");
-		return new SpyDrone(parameters);
+		String enertgySource=input("energy source (String):");
+		return new SpyDrone(enertgySource);
 	}
 	
 	private PlayDrone inputPlayDrone() throws ClassCastException {
