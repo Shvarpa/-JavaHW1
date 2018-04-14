@@ -3,7 +3,6 @@ package base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import base.Jeep;
 import base.Inputable;
 
@@ -18,14 +17,15 @@ public class MainMenu{
 	
 	
 	private boolean selectOption() {
+		if (!vehicleDatabase.isEmpty()) {System.out.println("vehicles database:"+vehicleDatabase.toString());}
 		System.out.println(
-				"Select form the following options:\r\n"
-				+ "1)add vehicle\r\n"
-				+ "2)buy vehicle\r\n"
-				+ "3)take a vehicle for a test-drive\r\n"
-				+ "4)reset all vehicle distances\r\n"
-				+ "5)change flags\r\n"
-				+ "6)exit\r\n");
+				"Select form the following options:\n"
+				+ "1)add vehicle\n"
+				+ "2)buy vehicle\n"
+				+ "3)take a vehicle for a test-drive\n"
+				+ "4)reset all vehicle distances\n"
+				+ "5)change flags\n"
+				+ "6)exit\n\n");
 		int option=Inputable.in.nextInt();
 		switch(option) {
 		case 1:
@@ -66,16 +66,18 @@ public class MainMenu{
 	private Vehicle selectVehicle() {
 		int index=Integer.parseInt(Inputable.input("enter vehicle index:"));
 		if (index<0 || index>=vehicleDatabase.size()) {
-			System.out.println("the index "+index+" is out of bounds, returning");
+			System.out.println("the index "+index+" is out of bounds, returning\n");
 			return null;
 		}
 		return vehicleDatabase.get(index);
 	}
 	
 	private Vehicle selectOrInputVehicle() {
-		boolean byindex=Boolean.parseBoolean(Inputable.input("would you like to select a vehicle by index?"));
-		if (byindex) {return selectVehicle();}
-		else return inputVehicle();
+		if (!vehicleDatabase.isEmpty()) {
+			boolean byindex=Boolean.parseBoolean(Inputable.input("would you like to select a vehicle by index?"));
+			if (byindex) {return selectVehicle();}
+		}
+		return inputVehicle();
 	}
 	
 	private boolean addVehicle() {
@@ -86,10 +88,10 @@ public class MainMenu{
 			else if (nVehicle instanceof LandVehicle) {this.landVehicleDatabase.add((LandVehicle) nVehicle);}
 			else if (nVehicle instanceof AirVehicle) {this.airVehicleDatabase.add((AirVehicle) nVehicle);}
 			else;
-			System.out.println("the vehicle: "+nVehicle.toString()+" was added succesfully, returning");
+			System.out.println("the vehicle: "+nVehicle.toString()+" was added succesfully, returning\n");
 			return true;
 		}
-		System.out.println("bad vehicle input, returning");
+		System.out.println("bad vehicle input, returning\n");
 		return false;
 	}
 	
@@ -104,7 +106,7 @@ public class MainMenu{
 				return true;
 			}
 		}
-		System.out.println("vehicle doesnt exist, returning");
+		System.out.println("vehicle doesnt exist, returning\n");
 		return false;
 
 	}
@@ -113,7 +115,7 @@ public class MainMenu{
 		Vehicle currVehicle=selectOrInputVehicle();
 		if (currVehicle!=null) {
 			if (this.removeVehicle(currVehicle)) {
-				System.out.println("the vehicle: "+currVehicle.toString()+" was bought succesfully, returning");
+				System.out.println("the vehicle: "+currVehicle.toString()+" was bought succesfully, returning\n");
 				return true;
 			}
 		}
@@ -134,7 +136,7 @@ public class MainMenu{
 		if (currVehicle==null) {return false;}
 		double distance=Double.parseDouble("enter test drive distance:");
 		if(driveVehicle(currVehicle,distance)){
-			System.out.println("the vehicle: "+currVehicle.toString()+" was taken for a "+distance+"km test-drive succesfully, returning");
+			System.out.println("the vehicle: "+currVehicle.toString()+" was taken for a "+distance+"km test-drive succesfully, returning\n");
 			return true;
 		}
 		return false;
@@ -142,13 +144,13 @@ public class MainMenu{
 	
 	private void resetDistances() {
 		for(Vehicle v:vehicleDatabase) {v.resetTotalDistance();}
-		System.out.println("all vehicle distances were reset succesfully, returning");
+		System.out.println("all vehicle distances were reset succesfully, returning\n");
 	}
 	
 	private void changeFlags() {
 		String flag=Inputable.input("Enter new flag name:");
 		for(SeaVehicle sV: seaVehicleDatabase) {sV.setFlag(flag);}
-		System.out.println("all vehicle flags were changed to "+flag+" succesfully, returning");
+		System.out.println("all vehicle flags were changed to "+flag+" succesfully, returning\n");
 	}
 	
 	
