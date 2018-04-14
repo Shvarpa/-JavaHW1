@@ -36,5 +36,10 @@ public abstract class Vehicle {
 	}
 	
 	public String toString() {return this.getClass().getName()+": Model: "+this.model+", traveled:"+this.totalDistance+" Km, Max Speed of "+this.speed+" Mph, can carry max of "+this.seats+" people.";		}
-	public boolean equals(Vehicle other) {return this.model.equals(other.getModel()) && this.totalDistance==other.getTotalDistance() && this.seats==other.getSeats() && this.speed==other.getSpeed();}
+	public boolean equals(Object other) {
+		if (other instanceof Vehicle) {
+			return this.model.equals(((Vehicle)other).getModel()) && this.totalDistance==((Vehicle)other).getTotalDistance() && this.seats==((Vehicle)other).getSeats() && this.speed==((Vehicle)other).getSpeed();
+		}
+		return false;
+	}
 }

@@ -42,6 +42,8 @@ public class Jeep extends LandVehicle implements Commercial,Motorized{
 	
 
 	public String toString() {return super.toString()+" "+Commercial.toString(this)+" "+Motorized.toString(this);}
-	public boolean equals(Jeep other) {return super.equals(other) && Commercial.equals(this, other) && Motorized.equals(this, other);}
+	public boolean equals(Object other) {
+		return super.equals(other) && Commercial.equals(this, other) && Motorized.equals(this, other);
+	}
 	
 }

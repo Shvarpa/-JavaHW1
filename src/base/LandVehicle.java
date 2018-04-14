@@ -31,5 +31,10 @@ public abstract class LandVehicle extends Vehicle {
 	}
 	
 	public String toString() {return super.toString()+" has "+this.wheels+" wheels, can ride on "+this.roadType+" roads.";}
-	public boolean equals(LandVehicle other) {return super.equals(other) && this.wheels==other.getWheels() && this.roadType.equals(other.getRoadType());}
+	public boolean equals(Object other) {
+		if (other instanceof LandVehicle) {
+			return super.equals(other) && this.wheels==((LandVehicle)other).getWheels() && this.roadType.equals(((LandVehicle)other).getRoadType());
+		}
+		return false;
+	}
 }

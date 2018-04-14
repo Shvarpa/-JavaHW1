@@ -14,10 +14,14 @@ public class MainMenu{
 	private List<AirVehicle> airVehicleDatabase;
 	private List<LandVehicle> landVehicleDatabase;
 	
-	
+	private void printDatabase() {
+		for(Vehicle v:vehicleDatabase) {
+			System.out.println("index:"+vehicleDatabase.indexOf(v)+" "+v.toString());
+		}
+	}
 	
 	private boolean selectOption() {
-		if (!vehicleDatabase.isEmpty()) {System.out.println("vehicles database:"+vehicleDatabase.toString());}
+		if (!vehicleDatabase.isEmpty()) {printDatabase();}
 		System.out.println(
 				"Select form the following options:\n"
 				+ "1)add vehicle\n"

@@ -6,7 +6,12 @@ public interface Commercial {
 	static final StringRange possibleLicences= new StringRange(Arrays.asList("MINI","LIMIT","UNLIMIT"));
 	
 	static String toString(Commercial self) {return "has "+self.getLicence()+" licence.";}
-	static boolean equals(Commercial self,Commercial other) {return self.getLicence().equals(other.getLicence());}
+	static boolean equals(Commercial self,Object other) {
+		if (other instanceof Commercial) {
+			return self.getLicence().equals(((Commercial)other).getLicence());
+		}
+		return false;
+	}
 	
 	
 	static boolean checkLicenseInput(String Licence) {
