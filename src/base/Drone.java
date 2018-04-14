@@ -1,6 +1,7 @@
 package base;
+import base.Inputable;
 
-public abstract class Drone extends AirVehicle implements NonMotorized, Inputable{
+public abstract class Drone extends AirVehicle implements NonMotorized{
 	
 	private String energyRating; //NonMotorized Interface
 	private String energySource;

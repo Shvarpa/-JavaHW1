@@ -1,9 +1,8 @@
 package base;
 
-import java.util.List;
-import java.util.Scanner;
+import base.Inputable;
 
-public class Jeep extends LandVehicle implements Commercial,Motorized,Inputable{
+public class Jeep extends LandVehicle implements Commercial,Motorized{
 	
 	static Jeep inputJeep() {
 		String model=Inputable.input("model (String):");

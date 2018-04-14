@@ -13,11 +13,13 @@ public abstract class Vehicle {
 	public float getSpeed() {return this.speed;}
 	
 	private void setModel(String model) {this.model=model;}
+	
 	private void setTotalDistance(double totalDistance) {this.totalDistance=totalDistance;}
+	public void resetTotalDistance() {this.setTotalDistance(0);}
 	private void setSeats(int seats){this.seats=seats;}
 	private void setSpeed(float speed){this.speed=speed;}
 
-	protected boolean moveDistance(float distance)
+	protected boolean moveDistance(double distance)
 	{
 		if (distance>0) {
 			totalDistance+=distance; 

@@ -1,9 +1,9 @@
 package base;
 
-import java.util.List;
+import base.Inputable;
 
-public class Frigate extends SeaVehicle implements Motorized,Inputable{	
-	
+
+public class Frigate extends SeaVehicle implements Motorized{	
 	static Frigate inputFrigate() {
 		String model=Inputable.input("model (String):");
 		int seats=Integer.parseInt(Inputable.input("seats (int):"));

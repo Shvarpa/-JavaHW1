@@ -8,7 +8,7 @@ public abstract class SeaVehicle extends Vehicle {
 	public String getFlag() {return this.flag;}
 
 	
-	private void setFlag(String flag) {this.flag=flag;}
+	public void setFlag(String flag) {this.flag=flag;}
 	
 	protected SeaVehicle(String model, int seats, float speed,boolean withWindDiraction, String flag) {
 		super(model,seats,speed);
