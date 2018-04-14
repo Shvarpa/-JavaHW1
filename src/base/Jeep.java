@@ -1,8 +1,17 @@
 package base;
 
 import java.util.List;
+import java.util.Scanner;
 
-public class Jeep extends LandVehicle implements Commercial,Motorized {
+public class Jeep extends LandVehicle implements Commercial,Motorized,Inputable{
+	
+	static Jeep inputJeep() {
+		String model=Inputable.input("model (String):");
+		float speed=Float.parseFloat(Inputable.input("speed (float):"));
+		double avgFuelConsumption=Double.parseDouble(Inputable.input("average fuel consumption (double):"));
+		double avgMotorLifespan=Double.parseDouble(Inputable.input("average motor lifespan (double):"));
+		return new Jeep(model,speed,avgFuelConsumption,avgMotorLifespan);
+	}
 	
 	private String licence;//Commercial Interface
 	

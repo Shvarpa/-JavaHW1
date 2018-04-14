@@ -2,8 +2,16 @@ package base;
 
 import java.util.List;
 
-public class Frigate extends SeaVehicle implements Motorized {	
-
+public class Frigate extends SeaVehicle implements Motorized,Inputable{	
+	
+	static Frigate inputFrigate() {
+		String model=Inputable.input("model (String):");
+		int seats=Integer.parseInt(Inputable.input("seats (int):"));
+		float speed=Float.parseFloat(Inputable.input("speed (float):"));
+		boolean withWindDiraction=Boolean.parseBoolean(Inputable.input("with wind diraction? (boolean):"));
+		return new Frigate(model,seats,speed,withWindDiraction);
+	}
+	
 	private double avgFuelConsumption; //Motorized Interface
 	private double avgMotorLifespan;
 	

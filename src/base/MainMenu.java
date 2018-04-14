@@ -28,8 +28,12 @@ public class MainMenu {
 				+ "6)exit\r\n");
 		int option=in.nextInt();
 		switch(option) {
-		case 1:break;
-		case 2:break;
+		case 1:
+			this.addVehicle();
+			break;
+		case 2:
+			this.buyVehicle();
+			break;
 		case 3:break;
 		case 4:break;
 		case 5:break;
@@ -43,32 +47,8 @@ public class MainMenu {
 		System.out.println(msg);
 		return in.next();
 	}
-	
-	private Jeep inputJeep() throws ClassCastException {
-		String model=input("model (String):");
-		float speed=Float.parseFloat(input("speed (float):"));
-		double avgFuelConsumption=Double.parseDouble(input("average fuel consumption (double):"));
-		double avgMotorLifespan=Double.parseDouble(input("average motor lifespan (double):"));
-		return new Jeep(model,speed,avgFuelConsumption,avgMotorLifespan);
-	}
-	
-	private Frigate inputFrigate() throws ClassCastException {
-		String model=input("model (String):");
-		int seats=Integer.parseInt(input("seats (int):"));
-		float speed=Float.parseFloat(input("speed (float):"));
-		boolean withWindDiraction=Boolean.parseBoolean(input("with wind diraction? (boolean):"));
-		return new Frigate(model,seats,speed,withWindDiraction);
-	}
-	
-	private SpyDrone inputSpyDrone() throws ClassCastException {
-		String enertgySource=input("energy source (String):");
-		return new SpyDrone(enertgySource);
-	}
-	
-	private PlayDrone inputPlayDrone() throws ClassCastException {
-		return new PlayDrone();
-	}
-	
+		
+		
 	private Vehicle inputVehicle() {
 		String type;
 		do {
@@ -80,16 +60,16 @@ public class MainMenu {
 			}
 		type=possibleVehicleTypes.FixCaps(type);
 		switch(type) {
-		case "Jeep": return inputJeep();
-		case "Frigate":return inputFrigate();
-		case "SpyDrone":return inputSpyDrone();
-		case "PlayDrone":return inputPlayDrone();
+		case "Jeep": return Jeep.inputJeep();
+		case "Frigate":return Frigate.inputFrigate();
+		case "SpyDrone":return SpyDrone.inputSpyDrone();
+		case "PlayDrone":return PlayDrone.inputPlayDrone();
 		}
 
 		}while(true);
 	}
 	
-	private void addVehicle(Vehicle newVehicle) {
+	private void addVehicle() {
 		Vehicle nVehicle=inputVehicle();
 		if (nVehicle!=null) {
 			this.vehicleDatabase.add(nVehicle);
@@ -102,6 +82,26 @@ public class MainMenu {
 			System.out.println("bad vehicle input, returning");
 		}
 	}
+	
+	private void removeVehicle(Vehicle nVehicle) {
+		if (nVehicle!=null) {
+			if (vehicleDatabase.contains(nVehicle)) {
+				this.vehicleDatabase.remove(nVehicle);
+				if (nVehicle instanceof SeaVehicle) {this.seaVehicleDatabase.remove((SeaVehicle) nVehicle);}
+				else if (nVehicle instanceof LandVehicle) {this.landVehicleDatabase.remove((LandVehicle) nVehicle);}
+				else if (nVehicle instanceof AirVehicle) {this.airVehicleDatabase.remove((AirVehicle) nVehicle);}
+				else;
+			}
+			else {System.out.println("vehicle doesnt exist, returning");}
+		}
+	}
+	
+	private void buyVehicle() {
+		Vehicle nVehicle=inputVehicle();
+		this.removeVehicle(nVehicle);
+	}
+	
+	
 	
 	
 	public MainMenu() {
