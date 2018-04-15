@@ -35,6 +35,8 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
             this.licence = licence;
             return true;
         }
+        System.out.println("\n incorrect 'licence' was entered,'MINI' use set by default.");
+        this.licence = "MINI";
         return false;
     }
 
