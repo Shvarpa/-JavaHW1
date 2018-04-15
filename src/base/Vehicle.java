@@ -7,32 +7,33 @@ public abstract class Vehicle {
     private float speed;
 
 
-    public String getModel() {
+    protected Vehicle(String model, int seats, float speed) {
+
+
+        setModel(model);
+        setTotalDistance(0);
+        setSeats(seats);
+        setSpeed(speed);
+    }
+
+    private String getModel() {
         return this.model;
-    }
-
-    public double getTotalDistance() {
-        return this.totalDistance;
-    }
-
-    public int getSeats() {
-        return this.seats;
-    }
-
-    public float getSpeed() {
-        return this.speed;
     }
 
     private void setModel(String model) {
         this.model = model;
     }
 
+    private double getTotalDistance() {
+        return this.totalDistance;
+    }
+
     private void setTotalDistance(double totalDistance) {
         this.totalDistance = totalDistance;
     }
 
-    public void resetTotalDistance() {
-        this.setTotalDistance(0);
+    private int getSeats() {
+        return this.seats;
     }
 
     private void setSeats(int seats) {
@@ -43,6 +44,10 @@ public abstract class Vehicle {
         this.seats = seats;
     }
 
+    private float getSpeed() {
+        return this.speed;
+    }
+
     private void setSpeed(float speed) {
         if (speed < 0) {
             System.out.println("\n incorrect maximum speed , 0 was set to default");
@@ -51,20 +56,15 @@ public abstract class Vehicle {
         this.speed = speed;
     }
 
+    public void resetTotalDistance() {
+        this.setTotalDistance(0);
+    }
+
     protected boolean moveDistance(double distance) {
         if (distance > 0) {
             totalDistance += distance;
             return true;
         } else return false;
-    }
-
-    protected Vehicle(String model, int seats, float speed) {
-
-
-        setModel(model);
-        setTotalDistance(0);
-        setSeats(seats);
-        setSpeed(speed);
     }
 
     public String toString() {

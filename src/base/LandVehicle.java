@@ -7,6 +7,12 @@ public abstract class LandVehicle extends Vehicle {
     private int wheels;
     private String roadType;
 
+    protected LandVehicle(String model, int seats, float speed, int wheels, String roadType) {
+        super(model, seats, speed);
+        setWheels(wheels);
+        setRoadType(roadType);
+    }
+
     private static boolean checkRoadTypeInput(String roadType) {
         return LandVehicle.possibleRoadType.containsIgnoreCaps(roadType);
     }
@@ -21,13 +27,8 @@ public abstract class LandVehicle extends Vehicle {
         return false;
     }
 
-
-    public int getWheels() {
+    private int getWheels() {
         return this.wheels;
-    }
-
-    public String getRoadType() {
-        return this.roadType;
     }
 
     private void setWheels(int wheels) {
@@ -38,10 +39,8 @@ public abstract class LandVehicle extends Vehicle {
         this.wheels = wheels;
     }
 
-    protected LandVehicle(String model, int seats, float speed, int wheels, String roadType) {
-        super(model, seats, speed);
-        setWheels(wheels);
-        setRoadType(roadType);
+    private String getRoadType() {
+        return this.roadType;
     }
 
     public String toString() {

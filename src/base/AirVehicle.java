@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public abstract class AirVehicle extends Vehicle {
     private String vehicleUse;
-    static final StringRange possibleVehicleUse = new StringRange(Arrays.asList("Army", "Civilian"));
+    private static final StringRange possibleVehicleUse = new StringRange(Arrays.asList("Army", "Civilian"));
 
-    public String getVehicleUse() {
+    private String getVehicleUse() {
         return this.vehicleUse;
     }
 

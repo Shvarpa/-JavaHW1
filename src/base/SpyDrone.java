@@ -1,14 +1,13 @@
 package base;
-import base.Inputable;
 
-public class SpyDrone extends Drone implements Inputable{
-	
-	static SpyDrone inputSpyDrone() {
-		String enertgySource=Inputable.input("energy source:");
-		return new SpyDrone(enertgySource);
-	}
-	
-	public SpyDrone(String energySource) {
-		super("Classified",1,50,"Army",energySource,"c");
-	}
+public class SpyDrone extends Drone implements Inputable {
+
+    public SpyDrone(String energySource) {
+        super("Classified", 1, 50, "Army", energySource, "c");
+    }
+
+    static SpyDrone inputSpyDrone() {
+        String enertgySource = Inputable.input("energy source:");
+        return new SpyDrone(enertgySource);
+    }
 }

@@ -1,12 +1,12 @@
 package base;
 
-public class PlayDrone extends Drone{
-	
-	static PlayDrone inputPlayDrone() {
-		return new PlayDrone();
-	}
-	
-	public PlayDrone() {
-		super("Toy",0,10,"Civillian","Manual","a");
-	}
+public class PlayDrone extends Drone {
+
+    public PlayDrone() {
+        super("Toy", 0, 10, "Civillian", "Manual", "a");
+    }
+
+    static PlayDrone inputPlayDrone() {
+        return new PlayDrone();
+    }
 }
