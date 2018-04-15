@@ -12,7 +12,7 @@ public class Frigate extends SeaVehicle implements Motorized{
 		boolean withWindDiraction=Inputable.inputBoolean("with wind diraction?:");
 		return new Frigate(model,seats,speed,withWindDiraction);
 		}
-		catch (NumberFormatException e) {System.out.println(e.toString()); return null;} 
+		catch (NumberFormatException e) {System.out.println("bad input "+e.getLocalizedMessage()+", returning"); return null;}
 	}
 	
 	private double avgFuelConsumption; //Motorized Interface

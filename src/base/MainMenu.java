@@ -17,13 +17,13 @@ public class MainMenu{
 	private void printDatabase() {
 		for(Vehicle v:vehicleDatabase) {
 			System.out.println("index:"+vehicleDatabase.indexOf(v)+", "+v.toString());
-		}
-	}
+		}	}
 	
 	private boolean selectOption() {
 		if (!vehicleDatabase.isEmpty()) {printDatabase();}
 		System.out.println(
-				"Select form the following options:\n"
+				"\n"
+				+ "Select form the following options:\n"
 				+ "1)add vehicle\n"
 				+ "2)buy vehicle\n"
 				+ "3)take a vehicle for a test-drive\n"
@@ -55,8 +55,7 @@ public class MainMenu{
 		
 	private Vehicle inputVehicle() {
 		String type;
-		type=Inputable.input("what is the vehicle's type? (type 'exit' to return)");
-		if (type.equalsIgnoreCase("exit")) {return null;}
+		type=Inputable.input("what is the vehicle's type?");
 		type=possibleVehicleTypes.FixCaps(type);
 		switch(type) {
 			case "Jeep": return Jeep.inputJeep();
@@ -66,9 +65,16 @@ public class MainMenu{
 			default: System.out.println("this type is undefined. ("+possibleVehicleTypes.toString()+")");return null;
 		}
 	}
+	private boolean isEmpty() {
+		if (vehicleDatabase.isEmpty()){
+			System.out.println("no vehicles in database, returning\n");
+			return true;
+		}
+		return false;
+	}
 	
 	private Vehicle selectVehicle() {
-		int index=Integer.parseInt(Inputable.input("enter vehicle index:"));
+		int index=Inputable.inputIntger("enter vehicle index:");
 		if (index<0 || index>=vehicleDatabase.size()) {
 			System.out.println("the index "+index+" is out of bounds, returning\n");
 			return null;
@@ -77,8 +83,8 @@ public class MainMenu{
 	}
 	
 	private Vehicle selectOrInputVehicle() {
-		if (!vehicleDatabase.isEmpty()) {
-			boolean byindex=Boolean.parseBoolean(Inputable.input("would you like to select a vehicle by index?"));
+		if (!isEmpty()) {
+			boolean byindex=Inputable.inputBoolean("would you like to select a vehicle by index?");
 			if (byindex) {return selectVehicle();}
 		}
 		return inputVehicle();
@@ -95,7 +101,6 @@ public class MainMenu{
 			System.out.println("the vehicle: "+nVehicle.toString()+" was added succesfully, returning\n");
 			return true;
 		}
-		System.out.println("bad vehicle input, returning\n");
 		return false;
 	}
 	
@@ -112,15 +117,16 @@ public class MainMenu{
 		}
 		System.out.println("vehicle doesnt exist, returning\n");
 		return false;
-
 	}
 		
 	private boolean buyVehicle() {
-		Vehicle currVehicle=selectOrInputVehicle();
-		if (currVehicle!=null) {
-			if (this.removeVehicle(currVehicle)) {
-				System.out.println("the vehicle: "+currVehicle.toString()+" was bought succesfully, returning\n");
-				return true;
+		if(!isEmpty()) {
+			Vehicle currVehicle=selectOrInputVehicle();
+			if (currVehicle!=null) {
+				if (this.removeVehicle(currVehicle)) {
+					System.out.println("the vehicle: "+currVehicle.toString()+" was bought succesfully, returning\n");
+					return true;
+				}
 			}
 		}
 		return false;
@@ -136,31 +142,32 @@ public class MainMenu{
 	}
 	
 	private boolean testDriveVehicle() {
-		Vehicle currVehicle=selectOrInputVehicle();
-		if (currVehicle==null) {return false;}
-		double distance=Double.parseDouble("enter test drive distance:");
-		if(driveVehicle(currVehicle,distance)){
-			System.out.println("the vehicle: "+currVehicle.toString()+" was taken for a "+distance+"km test-drive succesfully, returning\n");
-			return true;
+		if(!isEmpty()) {
+			Vehicle currVehicle=selectOrInputVehicle();
+			if (currVehicle==null) {return false;}
+			try {
+				double distance=Inputable.inputDouble("enter test drive distance:");
+				if(driveVehicle(currVehicle,distance)){
+					System.out.println("the vehicle: "+currVehicle.toString()+" was taken for a "+distance+"km test-drive succesfully, returning\n");
+					return true;
+				}
+				return false;
+			}
+			catch (NumberFormatException e) {System.out.println("bad input "+e.getLocalizedMessage()+", returning"); return false;}
 		}
 		return false;
+
 	}
 	
 	private boolean resetDistances() {
-		if (vehicleDatabase.isEmpty()){
-			System.out.println("no vehicles in database, returning\n");
-			return false;
-		}
+		if (isEmpty()){return false;}
 		for(Vehicle v:vehicleDatabase) {v.resetTotalDistance();}
 		System.out.println("all vehicle distances were reset succesfully, returning\n");
 		return true;
 	}
 	
 	private boolean changeFlags() {
-		if (vehicleDatabase.isEmpty()){
-			System.out.println("no vehicles in database, returning\n");
-			return false;
-		}
+		if (isEmpty()){return false;}
 		String flag=Inputable.input("Enter new flag name:");
 		for(SeaVehicle sV: seaVehicleDatabase) {sV.setFlag(flag);}
 		System.out.println("all vehicle flags were changed to "+flag+" succesfully, returning\n");

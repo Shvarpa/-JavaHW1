@@ -12,7 +12,7 @@ public class Jeep extends LandVehicle implements Commercial,Motorized{
 		double avgMotorLifespan=Inputable.inputDouble("average motor lifespan:");
 		return new Jeep(model,speed,avgFuelConsumption,avgMotorLifespan);
 		}
-		catch (NumberFormatException e) {System.out.println(e.toString()); return null;}
+		catch (NumberFormatException e) {System.out.println("bad input "+e.getLocalizedMessage()+", returning"); return null;}
 	}
 	
 	private String licence;//Commercial Interface

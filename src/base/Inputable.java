@@ -21,7 +21,8 @@ public interface Inputable {
 		return Double.parseDouble(input(msg+" (double)"));
 	}
 	
-	static Boolean inputBoolean(String msg) throws NumberFormatException{
-		return Boolean.parseBoolean(input(msg+" (boolean)"));
+	static Boolean inputBoolean(String msg){
+		String inputStr=input(msg+" (boolean)");
+		return Boolean.parseBoolean(inputStr)||"yes".equalsIgnoreCase(inputStr)||"1".equalsIgnoreCase(inputStr)||"on".equalsIgnoreCase(inputStr);
 	}
 }
