@@ -16,7 +16,7 @@ public class MainMenu{
 	
 	private void printDatabase() {
 		for(Vehicle v:vehicleDatabase) {
-			System.out.println("index:"+vehicleDatabase.indexOf(v)+" "+v.toString());
+			System.out.println("index:"+vehicleDatabase.indexOf(v)+", "+v.toString());
 		}
 	}
 	

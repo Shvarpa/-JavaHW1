@@ -1,5 +1,4 @@
 package base;
-import base.Inputable;
 
 public abstract class Drone extends AirVehicle implements NonMotorized{
 	

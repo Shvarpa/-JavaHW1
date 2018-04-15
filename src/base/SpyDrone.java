@@ -1,4 +1,5 @@
 package base;
+import base.Inputable;
 
 public class SpyDrone extends Drone implements Inputable{
 	

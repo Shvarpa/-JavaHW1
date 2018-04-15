@@ -1,6 +1,7 @@
 package base;
 
 public abstract class Vehicle {
+	
 	private String model;
 	private double totalDistance;
 	private int seats;
@@ -35,7 +36,7 @@ public abstract class Vehicle {
 		setSpeed(speed);
 	}
 	
-	public String toString() {return this.getClass().getName()+": Model: "+this.model+", traveled:"+this.totalDistance+" Km, Max Speed of "+this.speed+" Mph, can carry max of "+this.seats+" people.";		}
+	public String toString() {return this.getClass().getSimpleName()+":Model: "+this.model+", traveled:"+this.totalDistance+" Km, Max Speed of "+this.speed+" Mph, can carry max of "+this.seats+" people.";		}
 	public boolean equals(Object other) {
 		if (other instanceof Vehicle) {
 			return this.model.equals(((Vehicle)other).getModel()) && this.totalDistance==((Vehicle)other).getTotalDistance() && this.seats==((Vehicle)other).getSeats() && this.speed==((Vehicle)other).getSpeed();
