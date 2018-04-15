@@ -3,7 +3,6 @@ package base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import base.Jeep;
 import base.Inputable;
 
 public class MainMenu{
