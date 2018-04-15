@@ -8,8 +8,6 @@ public abstract class Vehicle {
 
 
     protected Vehicle(String model, int seats, float speed) {
-
-
         setModel(model);
         setTotalDistance(0);
         setSeats(seats);

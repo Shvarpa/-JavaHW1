@@ -23,6 +23,6 @@ public interface Inputable {
 	
 	static Boolean inputBoolean(String msg){
 		String inputStr=input(msg+" (boolean)");
-		return Boolean.parseBoolean(inputStr)||"yes".equalsIgnoreCase(inputStr)||"1".equalsIgnoreCase(inputStr)||"on".equalsIgnoreCase(inputStr);
+		return Boolean.parseBoolean(inputStr)||"yes".equalsIgnoreCase(inputStr)||"1".equalsIgnoreCase(inputStr)||"on".equalsIgnoreCase(inputStr)||"y".equalsIgnoreCase(inputStr);
 	}
 }

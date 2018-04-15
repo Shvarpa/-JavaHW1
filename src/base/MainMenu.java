@@ -15,8 +15,8 @@ public class MainMenu{
 	private List<LandVehicle> landVehicleDatabase;
 	
 	private void printDatabase() {
-		for(Vehicle v:vehicleDatabase) {
-			System.out.println("index:"+vehicleDatabase.indexOf(v)+", "+v.toString());
+		for(int i=0;i<vehicleDatabase.size();i++) {
+			System.out.println("index:"+i+", "+(vehicleDatabase.get(i)).toString());
 		}	}
 	
 	private boolean selectOption() {
@@ -51,7 +51,10 @@ public class MainMenu{
 		}
 		return true;
 	}
-
+	
+	private boolean validIndex(int index) {
+		return (index>=0 && index<=vehicleDatabase.size());
+	}
 		
 	private Vehicle inputVehicle() {
 		String type;
@@ -73,21 +76,25 @@ public class MainMenu{
 		return false;
 	}
 	
-	private Vehicle selectVehicle() {
+	private int selectVehicle() {
 		int index=Inputable.inputIntger("enter vehicle index:");
-		if (index<0 || index>=vehicleDatabase.size()) {
+		if (!validIndex(index)) {
 			System.out.println("the index "+index+" is out of bounds, returning\n");
-			return null;
+			return -1;
 		}
-		return vehicleDatabase.get(index);
+		return index;
 	}
 	
-	private Vehicle selectOrInputVehicle() {
+	private int selectVehicle(Vehicle inputedVehicle) {
+		if(vehicleDatabase.contains(inputedVehicle)) {return vehicleDatabase.indexOf(inputedVehicle);}
+		else return -1;
+	}
+	
+	private int selectOrInputVehicle() {
 		if (!isEmpty()) {
-			boolean byindex=Inputable.inputBoolean("would you like to select a vehicle by index?");
-			if (byindex) {return selectVehicle();}
+			if (Inputable.inputBoolean("would you like to select a vehicle by index?")){return selectVehicle();}
 		}
-		return inputVehicle();
+		return selectVehicle(inputVehicle());
 	}
 	
 	private boolean addVehicle() {
@@ -104,38 +111,58 @@ public class MainMenu{
 		return false;
 	}
 	
-	private boolean removeVehicle(Vehicle nVehicle) {
-		if (nVehicle!=null) {
-			if (vehicleDatabase.contains(nVehicle)) {
-				this.vehicleDatabase.remove(nVehicle);
-				if (nVehicle instanceof SeaVehicle) {this.seaVehicleDatabase.remove((SeaVehicle) nVehicle);}
-				else if (nVehicle instanceof LandVehicle) {this.landVehicleDatabase.remove((LandVehicle) nVehicle);}
-				else if (nVehicle instanceof AirVehicle) {this.airVehicleDatabase.remove((AirVehicle) nVehicle);}
-				else;
-				return true;
+	private boolean removeVehicle(int index) {
+		if (validIndex(index)) {
+			Vehicle currVehicle=this.vehicleDatabase.get(index);
+			this.vehicleDatabase.remove(index);
+			if (currVehicle instanceof SeaVehicle) {
+				for(int i=0;i<seaVehicleDatabase.size();i++) {
+					if (seaVehicleDatabase.get(i)==currVehicle) {
+						seaVehicleDatabase.remove(i);
+						break;
+					}
+				}
 			}
-		}
+			else if (currVehicle instanceof LandVehicle) {
+				for(int i=0;i<landVehicleDatabase.size();i++) {
+					if (landVehicleDatabase.get(i)==currVehicle) {
+						landVehicleDatabase.remove(i);
+						break;
+					}
+				}
+			}
+			else if (currVehicle instanceof AirVehicle) {
+				for(int i=0;i<airVehicleDatabase.size();i++) {
+					if (airVehicleDatabase.get(i)==currVehicle) {
+						landVehicleDatabase.remove(i);
+						break;
+					}				
+				}
+			}
+			else;
+			return true;
+			}
 		System.out.println("vehicle doesnt exist, returning\n");
 		return false;
 	}
 		
 	private boolean buyVehicle() {
 		if(!isEmpty()) {
-			Vehicle currVehicle=selectOrInputVehicle();
-			if (currVehicle!=null) {
-				if (this.removeVehicle(currVehicle)) {
-					System.out.println("the vehicle: "+currVehicle.toString()+" was bought succesfully, returning\n");
-					return true;
-				}
+			int vehicleIndex=selectOrInputVehicle();
+			if (validIndex(vehicleIndex)) {
+				Vehicle currVehicle=this.vehicleDatabase.get(vehicleIndex);
+				removeVehicle(vehicleIndex);
+				System.out.println("the vehicle: "+currVehicle.toString()+" was bought succesfully, returning\n");
+				return true;
 			}
 		}
 		return false;
 	}
 	
 	
-	private boolean driveVehicle(Vehicle inputedVehicle,double distance) {
-		if (vehicleDatabase.contains(inputedVehicle)){
-			vehicleDatabase.get(vehicleDatabase.indexOf(inputedVehicle)).moveDistance(distance);
+	private boolean driveVehicle(int index,double distance) {
+		if (validIndex(index)){
+			vehicleDatabase.get(index).moveDistance(distance);
 			return true;
 		}
 		return false;
@@ -143,11 +170,12 @@ public class MainMenu{
 	
 	private boolean testDriveVehicle() {
 		if(!isEmpty()) {
-			Vehicle currVehicle=selectOrInputVehicle();
-			if (currVehicle==null) {return false;}
+			int vehicleIndex=selectOrInputVehicle();
+			if (!validIndex(vehicleIndex)) {return false;}
 			try {
 				double distance=Inputable.inputDouble("enter test drive distance:");
-				if(driveVehicle(currVehicle,distance)){
+				if(driveVehicle(vehicleIndex,distance)){
+					Vehicle currVehicle=this.vehicleDatabase.get(vehicleIndex);
 					System.out.println("the vehicle: "+currVehicle.toString()+" was taken for a "+distance+"km test-drive succesfully, returning\n");
 					return true;
 				}
