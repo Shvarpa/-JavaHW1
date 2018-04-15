@@ -5,11 +5,14 @@ import base.Inputable;
 public class Jeep extends LandVehicle implements Commercial,Motorized{
 	
 	static Jeep inputJeep() {
-		String model=Inputable.input("model (String):");
-		float speed=Float.parseFloat(Inputable.input("speed (float):"));
-		double avgFuelConsumption=Double.parseDouble(Inputable.input("average fuel consumption (double):"));
-		double avgMotorLifespan=Double.parseDouble(Inputable.input("average motor lifespan (double):"));
+		try {
+		String model=Inputable.input("model:");
+		float speed=Inputable.inputFloat("speed:");
+		double avgFuelConsumption=Inputable.inputDouble("average fuel consumption:");
+		double avgMotorLifespan=Inputable.inputDouble("average motor lifespan:");
 		return new Jeep(model,speed,avgFuelConsumption,avgMotorLifespan);
+		}
+		catch (NumberFormatException e) {System.out.println(e.toString()); return null;}
 	}
 	
 	private String licence;//Commercial Interface

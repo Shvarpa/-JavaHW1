@@ -4,7 +4,7 @@ import base.Inputable;
 public class SpyDrone extends Drone implements Inputable{
 	
 	static SpyDrone inputSpyDrone() {
-		String enertgySource=Inputable.input("energy source (String):");
+		String enertgySource=Inputable.input("energy source:");
 		return new SpyDrone(enertgySource);
 	}
 	

@@ -5,11 +5,14 @@ import base.Inputable;
 
 public class Frigate extends SeaVehicle implements Motorized{	
 	static Frigate inputFrigate() {
-		String model=Inputable.input("model (String):");
-		int seats=Integer.parseInt(Inputable.input("seats (int):"));
-		float speed=Float.parseFloat(Inputable.input("speed (float):"));
-		boolean withWindDiraction=Boolean.parseBoolean(Inputable.input("with wind diraction? (boolean):"));
+		try {
+		String model=Inputable.input("model:");
+		int seats=Inputable.inputIntger("seats:");
+		float speed=Inputable.inputFloat("speed:");
+		boolean withWindDiraction=Inputable.inputBoolean("with wind diraction?:");
 		return new Frigate(model,seats,speed,withWindDiraction);
+		}
+		catch (NumberFormatException e) {System.out.println(e.toString()); return null;} 
 	}
 	
 	private double avgFuelConsumption; //Motorized Interface

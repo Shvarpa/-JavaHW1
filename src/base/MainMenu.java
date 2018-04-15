@@ -146,15 +146,25 @@ public class MainMenu{
 		return false;
 	}
 	
-	private void resetDistances() {
+	private boolean resetDistances() {
+		if (vehicleDatabase.isEmpty()){
+			System.out.println("no vehicles in database, returning\n");
+			return false;
+		}
 		for(Vehicle v:vehicleDatabase) {v.resetTotalDistance();}
 		System.out.println("all vehicle distances were reset succesfully, returning\n");
+		return true;
 	}
 	
-	private void changeFlags() {
+	private boolean changeFlags() {
+		if (vehicleDatabase.isEmpty()){
+			System.out.println("no vehicles in database, returning\n");
+			return false;
+		}
 		String flag=Inputable.input("Enter new flag name:");
 		for(SeaVehicle sV: seaVehicleDatabase) {sV.setFlag(flag);}
 		System.out.println("all vehicle flags were changed to "+flag+" succesfully, returning\n");
+		return true;
 	}
 	
 	
