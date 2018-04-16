@@ -1,5 +1,5 @@
-//Pavel Shvarchov - 319270583
-//Mordy Dabah - 203507017
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 
 package base;
 
