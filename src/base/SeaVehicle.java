@@ -1,3 +1,6 @@
+//Pavel Shvarchov - 319270583
+//Mordy Dabah - 203507017
+
 package base;
 
 public abstract class SeaVehicle extends Vehicle {

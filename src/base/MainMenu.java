@@ -1,3 +1,6 @@
+//Pavel Shvarchov - 319270583
+//Mordy Dabah - 203507017
+
 package base;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ public class MainMenu{
 			System.out.println("index:"+i+", "+(vehicleDatabase.get(i)).toString());
 		}	}
 	
-	private boolean selectOption() {
+	public boolean selectOption() {
 		if (!vehicleDatabase.isEmpty()) {printDatabase();}
 		System.out.println(
 				"\n"

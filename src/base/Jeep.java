@@ -1,3 +1,6 @@
+//Pavel Shvarchov - 319270583
+//Mordy Dabah - 203507017
+
 package base;
 
 public class Jeep extends LandVehicle implements Commercial, Motorized {
