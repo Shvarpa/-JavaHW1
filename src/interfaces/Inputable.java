@@ -12,7 +12,7 @@ public interface Inputable {
 		return in.next();
 	}
 	
-	static Integer inputIntger(String msg) throws NumberFormatException{
+	static Integer inputInteger(String msg) throws NumberFormatException{
 		return Integer.parseInt(input(msg+" (int)"));
 	}
 	

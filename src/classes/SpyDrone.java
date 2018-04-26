@@ -10,7 +10,7 @@ public class SpyDrone extends Drone {
         super("Classified", 1, 50, "Army", energySource, "c");
     }
 
-    static SpyDrone inputSpyDrone() {
+    public static SpyDrone inputSpyDrone() {
         String enertgySource = Inputable.input("energy source:");
         return new SpyDrone(enertgySource);
     }

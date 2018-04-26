@@ -19,7 +19,7 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
         setAvgMotorLifespan(avgMotorLifespan);
     }
 
-    static Jeep inputJeep() {
+    public static Jeep inputJeep() {
         try {
             String model = Inputable.input("model:");
             float speed = Inputable.inputFloat("speed:");

@@ -15,10 +15,10 @@ public class Frigate extends SeaVehicle implements Motorized {
         setAvgMotorLifespan(4);
     }
 
-    static Frigate inputFrigate() {
+    public static Frigate inputFrigate() {
         try {
             String model = Inputable.input("model:");
-            int seats = Inputable.inputIntger("seats:");
+            int seats = Inputable.inputInteger("seats:");
             float speed = Inputable.inputFloat("speed:");
             boolean withWindDiraction = Inputable.inputBoolean("with wind diraction?:");
             return new Frigate(model, seats, speed, withWindDiraction);

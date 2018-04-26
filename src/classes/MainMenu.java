@@ -79,7 +79,7 @@ public class MainMenu{
 	}
 	
 	private int selectVehicle() {
-		int index=Inputable.inputIntger("enter vehicle index:");
+		int index=Inputable.inputInteger("enter vehicle index:");
 		if (!validIndex(index)) {
 			System.out.println("the index "+index+" is out of bounds, returning\n");
 			return -1;

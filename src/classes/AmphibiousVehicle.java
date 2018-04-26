@@ -4,6 +4,7 @@ package classes;
 
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import interfaces.Inputable;
 import interfaces.Motorized;
 
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{
@@ -55,4 +56,21 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 	public String toString() {
 		return super.toString()+ " " +ILandVehicle.toString(this)+ " " + ISeaVehicle.toString(this) + " " + Motorized.toString(this);
 	}
+	
+    public static AmphibiousVehicle inputAmphibiousVehicle() {
+        try {
+            String model = Inputable.input("model:");
+            int seats= Inputable.inputInteger("seats:");
+            float speed = Inputable.inputFloat("speed:");
+            int wheels= Inputable.inputInteger("Wheels:");
+            boolean withWindDiraction=Inputable.inputBoolean("with wind diraction?:");
+            String flag = Inputable.input("flag:");
+            double avgFuelConsumption = Inputable.inputDouble("average fuel consumption:");
+            double avgMotorLifespan = Inputable.inputDouble("average motor lifespan:");
+            return new AmphibiousVehicle(model,seats,speed,wheels,withWindDiraction,flag,avgFuelConsumption,avgMotorLifespan);
+        } catch (NumberFormatException e) {
+            System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
+            return null;
+        }
+    }
 }
