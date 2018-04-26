@@ -2,23 +2,18 @@
 
 package classes;
 
-import java.util.Arrays;
+import interfaces.IAirVehicle;
 
-public abstract class AirVehicle extends Vehicle {
+public abstract class AirVehicle extends Vehicle implements IAirVehicle{
     private String vehicleUse;
-    private static final StringRange possibleVehicleUse = new StringRange(Arrays.asList("Army", "Civilian"));
 
-    private String getVehicleUse() {
+    public String getVehicleUse() {
         return this.vehicleUse;
     }
 
-    private static boolean checkVehicleUseInput(String vehicleUse) {
-        return AirVehicle.possibleVehicleUse.containsIgnoreCaps(vehicleUse);
-    }
-
     private boolean setVehicleUse(String vehicleUse) {
-        if (AirVehicle.checkVehicleUseInput(vehicleUse)) {
-            this.vehicleUse = AirVehicle.possibleVehicleUse.FixCaps(vehicleUse);
+        if (IAirVehicle.checkVehicleUseInput(vehicleUse)) {
+            this.vehicleUse = IAirVehicle.possibleVehicleUse.FixCaps(vehicleUse);
             return true;
         }
         System.out.println("\n incorrect 'use' was entered,'Civilian' use set by default.");
@@ -32,13 +27,10 @@ public abstract class AirVehicle extends Vehicle {
     }
 
     public String toString() {
-        return super.toString() + " intended for " + this.vehicleUse + " use.";
+        return super.toString() + " " + IAirVehicle.toString(this);
     }
 
     public boolean equals(Object other) {
-        if (other instanceof AirVehicle) {
-            return super.equals(other) && this.vehicleUse.equals(((AirVehicle) other).getVehicleUse());
-        }
-        return false;
+    	return super.equals(other) && IAirVehicle.equals(this, other);
     }
 }

@@ -9,9 +9,6 @@ import java.util.Set;
 
 public class StringRange extends ArrayList<String>{	
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public StringRange(String[] range) {super(Arrays.asList(range));}

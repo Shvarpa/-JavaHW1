@@ -4,7 +4,7 @@ package classes;
 
 import interfaces.Inputable;
 
-public class SpyDrone extends Drone implements Inputable {
+public class SpyDrone extends Drone {
 
     public SpyDrone(String energySource) {
         super("Classified", 1, 50, "Army", energySource, "c");
