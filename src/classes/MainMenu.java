@@ -1,11 +1,12 @@
 //Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
 
-package base;
+package classes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import base.Inputable;
+
+import interfaces.Inputable;
 
 public class MainMenu{
 	static final StringRange possibleVehicleTypes=new StringRange(Arrays.asList("Jeep","Frigate","SpyDrone","PlayDrone"));

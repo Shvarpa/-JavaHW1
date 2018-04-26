@@ -1,6 +1,9 @@
 //Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
 
-package base;
+package classes;
+
+import interfaces.Inputable;
+import interfaces.Motorized;
 
 public class Frigate extends SeaVehicle implements Motorized {
     private double avgFuelConsumption; //Motorized Interface

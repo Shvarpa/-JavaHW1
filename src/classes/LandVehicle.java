@@ -1,11 +1,10 @@
 //Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
 
-package base;
+package classes;
 
-import java.util.Arrays;
 
-public abstract class LandVehicle extends Vehicle {
-    private static StringRange possibleRoadType = new StringRange(Arrays.asList("dirt", "constructed"));
+import interfaces.ILandVehicle;
+public abstract class LandVehicle extends Vehicle implements ILandVehicle{
     private int wheels;
     private String roadType;
 
@@ -14,14 +13,14 @@ public abstract class LandVehicle extends Vehicle {
         setWheels(wheels);
         setRoadType(roadType);
     }
-
-    private static boolean checkRoadTypeInput(String roadType) {
-        return LandVehicle.possibleRoadType.containsIgnoreCaps(roadType);
+    
+    public String getRoadType() {
+        return this.roadType;
     }
 
     private boolean setRoadType(String roadType) {
-        if (LandVehicle.checkRoadTypeInput(roadType)) {
-            this.roadType = LandVehicle.possibleRoadType.FixCaps(roadType);
+        if (ILandVehicle.checkRoadTypeInput(roadType)) {
+            this.roadType = ILandVehicle.possibleRoadType.FixCaps(roadType);
             return true;
         }
         System.out.println("\n incorrect Road Type was entered,'constructed' use set by default.");
@@ -29,7 +28,7 @@ public abstract class LandVehicle extends Vehicle {
         return false;
     }
 
-    private int getWheels() {
+    public int getWheels() {
         return this.wheels;
     }
 
@@ -41,18 +40,11 @@ public abstract class LandVehicle extends Vehicle {
         this.wheels = wheels;
     }
 
-    private String getRoadType() {
-        return this.roadType;
-    }
-
     public String toString() {
-        return super.toString() + " has " + this.wheels + " wheels, can ride on " + this.roadType + " roads.";
+        return super.toString() + " " +ILandVehicle.toString(this);
     }
 
     public boolean equals(Object other) {
-        if (other instanceof LandVehicle) {
-            return super.equals(other) && this.wheels == ((LandVehicle) other).getWheels() && this.roadType.equals(((LandVehicle) other).getRoadType());
-        }
-        return false;
+    	return super.equals(other) && ILandVehicle.equals(this, other);
     }
 }
