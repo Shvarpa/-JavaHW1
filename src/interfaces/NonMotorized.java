@@ -14,9 +14,10 @@ public interface NonMotorized {
 	}
 	
 	static String toString(NonMotorized self) {return "Energy source:"+self.getEnergySource()+", Energy rating:"+self.getEnergyRating()+".";}
+	
 	static boolean equals(NonMotorized self,Object other) {
 		if (other instanceof NonMotorized) {
-			return self.getEnergyRating().equals(((NonMotorized)other).getEnergyRating());
+			return self.getEnergyRating().equals(((NonMotorized)other).getEnergyRating()) && self.getEnergySource().equalsIgnoreCase(((NonMotorized)other).getEnergySource());
 		}
 		return false;
 	}
