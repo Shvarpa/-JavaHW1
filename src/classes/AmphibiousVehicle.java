@@ -1,8 +1,6 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package classes;
-
-
-//import classes.LandVehicle;
-//import classes.SeaVehicle;
 
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
