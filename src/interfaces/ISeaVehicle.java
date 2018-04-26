@@ -1,6 +1,11 @@
 package interfaces;
 
+import java.util.Arrays;
+import classes.StringRange;
+
 public interface ISeaVehicle {
+	
+	public static StringRange possibleFlags = new StringRange(Arrays.asList("Israel","USA","Germany","Italy","Greece","Somalia","Pirate"));
 	
 	public static boolean equals(ISeaVehicle self,Object other) {
     	if (other instanceof ISeaVehicle) {
@@ -16,4 +21,5 @@ public interface ISeaVehicle {
 	
 	public boolean getWithWindDiraction();
 	public String getFlag();
+	public void setFlag(String flag);
 }
