@@ -1,24 +1,10 @@
 package gui;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.PopupMenu;
-
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
@@ -141,7 +127,8 @@ public class MainFrame extends JFrame {
 					public void run() {
 						Form form = new Form();
 						form.setVisible(true);
-						form.setLocationRelativeTo(null);;
+						form.setLocationRelativeTo(null);
+						dispose();
 					}
 				});
 
