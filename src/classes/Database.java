@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import interfaces.IAirVehicle;
+import interfaces.ILandVehicle;
+import interfaces.ISeaVehicle;
 import interfaces.Inputable;
 
 public class Database {
@@ -14,9 +17,9 @@ public class Database {
 
 	private static Database self = null;
 	private List<Vehicle> vehicleDatabase;
-	private List<SeaVehicle> seaVehicleDatabase;
-	private List<AirVehicle> airVehicleDatabase;
-	private List<LandVehicle> landVehicleDatabase;
+	private List<ISeaVehicle> seaVehicleDatabase;
+	private List<IAirVehicle> airVehicleDatabase;
+	private List<ILandVehicle> landVehicleDatabase;
 
 	private void printDatabase() {
 		for (int i = 0; i < vehicleDatabase.size(); i++) {
@@ -132,21 +135,23 @@ public class Database {
 		if (validIndex(index)) {
 			Vehicle currVehicle = this.vehicleDatabase.get(index);
 			this.vehicleDatabase.remove(index);
-			if (currVehicle instanceof SeaVehicle) {
+			if (currVehicle instanceof ISeaVehicle) {
 				for (int i = 0; i < seaVehicleDatabase.size(); i++) {
 					if (seaVehicleDatabase.get(i) == currVehicle) {
 						seaVehicleDatabase.remove(i);
 						break;
 					}
 				}
-			} else if (currVehicle instanceof LandVehicle) {
+			}
+			if (currVehicle instanceof ILandVehicle) {
 				for (int i = 0; i < landVehicleDatabase.size(); i++) {
 					if (landVehicleDatabase.get(i) == currVehicle) {
 						landVehicleDatabase.remove(i);
 						break;
 					}
 				}
-			} else if (currVehicle instanceof AirVehicle) {
+			}
+			if (currVehicle instanceof IAirVehicle) {
 				for (int i = 0; i < airVehicleDatabase.size(); i++) {
 					if (airVehicleDatabase.get(i) == currVehicle) {
 						landVehicleDatabase.remove(i);
@@ -222,7 +227,7 @@ public class Database {
 			return false;
 		}
 		String flag = Inputable.input("Enter new flag name:");
-		for (SeaVehicle sV : seaVehicleDatabase) {
+		for (ISeaVehicle sV : seaVehicleDatabase) {
 			sV.setFlag(flag);
 		}
 		System.out.println("all vehicle flags were changed to " + flag + " succesfully, returning\n");
