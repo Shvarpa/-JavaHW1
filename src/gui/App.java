@@ -2,9 +2,13 @@
 
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+
 import classes.Database;
 
 public class App {
@@ -15,6 +19,7 @@ public class App {
 				JFrame app = new MainFrame("Car Agency");
 				app.setSize(500, 300);
 				app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				app.setLocationRelativeTo(null);;
 				app.setVisible(true);				
 			}
 		});
