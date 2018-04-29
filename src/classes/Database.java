@@ -27,35 +27,35 @@ public class Database {
 		}
 	}
 
-	public boolean selectOption() {
-		if (!vehicleDatabase.isEmpty()) {
-			printDatabase();
-		}
-		System.out.println("\n" + "Select form the following options:\n" + "1)add vehicle\n" + "2)buy vehicle\n"
-				+ "3)take a vehicle for a test-drive\n" + "4)reset all vehicle distances\n" + "5)change flags\n"
-				+ "6)exit\n\n");
-		int option = Inputable.in.nextInt();
-		switch (option) {
-		case 1:
-			this.addVehicle();
-			break;
-		case 2:
-			this.buyVehicle();
-			break;
-		case 3:
-			testDriveVehicle();
-			break;
-		case 4:
-			resetDistances();
-			break;
-		case 5:
-			changeFlags();
-			break;
-		case 6:
-			return false;
-		}
-		return true;
-	}
+//	public boolean selectOption() {
+//		if (!vehicleDatabase.isEmpty()) {
+//			printDatabase();
+//		}
+//		System.out.println("\n" + "Select form the following options:\n" + "1)add vehicle\n" + "2)buy vehicle\n"
+//				+ "3)take a vehicle for a test-drive\n" + "4)reset all vehicle distances\n" + "5)change flags\n"
+//				+ "6)exit\n\n");
+//		int option = Inputable.in.nextInt();
+//		switch (option) {
+//		case 1:
+//			this.addVehicle();
+//			break;
+//		case 2:
+//			this.buyVehicle();
+//			break;
+//		case 3:
+//			testDriveVehicle();
+//			break;
+//		case 4:
+//			resetDistances();
+//			break;
+//		case 5:
+//			changeFlags();
+//			break;
+//		case 6:
+//			return false;
+//		}
+//		return true;
+//	}
 
 	private boolean validIndex(int index) {
 		return (index >= 0 && index <= vehicleDatabase.size());
@@ -248,14 +248,6 @@ public class Database {
 			Database.self = new Database();
 			return Database.self;
 		}
-	}
-
-	public static void main(String[] args) {
-		Database main = Database.getInstance();
-		boolean retry = false;
-		do {
-			retry = main.selectOption();
-		} while (retry);
 	}
 
 }
