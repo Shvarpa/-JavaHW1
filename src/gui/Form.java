@@ -7,10 +7,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class Form extends JDialog {
-	private CardLayout cl= new CardLayout();
+	private CardLayout cl = new CardLayout();
 	private JPanel formPanel;
+	
+	private static String[] types = {"Jeep", "Frigate","SpyDrone","PlayDrone","AmphibiousVehicle","Bike","CruiseShip"};
+	
+	private static DefaultComboBoxModel<ImageAndText> populateComboBoxModel(Dimension imageSize) {
+		String basePath= "Images\\";
+		DefaultComboBoxModel<ImageAndText> model = new DefaultComboBoxModel<ImageAndText>();
+		for (String type:types) {
+			ImageAndText curr = new ImageAndText(basePath+type+".png",type);
+			curr.scaleImg(imageSize);
+			model.addElement(curr);
+		}
+		return model;
+	}
+
 
 	private final JPanel contentPanel = new JPanel();
+
 	public Form() {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -40,19 +55,22 @@ class Form extends JDialog {
 				selectPanel.add(selectLabel);
 			}
 			{
-				final JComboBox typesComboBox = new JComboBox();
-				typesComboBox.setModel(new DefaultComboBoxModel(new String[] {"","Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike", "CruiseShip"}));
-				selectPanel.add(typesComboBox);
+				final JComboBox<ImageAndText> typesComboBox = new JComboBox<ImageAndText>();
+				typesComboBox.setPreferredSize(new Dimension(200,30));
+				typesComboBox.setModel(populateComboBoxModel(new Dimension(30,30)));
+				typesComboBox.setRenderer(new ImageTextRenderer());
 				typesComboBox.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						if (typesComboBox.getSelectedItem().equals("Jeep")){
+						if (typesComboBox.getSelectedItem().toString().equals("Jeep")){
 							cl.show(formPanel, "Jeep");
 						}
 						else cl.show(formPanel, "Empty");
 					}
 				});
+				
+				selectPanel.add(typesComboBox);
 			}
 		}
 		
@@ -67,6 +85,8 @@ class Form extends JDialog {
 			gbc_formPanel.gridx = 0;
 			gbc_formPanel.gridy = 1;
 			contentPanel.add(formPanel, gbc_formPanel);
+			
+			///added form types
 			formPanel.setLayout(cl);
 			formPanel.add("Empty", new JPanel());
 			formPanel.add("Jeep", new JeepForm());
@@ -90,5 +110,6 @@ class Form extends JDialog {
 			}
 		}
 	}
+
 
 }
