@@ -13,7 +13,7 @@ class Form extends JDialog {
 	private static String[] types = {"Jeep", "Frigate","SpyDrone","PlayDrone","AmphibiousVehicle","Bike","CruiseShip"};
 	
 	private static DefaultComboBoxModel<ImageAndText> populateComboBoxModel(Dimension imageSize) {
-		String basePath= "";
+		String basePath= "Icons\\";
 		DefaultComboBoxModel<ImageAndText> model = new DefaultComboBoxModel<ImageAndText>();
 		for (String type:types) {
 			ImageAndText curr = new ImageAndText(basePath+type+".png",type);
