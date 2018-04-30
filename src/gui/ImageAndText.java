@@ -35,9 +35,11 @@ class ImageAndText{
 
 	
 	void scaleImg(int width,int height) {
+		if (img!=null) {
 		Image image = this.img.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		this.img = new ImageIcon(newimg);  // transform it back
+		}
 	}
 	
 	public void setImg(String path) {this.img=createImageIcon(path);}
