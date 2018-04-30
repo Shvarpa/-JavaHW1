@@ -1,15 +1,29 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainFrame extends JFrame {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+
+public class MainFrame extends JFrame{
 
 	private JPanel contentPane;
-	
+	private JButton addVehicleButton;;
+	private JButton buyVehicleButton;
+	private JButton testDriveButton;
+	private JButton resetDistancesButton;
+	private JButton changeFlagsButton;
 	/**
 	 * Create the frame.
 	 */
@@ -64,14 +78,7 @@ public class MainFrame extends JFrame {
 		bottomPanel.setLayout(fl_bottomPanel);
 		
 		///buttons
-		JButton changeFlagsButton = new JButton("Change Flags");
-		changeFlagsButton.setEnabled(false);
-		changeFlagsButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		JButton addVehicleButton = new JButton("Add Vehicle");
+		addVehicleButton = new JButton("Add Vehicle");
 
 		GridBagConstraints gbc_addVehicleButton = new GridBagConstraints();
 		gbc_addVehicleButton.fill = GridBagConstraints.HORIZONTAL;
@@ -80,8 +87,9 @@ public class MainFrame extends JFrame {
 		gbc_addVehicleButton.gridy = 2;
 		rightPanel.add(addVehicleButton, gbc_addVehicleButton);
 		
-		JButton buyVehicleButton = new JButton("Buy Vehicle");
+		buyVehicleButton = new JButton("Buy Vehicle");
 		buyVehicleButton.setEnabled(false);
+		
 		GridBagConstraints gbc_buyVehicleButton = new GridBagConstraints();
 		gbc_buyVehicleButton.insets = new Insets(0, 0, 5, 0);
 		gbc_buyVehicleButton.fill = GridBagConstraints.HORIZONTAL;
@@ -89,8 +97,9 @@ public class MainFrame extends JFrame {
 		gbc_buyVehicleButton.gridy = 3;
 		rightPanel.add(buyVehicleButton, gbc_buyVehicleButton);
 		
-		JButton testDriveButton = new JButton("Test Drive");
+		testDriveButton = new JButton("Test Drive");
 		testDriveButton.setEnabled(false);
+		
 		GridBagConstraints gbc_testDriveButton = new GridBagConstraints();
 		gbc_testDriveButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_testDriveButton.insets = new Insets(0, 0, 5, 0);
@@ -98,14 +107,19 @@ public class MainFrame extends JFrame {
 		gbc_testDriveButton.gridy = 4;
 		rightPanel.add(testDriveButton, gbc_testDriveButton);
 		
-		JButton btnResetDistances = new JButton("Reset Distances");
-		btnResetDistances.setEnabled(false);
+		resetDistancesButton = new JButton("Reset Distances");
+		resetDistancesButton.setEnabled(false);
+		
 		GridBagConstraints gbc_btnResetDistances = new GridBagConstraints();
 		gbc_btnResetDistances.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnResetDistances.insets = new Insets(0, 0, 5, 0);
 		gbc_btnResetDistances.gridx = 0;
 		gbc_btnResetDistances.gridy = 5;
-		rightPanel.add(btnResetDistances, gbc_btnResetDistances);
+		rightPanel.add(resetDistancesButton, gbc_btnResetDistances);
+		
+		changeFlagsButton = new JButton("Change Flags");
+		changeFlagsButton.setEnabled(false);
+		
 		GridBagConstraints gbc_changeFlagsButton = new GridBagConstraints();
 		gbc_changeFlagsButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_changeFlagsButton.insets = new Insets(0, 0, 5, 0);
@@ -138,5 +152,4 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-
 }
