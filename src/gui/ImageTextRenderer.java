@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.Icon;
@@ -9,28 +10,33 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageAndText> {
+	
+	public ImageTextRenderer() {
+	       setOpaque(true);
+           setVerticalAlignment(CENTER);
+	}
 
 	@Override
-	public Component getListCellRendererComponent(JList list, ImageAndText item, int index, boolean selected,
-			boolean focused) {
+	public Component getListCellRendererComponent(JList list, ImageAndText item, int index, boolean isSelected,
+			boolean cellHasFocus) {
 
-		if (item instanceof ImageAndText) {
-			ImageAndText imageNtext = (ImageAndText) item;
-			ImageIcon img = imageNtext.getImage();
-			if (img != null) {
-				setIcon(imageNtext.getImage());
-			}
-			setText(imageNtext.toString());
+		ImageAndText imageNtext = (ImageAndText) item;
+		ImageIcon img = imageNtext.getImage();
+		if (img != null) {
+			setIcon(imageNtext.getImage());
 		}
+		setText(imageNtext.toString());
 
-		if (selected) {
+
+        if (isSelected) {
 			setBackground(list.getSelectionBackground());
 			setForeground(list.getSelectionForeground());
 		}
-		if (focused){
+		else {
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
+        
 		setFont(list.getFont());
 		
 		return this;
