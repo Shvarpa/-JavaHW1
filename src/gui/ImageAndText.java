@@ -19,9 +19,14 @@ class ImageAndText{
 	private ImageIcon img;
 	private String text;
 	
+	public ImageAndText() {
+		img=null;
+		setText("");	
+	}
+	
 	public ImageAndText(String path,String text) {
-		this.img=createImageIcon(path);
-		this.text=text;
+		setImg(path);
+		setText(text);
 	}
 	
 	void scaleImg(Dimension d) {
@@ -35,6 +40,9 @@ class ImageAndText{
 		this.img = new ImageIcon(newimg);  // transform it back
 	}
 	
+	public void setImg(String path) {this.img=createImageIcon(path);}
+	public void setText(String s) {this.text=s;}
 	public ImageIcon getImage() {return img;}
 	public String toString() {return text;}
+	public String getText() {return toString();}
 }

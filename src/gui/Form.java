@@ -59,8 +59,7 @@ class Form extends JDialog {
 				typesComboBox.setPreferredSize(new Dimension(200,30));
 				typesComboBox.setModel(populateComboBoxModel(new Dimension(30,30)));
 				typesComboBox.setRenderer(new ImageTextRenderer());
-				typesComboBox.addActionListener(new ActionListener() {
-					
+				typesComboBox.addActionListener(new ActionListener() {					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						if (typesComboBox.getSelectedItem().toString().equals("Jeep")){

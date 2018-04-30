@@ -20,12 +20,11 @@ class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageAndText>
 	public Component getListCellRendererComponent(JList list, ImageAndText item, int index, boolean isSelected,
 			boolean cellHasFocus) {
 
-		ImageAndText imageNtext = (ImageAndText) item;
-		ImageIcon img = imageNtext.getImage();
+		ImageIcon img = item.getImage();
 		if (img != null) {
-			setIcon(imageNtext.getImage());
+			setIcon(item.getImage());
 		}
-		setText(imageNtext.toString());
+		setText(item.toString());
 
 
         if (isSelected) {
