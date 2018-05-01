@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class Form extends JDialog {
+class AddVehicle extends JDialog {
 	
 	private Database data = Database.getInstance();
 	private CardLayout cl = new CardLayout();
@@ -28,7 +28,8 @@ class Form extends JDialog {
 		return model;
 	}
 
-	public Form() {
+	public AddVehicle() {
+		setTitle("Add Vehicle");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		{

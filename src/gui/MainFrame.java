@@ -139,7 +139,7 @@ public class MainFrame extends JFrame{
 					
 					@Override
 					public void run() {
-						Form form = new Form();
+						AddVehicle form = new AddVehicle();
 						form.setVisible(true);
 						form.setLocationRelativeTo(null);
 //						dispose();
