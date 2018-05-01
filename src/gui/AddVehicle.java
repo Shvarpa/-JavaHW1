@@ -1,10 +1,8 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 import classes.Database;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +16,7 @@ class AddVehicle extends JDialog {
 	private static String[] types = {"Jeep", "Frigate","SpyDrone","PlayDrone","AmphibiousVehicle","Bike","CruiseShip"};
 	
 	private static DefaultComboBoxModel<ImageAndText> populateComboBoxModel(Dimension imageSize) {
-		String basePath= "Images\\";
+		String basePath = "Icons\\";
 		DefaultComboBoxModel<ImageAndText> model = new DefaultComboBoxModel<ImageAndText>();
 		for (String type:types) {
 			ImageAndText curr = new ImageAndText(basePath+type+".png",type);
