@@ -5,11 +5,19 @@ package gui;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import classes.Database;
+import classes.Jeep;
+import classes.Vehicle;
 
 public class App {
 	
+	private static void test() {
+		Database.getInstance().addVehicle((Vehicle)(new Jeep("a", 5, 5, 5)));
+		Database.getInstance().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
+
+	}
+	
 	public static void main(String[] args) {
-		Database.getInstance();
+		test();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame app = new MainFrame();

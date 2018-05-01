@@ -2,7 +2,16 @@
 
 package classes;
 
-public abstract class Vehicle {
+import javax.swing.ImageIcon;
+
+public abstract class Vehicle{
+	
+	private String imagePath=null;
+	public void setImagePath(String path) {}
+	public String getImagePath() {return imagePath;}
+
+	
+	
     private double totalDistance;
     private String model;
     private int seats;
@@ -16,7 +25,7 @@ public abstract class Vehicle {
         setSpeed(speed);
     }
 
-    private String getModel() {
+    public String getModel() {
         return this.model;
     }
 
@@ -32,7 +41,7 @@ public abstract class Vehicle {
         this.totalDistance = totalDistance;
     }
 
-    private int getSeats() {
+    public int getSeats() {
         return this.seats;
     }
 
@@ -44,7 +53,7 @@ public abstract class Vehicle {
         this.seats = seats;
     }
 
-    private float getSpeed() {
+    public float getSpeed() {
         return this.speed;
     }
 

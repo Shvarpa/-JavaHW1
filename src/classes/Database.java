@@ -16,6 +16,7 @@ public class Database {
 			Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone"));
 
 	private static Database self = null;
+	
 	private List<Vehicle> vehicleDatabase;
 	private List<ISeaVehicle> seaVehicleDatabase;
 	private List<IAirVehicle> airVehicleDatabase;
@@ -113,8 +114,7 @@ public class Database {
 		return selectVehicle(inputVehicle());
 	}
 
-	private boolean addVehicle() {
-		Vehicle nVehicle = inputVehicle();
+	public boolean addVehicle(Vehicle nVehicle) {
 		if (nVehicle != null) {
 			this.vehicleDatabase.add(nVehicle);
 			if (nVehicle instanceof SeaVehicle) {
@@ -249,5 +249,9 @@ public class Database {
 			return Database.self;
 		}
 	}
-
+	
+	public List<Vehicle> getVehicles(){
+		return vehicleDatabase;
+	}
+	
 }
