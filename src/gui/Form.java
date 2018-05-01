@@ -28,32 +28,17 @@ class Form extends JDialog {
 		return model;
 	}
 
-
-	private final JPanel contentPanel = new JPanel();
-
 	public Form() {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{212, 212, 0};
-		gbl_contentPanel.rowHeights = new int[]{218, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPanel.setLayout(gbl_contentPanel);
 		{
 			
 			///select panel
 			JPanel selectPanel = new JPanel();
-			GridBagConstraints gbc_selectPanel = new GridBagConstraints();
-			gbc_selectPanel.gridwidth = 2;
-			gbc_selectPanel.insets = new Insets(0, 0, 5, 0);
-			gbc_selectPanel.fill = GridBagConstraints.BOTH;
-			gbc_selectPanel.gridx = 0;
-			gbc_selectPanel.gridy = 0;
-			contentPanel.add(selectPanel, gbc_selectPanel);
-			selectPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
+			getContentPane().add(selectPanel, BorderLayout.NORTH);
+			FlowLayout fl_selectPanel = new FlowLayout(FlowLayout.LEFT, 20, 5);
+			fl_selectPanel.setAlignOnBaseline(true);
+			selectPanel.setLayout(fl_selectPanel);
 			{
 				JLabel selectLabel = new JLabel("Select Type:");
 				selectLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -82,18 +67,14 @@ class Form extends JDialog {
 		///form panel
 		{
 			formPanel = new JPanel();
-			GridBagConstraints gbc_formPanel = new GridBagConstraints();
-			gbc_formPanel.gridheight = 6;
-			gbc_formPanel.gridwidth = 2;
-			gbc_formPanel.fill = GridBagConstraints.BOTH;
-			gbc_formPanel.gridx = 0;
-			gbc_formPanel.gridy = 1;
-			contentPanel.add(formPanel, gbc_formPanel);
+			getContentPane().add(formPanel, BorderLayout.CENTER);
+			cl.setVgap(10);
+			cl.setHgap(15);
 			
 			///added form types
 			formPanel.setLayout(cl);
-			formPanel.add("Empty", new JPanel());
-			formPanel.add("Jeep", new JeepForm());
+			JeepForm jeepForm = new JeepForm();
+			formPanel.add("Jeep", jeepForm);
 		}
 		
 		///bottom panel
@@ -110,6 +91,13 @@ class Form extends JDialog {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				buttonPane.add(cancelButton);
 			}
 		}
