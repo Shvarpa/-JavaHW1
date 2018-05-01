@@ -5,13 +5,10 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import Images.ImagesReferance;
-
-
 
 class ImageAndText{
 	protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = ImagesReferance.class.getResource(path);
+        java.net.URL imgURL = ImageAndText.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
