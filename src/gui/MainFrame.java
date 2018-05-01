@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import classes.Database;
 import classes.Vehicle;
-import classes.VehicleLabel;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 

@@ -11,25 +11,24 @@ import javax.swing.JScrollPane;
 
 import classes.Database;
 import classes.Vehicle;
-import classes.VehicleLabel;
 
 
 public class DataPanel extends JPanel{
 	
 	private Database db = Database.getInstance();
 	private FlowLayout flow= new FlowLayout(FlowLayout.LEFT, 15, 10);
-	public List<VehicleLabel> vehicleLables= new ArrayList<VehicleLabel>();
+	public List<VehicleSelectButton> vehicleSelectButtons= new ArrayList<VehicleSelectButton>();
 	
 	public void refresh() {
-		for(VehicleLabel vL:vehicleLables) {
-			remove(vL);
+		for(VehicleSelectButton vS:vehicleSelectButtons) {
+			remove(vS);
 		}
-		vehicleLables.clear();
+		vehicleSelectButtons.clear();
 		for(Vehicle v:db.getVehicles()) {
-			vehicleLables.add(new VehicleLabel(v));
+			vehicleSelectButtons.add(new VehicleSelectButton(v));
 		}
-		for(VehicleLabel vL:vehicleLables) {
-			add(vL);
+		for(VehicleSelectButton vS:vehicleSelectButtons) {
+			add(vS);
 		}
 		revalidate();
 	}

@@ -7,15 +7,7 @@ import javax.swing.ImageIcon;
 
 
 class ImageAndText{
-	protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = ImageAndText.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-                return null;
-        }
-	}
+	
 		
 	private ImageIcon img;
 	private String text;
@@ -43,7 +35,7 @@ class ImageAndText{
 		}
 	}
 	
-	public void setImg(String path) {this.img=createImageIcon(path);}
+	public void setImg(String path) {this.img=ImageOpener.createImageIcon(path);}
 	public void setText(String s) {this.text=s;}
 	public ImageIcon getImage() {return img;}
 	public String toString() {return text;}
