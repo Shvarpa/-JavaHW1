@@ -8,6 +8,8 @@ import interfaces.Inputable;
 
 public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	
+	public static final String defaultLicence = "Unlimited";
+	
 	private double avgFuelConsumption;
 	private double avgMotorLifespan;
 	
@@ -17,7 +19,7 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 		setAvgMotorLifespan(avgMotorLifespan);
 	}
 
-	public String getLicence() {return "Unlimited";}
+	public String getLicence() {return defaultLicence;}
 	
 	public double getAvgFuelConsumption() {return avgFuelConsumption;}
 	public double getAvgMotorLifespan() {return avgMotorLifespan;}

@@ -2,11 +2,16 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import classes.Database;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class Form extends JDialog {
+	
+	private Database data = Database.getInstance();
 	private CardLayout cl = new CardLayout();
 	private JPanel formPanel;
 	

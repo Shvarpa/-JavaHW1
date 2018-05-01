@@ -6,7 +6,11 @@ import interfaces.Inputable;
 import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {
+	
+	public static final String defaultEnergyRating = "a";
+	public static final String defaultEnergySource = "Manual";
 
+	
     protected Bike(String model, int seats, float speed, String roadType) {
         super(model, seats, speed, 2, roadType);
     }
@@ -25,11 +29,11 @@ public class Bike extends LandVehicle implements NonMotorized {
     }
 
     public String getEnergyRating() {
-        return "a";
+        return Bike.defaultEnergyRating;
     }
 
     public String getEnergySource() {
-        return "Manual";
+        return Bike.defaultEnergySource;
     }
 
     public boolean equals(Object other) {

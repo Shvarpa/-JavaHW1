@@ -11,9 +11,12 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
     private String licence;//Commercial Interface
     private double avgFuelConsumption; //Motorized Interface
     private double avgMotorLifespan;
-
+    
+	public final static String defaultRoadType="Dirt";
+	
+    
     public Jeep(String model, float speed, double avgFuelConsumption, double avgMotorLifespan) {
-        super(model, 5, speed, 4, "Dirt");
+        super(model, 5, speed, 4, Jeep.defaultRoadType);
         setLicense("MINI");
         setAvgFuelConsumption(avgFuelConsumption);
         setAvgMotorLifespan(avgMotorLifespan);

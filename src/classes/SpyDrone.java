@@ -5,9 +5,15 @@ package classes;
 import interfaces.Inputable;
 
 public class SpyDrone extends Drone {
+	
+	public final static String defaultModel="Classified";
+	public final static String defaultVehicleUse="Army";
+	public final static String defaultEnergyRating="c";
+
+	
 
     public SpyDrone(String energySource) {
-        super("Classified", 1, 50, "Army", energySource, "c");
+        super(SpyDrone.defaultModel, 1, 50, SpyDrone.defaultVehicleUse, energySource, SpyDrone.defaultEnergyRating);
     }
 
     public static SpyDrone inputSpyDrone() {

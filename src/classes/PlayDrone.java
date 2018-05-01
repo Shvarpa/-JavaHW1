@@ -3,9 +3,13 @@
 package classes;
 
 public class PlayDrone extends Drone {
-
+	
+	public final static String defaultModel="Classified";
+	public final static String defaultVehicleUse="Civillian";
+	public final static String defaultEnergyRating="a";
+	
     public PlayDrone() {
-        super("Toy", 0, 10, "Civillian", "Manual", "a");
+        super(PlayDrone.defaultModel, 0, 10, PlayDrone.defaultVehicleUse, "Manual", PlayDrone.defaultEnergyRating);
     }
 
     public static PlayDrone inputPlayDrone() {

@@ -10,14 +10,14 @@ import interfaces.Motorized;
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{
 	
 	int wheels;	//ILandVehicle interface
-
+	public final static String defaultRoadType= "constructed";
+	
 	boolean withWindDiraction;//ISeaVehicle interface
 	String flag;
 	
 	double avgFuelConsumption;//Motorized interface
 	double avgMotorLifespan;
 
-	
 	
 	protected AmphibiousVehicle(String model, int seats, float speed,int wheels,boolean withWindDiraction,String flag,double avgFuelConsumption,double avgMotorLifespan) {
 		super(model, seats, speed);
@@ -30,7 +30,7 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 
 	/////////////////////////////////////////////////////////get////////////////////////////////////////////////////////////////////////////////////////////
 	public int getWheels() {return wheels;}
-	public String getRoadType() {return "constructed";}
+	public String getRoadType() {return AmphibiousVehicle.defaultRoadType;}
 	
 	public boolean getWithWindDiraction() {return withWindDiraction;}
 	public String getFlag() {return flag;}

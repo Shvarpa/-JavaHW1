@@ -142,7 +142,7 @@ public class MainFrame extends JFrame{
 						Form form = new Form();
 						form.setVisible(true);
 						form.setLocationRelativeTo(null);
-						dispose();
+//						dispose();
 					}
 				});
 

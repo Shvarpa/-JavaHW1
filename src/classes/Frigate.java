@@ -8,9 +8,12 @@ import interfaces.Motorized;
 public class Frigate extends SeaVehicle implements Motorized {
     private double avgFuelConsumption; //Motorized Interface
     private double avgMotorLifespan;
+    
+	public final static String defaultFlag="Israel";
 
+    
     public Frigate(String model, int seats, float speed, boolean withWindDiraction) {
-        super(model, seats, speed, withWindDiraction, "Israel");
+        super(model, seats, speed, withWindDiraction, Frigate.defaultFlag);
         setAvgFuelConsumption(500);
         setAvgMotorLifespan(4);
     }
