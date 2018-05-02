@@ -85,6 +85,8 @@ public class MainFrame extends JFrame {
 				dataPanel.refresh();
 			}
 		});
+		
+		btnRefresh.addActionListener(dataPanel);
 		rightPanel.add(btnRefresh);
 
 
