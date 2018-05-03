@@ -25,7 +25,7 @@ import classes.Vehicle;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ActionListener,FocusListener{
 
 	private JPanel contentPane;
 	private JButton addVehicleButton;;
@@ -59,6 +59,7 @@ public class MainFrame extends JFrame {
 
 		buyVehicleButton = new JButton("Buy Vehicle");
 		buyVehicleButton.setEnabled(false);
+		buyVehicleButton.addFocusListener(this);
 
 		rightPanel.add(buyVehicleButton);
 
@@ -123,5 +124,24 @@ public class MainFrame extends JFrame {
 		status = new JLabel(defaultStatus);
 		status.setForeground(Color.GRAY);
 		bottomPanel.add(status);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if(event.getActionCommand().equals("vehicle selected")) {
+			System.out.println("vehicle selected");
+		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void focusLost(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

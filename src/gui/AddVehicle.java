@@ -19,8 +19,7 @@ class AddVehicle extends JDialog {
 		String basePath = "Images\\";
 		DefaultComboBoxModel<ImageAndText> model = new DefaultComboBoxModel<ImageAndText>();
 		for (String type:types) {
-			ImageAndText curr = new ImageAndText(basePath+type+".png",type);
-			curr.scaleImg(imageSize);
+			ImageAndText curr = new ImageAndText(basePath+type+".png",type,imageSize);
 			model.addElement(curr);
 		}
 		return model;

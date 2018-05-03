@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public abstract class Vehicle{
 	
 	private String imagePath=null;
-	public void setImagePath(String path) {}
+	public void setImagePath(String path) {this.imagePath=path;}
 	public String getImagePath() {return imagePath;}
 
 	

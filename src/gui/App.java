@@ -11,7 +11,9 @@ import classes.Vehicle;
 public class App {
 	
 	private static void test() {
-		Database.getInstance().addVehicle((Vehicle)(new Jeep("a", 5, 5, 5)));
+		Vehicle n = new Jeep("a", 5, 5, 5);
+		n.setImagePath("images\\Jeep.png");
+		Database.getInstance().addVehicle(n);
 		Database.getInstance().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
 
 	}
