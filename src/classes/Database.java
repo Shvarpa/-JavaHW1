@@ -16,7 +16,7 @@ public class Database {
 			Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone"));
 
 	private static Database self = null;
-	
+
 	private List<Vehicle> vehicleDatabase;
 	private List<ISeaVehicle> seaVehicleDatabase;
 	private List<IAirVehicle> airVehicleDatabase;
@@ -28,35 +28,39 @@ public class Database {
 		}
 	}
 
-//	public boolean selectOption() {
-//		if (!vehicleDatabase.isEmpty()) {
-//			printDatabase();
-//		}
-//		System.out.println("\n" + "Select form the following options:\n" + "1)add vehicle\n" + "2)buy vehicle\n"
-//				+ "3)take a vehicle for a test-drive\n" + "4)reset all vehicle distances\n" + "5)change flags\n"
-//				+ "6)exit\n\n");
-//		int option = Inputable.in.nextInt();
-//		switch (option) {
-//		case 1:
-//			this.addVehicle();
-//			break;
-//		case 2:
-//			this.buyVehicle();
-//			break;
-//		case 3:
-//			testDriveVehicle();
-//			break;
-//		case 4:
-//			resetDistances();
-//			break;
-//		case 5:
-//			changeFlags();
-//			break;
-//		case 6:
-//			return false;
-//		}
-//		return true;
-//	}
+	public boolean selectOption() {
+		if (!vehicleDatabase.isEmpty()) {
+			printDatabase();
+		}
+		System.out.println("\n Select form the following options:" + 
+		"1)addvehicle\n" + 
+		"2)buy vehicle\n" + 
+		"3)take a vehicle for a test-drive\n" + 
+		"4)reset all vehicle distances\n" + 
+		"5)change flags\n" + 
+		"6)exit\n\n");
+		int option = Inputable.in.nextInt();
+		switch (option) {
+		case 1:
+			this.addVehicle();
+			break;
+		case 2:
+			this.buyVehicle();
+			break;
+		case 3:
+			testDriveVehicle();
+			break;
+		case 4:
+			resetDistances();
+			break;
+		case 5:
+			changeFlags();
+			break;
+		case 6:
+			return false;
+		}
+		return true;
+	}
 
 	private boolean validIndex(int index) {
 		return (index >= 0 && index <= vehicleDatabase.size());
@@ -88,150 +92,120 @@ public class Database {
 		}
 		return false;
 	}
-
-	private int selectVehicle() {
-		int index = Inputable.inputInteger("enter vehicle index:");
-		if (!validIndex(index)) {
-			System.out.println("the index " + index + " is out of bounds, returning\n");
-			return -1;
-		}
-		return index;
+	
+	public boolean addVehicle() {
+		Vehicle currVehicle = inputVehicle();
+		return addVehicle(currVehicle);
 	}
-
-	private int selectVehicle(Vehicle inputedVehicle) {
-		if (vehicleDatabase.contains(inputedVehicle)) {
-			return vehicleDatabase.indexOf(inputedVehicle);
-		} else
-			return -1;
-	}
-
-	private int selectOrInputVehicle() {
-		if (!isEmpty()) {
-			if (Inputable.inputBoolean("would you like to select a vehicle by index?")) {
-				return selectVehicle();
+	
+	public boolean addVehicle(Vehicle currVehicle) {
+		if (currVehicle != null) {
+			this.vehicleDatabase.add(currVehicle);
+			if (currVehicle instanceof ISeaVehicle) {
+				this.seaVehicleDatabase.add((ISeaVehicle) currVehicle);
+			} 
+			if (currVehicle instanceof ILandVehicle) {
+				this.landVehicleDatabase.add((ILandVehicle) currVehicle);
 			}
-		}
-		return selectVehicle(inputVehicle());
-	}
-
-	public boolean addVehicle(Vehicle nVehicle) {
-		if (nVehicle != null) {
-			this.vehicleDatabase.add(nVehicle);
-			if (nVehicle instanceof SeaVehicle) {
-				this.seaVehicleDatabase.add((SeaVehicle) nVehicle);
-			} else if (nVehicle instanceof LandVehicle) {
-				this.landVehicleDatabase.add((LandVehicle) nVehicle);
-			} else if (nVehicle instanceof AirVehicle) {
-				this.airVehicleDatabase.add((AirVehicle) nVehicle);
-			} else
-				;
-			System.out.println("the vehicle: " + nVehicle.toString() + " was added succesfully, returning\n");
+			if (currVehicle instanceof IAirVehicle) {
+				this.airVehicleDatabase.add((IAirVehicle) currVehicle);
+			} 
+			else;
+			System.out.println("the vehicle: " + currVehicle.toString() + " was added succesfully, returning");
 			return true;
 		}
 		return false;
 	}
 
-	private boolean removeVehicle(int index) {
-		if (validIndex(index)) {
-			Vehicle currVehicle = this.vehicleDatabase.get(index);
-			this.vehicleDatabase.remove(index);
-			if (currVehicle instanceof ISeaVehicle) {
-				for (int i = 0; i < seaVehicleDatabase.size(); i++) {
-					if (seaVehicleDatabase.get(i) == currVehicle) {
-						seaVehicleDatabase.remove(i);
-						break;
-					}
-				}
-			}
-			if (currVehicle instanceof ILandVehicle) {
-				for (int i = 0; i < landVehicleDatabase.size(); i++) {
-					if (landVehicleDatabase.get(i) == currVehicle) {
-						landVehicleDatabase.remove(i);
-						break;
-					}
-				}
-			}
-			if (currVehicle instanceof IAirVehicle) {
-				for (int i = 0; i < airVehicleDatabase.size(); i++) {
-					if (airVehicleDatabase.get(i) == currVehicle) {
-						landVehicleDatabase.remove(i);
-						break;
-					}
-				}
-			} else
-				;
+	private boolean buyVehicle(Vehicle currVehicle) {
+		if (vehicleDatabase.contains(currVehicle)) {
+			this.vehicleDatabase.remove(currVehicle);
+			if (currVehicle instanceof ISeaVehicle)
+				this.seaVehicleDatabase.remove(currVehicle);
+			if (currVehicle instanceof ILandVehicle)
+				this.landVehicleDatabase.remove(currVehicle);
 			return true;
 		}
-		System.out.println("vehicle doesnt exist, returning\n");
+		System.out.println("vehicle doesnt exist, returning");
 		return false;
 	}
 
 	private boolean buyVehicle() {
 		if (!isEmpty()) {
-			int vehicleIndex = selectOrInputVehicle();
-			if (validIndex(vehicleIndex)) {
-				Vehicle currVehicle = this.vehicleDatabase.get(vehicleIndex);
-				removeVehicle(vehicleIndex);
-				System.out.println("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning\n");
+			Vehicle currVehicle = inputVehicle();
+			buyVehicle(currVehicle);
+		}
+		System.out.println("no vehicle to buy, returning");
+		return false;
+	}
+
+	public boolean testDriveVehicle(Vehicle currVehicle, double distance) {
+		if (vehicleDatabase.contains(currVehicle)) {
+			vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean testDriveVehicle(Vehicle currVehicle) {
+		if (vehicleDatabase.contains(currVehicle)) {
+			double distance;
+			try {
+				distance = Inputable.inputDouble("enter test drive distance:");
+			}
+			catch (NumberFormatException e) {
+				System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
+				return false;
+			}
+			if (testDriveVehicle(currVehicle, distance)) {
+				System.out.println("the vehicle: " + currVehicle.toString() + " was taken for a " + distance
+						+ "km test-drive succesfully, returning");
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean driveVehicle(int index, double distance) {
-		if (validIndex(index)) {
-			vehicleDatabase.get(index).moveDistance(distance);
-			return true;
-		}
-		return false;
-	}
-
 	private boolean testDriveVehicle() {
 		if (!isEmpty()) {
-			int vehicleIndex = selectOrInputVehicle();
-			if (!validIndex(vehicleIndex)) {
-				return false;
-			}
-			try {
-				double distance = Inputable.inputDouble("enter test drive distance:");
-				if (driveVehicle(vehicleIndex, distance)) {
-					Vehicle currVehicle = this.vehicleDatabase.get(vehicleIndex);
-					System.out.println("the vehicle: " + currVehicle.toString() + " was taken for a " + distance
-							+ "km test-drive succesfully, returning\n");
-					return true;
-				}
-				return false;
-			} catch (NumberFormatException e) {
-				System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
-				return false;
-			}
+			Vehicle currVehicle = inputVehicle();
+			return testDriveVehicle(currVehicle);
 		}
+		System.out.println("no vehicles to test ride, returning");
 		return false;
-
 	}
 
 	private boolean resetDistances() {
 		if (isEmpty()) {
+			System.out.println("no vehicles to reset distance, returning");
 			return false;
 		}
 		for (Vehicle v : vehicleDatabase) {
 			v.resetTotalDistance();
 		}
-		System.out.println("all vehicle distances were reset succesfully, returning\n");
+		System.out.println("all vehicle distances were reset succesfully, returning");
 		return true;
 	}
 
-	private boolean changeFlags() {
-		if (isEmpty()) {
+	private boolean changeFlags(String flag) {
+		if (seaVehicleDatabase.isEmpty()) {
+			System.out.println("no vehicles to change flags, returning");
 			return false;
 		}
-		String flag = Inputable.input("Enter new flag name:");
 		for (ISeaVehicle sV : seaVehicleDatabase) {
 			sV.setFlag(flag);
 		}
 		System.out.println("all vehicle flags were changed to " + flag + " succesfully, returning\n");
 		return true;
+	}
+
+	private boolean changeFlags() {
+		if (seaVehicleDatabase.isEmpty()) {
+			System.out.println("no vehicles to change flags, returning");
+			return false;
+		}
+		String flag = Inputable.input("enter flag name:");
+		return changeFlags(flag);
 	}
 
 	private Database() {
@@ -249,9 +223,9 @@ public class Database {
 			return Database.self;
 		}
 	}
-	
-	public List<Vehicle> getVehicles(){
+
+	public List<Vehicle> getVehicles() {
 		return vehicleDatabase;
 	}
-	
+
 }

@@ -1,94 +1,105 @@
 package gui;
 
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.AbstractButton;
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-
 import classes.Database;
-import classes.Jeep;
 import classes.Vehicle;
 
+public class DataPanel extends JScrollPane implements ActionListener {
 
-public class DataPanel extends JScrollPane implements ActionListener{
-	
-	private WrapLayout layout= new WrapLayout(WrapLayout.LEFT, 15, 10);
+	private List<ItemListener> itemListeners = new ArrayList<ItemListener>();
 
-	
-	private static Dimension preferedImageSize=new Dimension(50, 50);
-	public static void setPreferedImageSize(Dimension size) {DataPanel.preferedImageSize=size;}	
-	
-//	private boolean vehicleSelected=false;
-	private Database db = Database.getInstance();
-	
-	private List<VehicleSelectButton> vehicleSelectButtons= new ArrayList<VehicleSelectButton>();
-	private ButtonGroup vehicleSelectButtonsGroup = new ButtonGroup();
-	
-	private JPanel content= new JPanel();
-	
-	
+	private WrapLayout layout = new WrapLayout(WrapLayout.LEFT, 15, 10);
+
+	static Dimension preferedImageSize = new Dimension(50, 50);
+
+	public static void setPreferedImageSize(Dimension size) {
+		DataPanel.preferedImageSize = size;
+	}
+
+	Database db = Database.getInstance();
+
+	List<VehicleSelectButton> vehicleSelectButtons = new ArrayList<VehicleSelectButton>();
+	ButtonGroup group = new ButtonGroup();
+
+	JPanel content = new JPanel();
+
 	public void refresh() {
-		for(VehicleSelectButton vS:vehicleSelectButtons) {
-			vehicleSelectButtonsGroup.remove(vS);
+		for (VehicleSelectButton vS : vehicleSelectButtons) {
+			group.remove(vS);
 			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
-		for(Vehicle v:db.getVehicles()) {
-			VehicleSelectButton vS=new VehicleSelectButton(v,DataPanel.preferedImageSize);
-//			vS.addFocusListener(this);
+		for (Vehicle v : db.getVehicles()) {
+			VehicleSelectButton vS = new VehicleSelectButton(v, DataPanel.preferedImageSize);
+			vS.addActionListener(this);
 			vehicleSelectButtons.add(vS);
 		}
-		for(VehicleSelectButton vS:vehicleSelectButtons) {
-			vehicleSelectButtonsGroup.add(vS);
+		for (VehicleSelectButton vS : vehicleSelectButtons) {
+			group.add(vS);
 			content.add(vS);
 		}
+		processIsEmpty();
 		revalidate();
 	}
 	
+	public boolean isEmpty() {
+		return vehicleSelectButtons.isEmpty();
+	}
+
+	public boolean isSelected() {
+		for (VehicleSelectButton vS : vehicleSelectButtons) {
+			if (vS.isSelected()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void processIsEmpty() {
+		boolean isEmpty = isEmpty();
+		firePropertyChange("isEmpty", !isEmpty, isEmpty);
+	}
+	
+	private void processSelected() {
+		boolean selected = isSelected();
+		firePropertyChange("vehicle selection", !selected, selected);
+	}
+	
 	public DataPanel() {
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		super.setViewportView(content);
-//		super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		// super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		content.setLayout(layout);
 		refresh();
-		JButton btn = new JButton("aaaaaa");
-		btn.addActionListener(this);
-		content.add(btn);
+	}
+
+	public void addActionListener(ActionListener l) {
+		listenerList.add(ActionListener.class, l);
+	}
+
+	public Vehicle getSelectedVehicle() {
+		for (VehicleSelectButton vS : vehicleSelectButtons) {
+			if (vS.isSelected()) {
+				return vS.getVehicle();
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		refresh();
-		System.out.println("ref");
+		processSelected();
 	}
- 
-//	private void setVehicleSelected(boolean status) {
-//		vehicleSelected=status;
-//	}
-//	
-//	public Vehicle getSelectedVehicle() {
-//		if(vehicleSelected) {
-//			for(VehicleSelectButton vS: vehicleSelectButtons) {
-//				if (vS.isSelected()) {return vS.getVehicle();}
-//			}
-//		}
-//		return null;
-//	}
+
 }

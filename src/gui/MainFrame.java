@@ -2,20 +2,27 @@ package gui;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
@@ -25,7 +32,7 @@ import classes.Vehicle;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-public class MainFrame extends JFrame implements ActionListener,FocusListener{
+public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JButton addVehicleButton;;
@@ -37,7 +44,8 @@ public class MainFrame extends JFrame implements ActionListener,FocusListener{
 	private JDialog addVehicleWindow;
 	private JLabel status;
 	private String defaultStatus = "current status:";
-	private JButton btnRefresh;
+	private JButton refreshButton;
+	private Database db = Database.getInstance();
 
 	public MainFrame() {
 		setTitle("Car Agency");
@@ -54,42 +62,35 @@ public class MainFrame extends JFrame implements ActionListener,FocusListener{
 
 		/// buttons
 		addVehicleButton = new JButton("Add Vehicle");
-
-		rightPanel.add(addVehicleButton);
+		addVehicleButton.setEnabled(true);
 
 		buyVehicleButton = new JButton("Buy Vehicle");
 		buyVehicleButton.setEnabled(false);
-		buyVehicleButton.addFocusListener(this);
-
-		rightPanel.add(buyVehicleButton);
 
 		testDriveButton = new JButton("Test Drive");
 		testDriveButton.setEnabled(false);
 
-		rightPanel.add(testDriveButton);
-
 		resetDistancesButton = new JButton("Reset Distances");
 		resetDistancesButton.setEnabled(false);
-
-		rightPanel.add(resetDistancesButton);
 
 		changeFlagsButton = new JButton("Change Flags");
 		changeFlagsButton.setEnabled(false);
 
-		rightPanel.add(changeFlagsButton);
+		refreshButton = new JButton("refresh");
+		refreshButton.addActionListener(new ActionListener() {
 
-		btnRefresh = new JButton("refresh");
-		btnRefresh.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				dataPanel.refresh();
 			}
 		});
-		
-//		btnRefresh.addActionListener(dataPanel);
-//		rightPanel.add(btnRefresh);
 
+		rightPanel.add(addVehicleButton);
+		rightPanel.add(buyVehicleButton);
+		rightPanel.add(testDriveButton);
+		rightPanel.add(resetDistancesButton);
+		rightPanel.add(changeFlagsButton);
+		rightPanel.add(refreshButton);
 
 		// actions
 		addVehicleButton.addActionListener(new ActionListener() {
@@ -101,47 +102,61 @@ public class MainFrame extends JFrame implements ActionListener,FocusListener{
 						addVehicleWindow = new AddVehicle();
 						addVehicleWindow.setVisible(true);
 						addVehicleWindow.setLocationRelativeTo(null);
-						// dispose();
 					}
 				});
 
-				// rightPanel.remove(buyVehicleButton);
-				// revalidate();
-				// buyVehicleButton.setEnabled(true);
+			}
+		});
+		
+		buyVehicleButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				Vehicle curr=dataPanel.getSelectedVehicle();
+				if (curr==null) return;
+				
 			}
 		});
 
-		/// panels
-		dataPanel = new DataPanel();
+		dataPanel = new DataPanel();		
+		dataPanel.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				String eventName = event.getPropertyName();
+				if (eventName.equals("isEmpty")) {
+					if(event.getNewValue().equals(true)) {
+						resetDistancesButton.setEnabled(false);
+						changeFlagsButton.setEnabled(false);
+					}
+					else {
+						resetDistancesButton.setEnabled(true);
+						changeFlagsButton.setEnabled(true);
+					}
+				}
+				else if(eventName.equals("vehicle selection")) {
+					if (event.getNewValue().equals(true)) {
+						buyVehicleButton.setEnabled(true);
+						testDriveButton.setEnabled(true);
+					}
+					else {
+						buyVehicleButton.setEnabled(false);
+						testDriveButton.setEnabled(false);
+					}
+				}
+			}
+		});
+				
+		
 		contentPane.add(dataPanel, BorderLayout.CENTER);
 
-		JPanel bottomPanel = new JPanel();
-		contentPane.add(bottomPanel, BorderLayout.SOUTH);
-		FlowLayout fl_bottomPanel = new FlowLayout(FlowLayout.LEFT, 10, 5);
-		bottomPanel.setLayout(fl_bottomPanel);
+		JPanel toStringPanel = new JPanel();
+		contentPane.add(toStringPanel, BorderLayout.SOUTH);
+		toStringPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
 		// labels
 		status = new JLabel(defaultStatus);
 		status.setForeground(Color.GRAY);
-		bottomPanel.add(status);
-	}
+		toStringPanel.add(status);
 
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		if(event.getActionCommand().equals("vehicle selected")) {
-			System.out.println("vehicle selected");
-		}
-	}
-
-	@Override
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }
