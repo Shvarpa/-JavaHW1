@@ -12,20 +12,30 @@ public interface Inputable {
 		return in.next();
 	}
 	
-	static Integer inputInteger(String msg) throws NumberFormatException{
+	public static Integer inputInteger(String msg) throws NumberFormatException{
 		return Integer.parseInt(input(msg+" (int)"));
 	}
 	
-	static Float inputFloat(String msg) throws NumberFormatException {
+	public static Float inputFloat(String msg) throws NumberFormatException {
 		return Float.parseFloat(input(msg+" (float)"));
 	}
 	
-	static Double inputDouble(String msg) throws NumberFormatException{
+	public static Double inputDouble(String msg) throws NumberFormatException{
 		return Double.parseDouble(input(msg+" (double)"));
 	}
 	
-	static Boolean inputBoolean(String msg){
+	public static Boolean inputBoolean(String msg){
 		String inputStr=input(msg+" (boolean)");
 		return Boolean.parseBoolean(inputStr)||"yes".equalsIgnoreCase(inputStr)||"1".equalsIgnoreCase(inputStr)||"on".equalsIgnoreCase(inputStr)||"y".equalsIgnoreCase(inputStr);
+	}
+	
+	public static boolean isNumeric(String input) {
+		try {
+			Double.parseDouble(input);
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 }

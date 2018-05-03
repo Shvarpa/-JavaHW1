@@ -33,6 +33,7 @@ public class VehicleSelectButton extends JRadioButton {
 		vehicle=v;
 	}
 	
+	
 	private void setImage(ImageIcon img) {
 		if(img!=null) {
 			setIcon(img);

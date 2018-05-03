@@ -35,13 +35,12 @@ import java.awt.GridLayout;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JButton addVehicleButton;;
+	private JButton addVehicleButton;
 	private JButton buyVehicleButton;
 	private JButton testDriveButton;
 	private JButton resetDistancesButton;
 	private JButton changeFlagsButton;
 	private DataPanel dataPanel;
-	private JDialog addVehicleWindow;
 	private JLabel status;
 	private String defaultStatus = "current status:";
 	private JButton refreshButton;
@@ -52,7 +51,6 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 345);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
@@ -99,7 +97,7 @@ public class MainFrame extends JFrame {
 
 					@Override
 					public void run() {
-						addVehicleWindow = new AddVehicle();
+						AddVehicle addVehicleWindow = new AddVehicle();
 						addVehicleWindow.setVisible(true);
 						addVehicleWindow.setLocationRelativeTo(null);
 					}
@@ -117,6 +115,23 @@ public class MainFrame extends JFrame {
 				vS.setSelected(false);
 				db.buyVehicle(vS.getVehicle());
 				dataPanel.refresh();
+			}
+		});
+		
+		testDriveButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				Vehicle currVehicle= dataPanel.getSelectedVehicle().getVehicle();
+				if(currVehicle==null) return;
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						TestDrive testDriveWindow = new TestDrive(currVehicle);
+						testDriveWindow.setVisible(true);
+						testDriveWindow.setLocationRelativeTo(null);
+					}
+				});
 			}
 		});
 

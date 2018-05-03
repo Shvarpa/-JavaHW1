@@ -143,6 +143,8 @@ public class Database {
 	public boolean testDriveVehicle(Vehicle currVehicle, double distance) {
 		if (vehicleDatabase.contains(currVehicle)) {
 			vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
+			System.out.println("the vehicle: " + currVehicle.toString() + " was taken for a " + distance
+					+ "km test-drive succesfully, returning");
 			return true;
 		}
 		return false;
@@ -158,11 +160,7 @@ public class Database {
 				System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
 				return false;
 			}
-			if (testDriveVehicle(currVehicle, distance)) {
-				System.out.println("the vehicle: " + currVehicle.toString() + " was taken for a " + distance
-						+ "km test-drive succesfully, returning");
-				return true;
-			}
+			return testDriveVehicle(currVehicle, distance);
 		}
 		return false;
 	}
