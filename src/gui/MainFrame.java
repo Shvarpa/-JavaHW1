@@ -112,9 +112,11 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				Vehicle curr=dataPanel.getSelectedVehicle();
-				if (curr==null) return;
-				
+				VehicleSelectButton vS=dataPanel.getSelectedVehicle();
+				if (vS==null) return;
+				vS.setSelected(false);
+				db.buyVehicle(vS.getVehicle());
+				dataPanel.refresh();
 			}
 		});
 
@@ -127,13 +129,15 @@ public class MainFrame extends JFrame {
 					if(event.getNewValue().equals(true)) {
 						resetDistancesButton.setEnabled(false);
 						changeFlagsButton.setEnabled(false);
+						buyVehicleButton.setEnabled(false);
+						testDriveButton.setEnabled(false);
 					}
 					else {
 						resetDistancesButton.setEnabled(true);
 						changeFlagsButton.setEnabled(true);
 					}
 				}
-				else if(eventName.equals("vehicle selection")) {
+				else if(eventName.equals("isSelected")) {
 					if (event.getNewValue().equals(true)) {
 						buyVehicleButton.setEnabled(true);
 						testDriveButton.setEnabled(true);

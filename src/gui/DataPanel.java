@@ -36,6 +36,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 
 	public void refresh() {
 		for (VehicleSelectButton vS : vehicleSelectButtons) {
+			vS.removeActionListener(this);
 			group.remove(vS);
 			content.remove(vS);
 		}
@@ -50,6 +51,8 @@ public class DataPanel extends JScrollPane implements ActionListener {
 			content.add(vS);
 		}
 		processIsEmpty();
+		processIsSelected();
+		repaint();
 		revalidate();
 	}
 	
@@ -71,9 +74,9 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		firePropertyChange("isEmpty", !isEmpty, isEmpty);
 	}
 	
-	private void processSelected() {
+	void processIsSelected() {
 		boolean selected = isSelected();
-		firePropertyChange("vehicle selection", !selected, selected);
+		firePropertyChange("isSelected", !selected, selected);
 	}
 	
 	public DataPanel() {
@@ -88,10 +91,10 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		listenerList.add(ActionListener.class, l);
 	}
 
-	public Vehicle getSelectedVehicle() {
+	public VehicleSelectButton getSelectedVehicle() {
 		for (VehicleSelectButton vS : vehicleSelectButtons) {
 			if (vS.isSelected()) {
-				return vS.getVehicle();
+				return vS;
 			}
 		}
 		return null;
@@ -99,7 +102,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		processSelected();
+		processIsSelected();
 	}
 
 }

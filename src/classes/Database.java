@@ -117,13 +117,14 @@ public class Database {
 		return false;
 	}
 
-	private boolean buyVehicle(Vehicle currVehicle) {
+	public boolean buyVehicle(Vehicle currVehicle) {
 		if (vehicleDatabase.contains(currVehicle)) {
 			this.vehicleDatabase.remove(currVehicle);
 			if (currVehicle instanceof ISeaVehicle)
 				this.seaVehicleDatabase.remove(currVehicle);
 			if (currVehicle instanceof ILandVehicle)
 				this.landVehicleDatabase.remove(currVehicle);
+			System.out.println("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
 		}
 		System.out.println("vehicle doesnt exist, returning");
@@ -174,8 +175,9 @@ public class Database {
 		System.out.println("no vehicles to test ride, returning");
 		return false;
 	}
+	
 
-	private boolean resetDistances() {
+	public boolean resetDistances() {
 		if (isEmpty()) {
 			System.out.println("no vehicles to reset distance, returning");
 			return false;
