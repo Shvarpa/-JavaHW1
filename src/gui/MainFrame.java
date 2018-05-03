@@ -87,8 +87,8 @@ public class MainFrame extends JFrame implements ActionListener,FocusListener{
 			}
 		});
 		
-		btnRefresh.addActionListener(dataPanel);
-		rightPanel.add(btnRefresh);
+//		btnRefresh.addActionListener(dataPanel);
+//		rightPanel.add(btnRefresh);
 
 
 		// actions

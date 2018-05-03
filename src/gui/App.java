@@ -15,6 +15,8 @@ public class App {
 		n.setImagePath("images\\Jeep.png");
 		Database.getInstance().addVehicle(n);
 		Database.getInstance().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
+		Database.getInstance().addVehicle((Vehicle)(new Jeep("c", 5, 5, 5)));
+
 
 	}
 	

@@ -12,7 +12,9 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,29 +27,36 @@ import classes.Jeep;
 import classes.Vehicle;
 
 
-public class DataPanel extends JScrollPane implements ActionListener,FocusListener{
+public class DataPanel extends JScrollPane implements ActionListener{
 	
-	
-	
-	private boolean vehicleSelected=false;
-	private Database db = Database.getInstance();
 	private WrapLayout layout= new WrapLayout(WrapLayout.LEFT, 15, 10);
-	private List<VehicleSelectButton> vehicleSelectButtons= new ArrayList<VehicleSelectButton>();
-	private JPanel content= new JPanel();
+
+	
 	private static Dimension preferedImageSize=new Dimension(50, 50);
-	public static void setPreferedImageSize(Dimension size) {DataPanel.preferedImageSize=size;}
+	public static void setPreferedImageSize(Dimension size) {DataPanel.preferedImageSize=size;}	
+	
+//	private boolean vehicleSelected=false;
+	private Database db = Database.getInstance();
+	
+	private List<VehicleSelectButton> vehicleSelectButtons= new ArrayList<VehicleSelectButton>();
+	private ButtonGroup vehicleSelectButtonsGroup = new ButtonGroup();
+	
+	private JPanel content= new JPanel();
+	
 	
 	public void refresh() {
 		for(VehicleSelectButton vS:vehicleSelectButtons) {
+			vehicleSelectButtonsGroup.remove(vS);
 			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
 		for(Vehicle v:db.getVehicles()) {
 			VehicleSelectButton vS=new VehicleSelectButton(v,DataPanel.preferedImageSize);
-			vS.addFocusListener(this);
+//			vS.addFocusListener(this);
 			vehicleSelectButtons.add(vS);
 		}
 		for(VehicleSelectButton vS:vehicleSelectButtons) {
+			vehicleSelectButtonsGroup.add(vS);
 			content.add(vS);
 		}
 		revalidate();
@@ -66,34 +75,20 @@ public class DataPanel extends JScrollPane implements ActionListener,FocusListen
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		refresh();
 		System.out.println("ref");
 	}
-
-	@Override
-	public void focusGained(FocusEvent event) {
-		setVehicleSelected(true);
-		for(VehicleSelectButton vS:vehicleSelectButtons) {
-			if (vS.equals(event.getSource())){continue;}
-			vS.setSelected(false);
-		}
-	}
-	
-
-	@Override
-	public void focusLost(FocusEvent event) {
-		setVehicleSelected(false);
-	}
-	
-	private void setVehicleSelected(boolean status) {
-		vehicleSelected=status;
-	}
-	
-	public Vehicle getSelectedVehicle() {
-		if(vehicleSelected) {
-			for(VehicleSelectButton vS: vehicleSelectButtons) {
-				if (vS.isSelected()) {return vS.getVehicle();}
-			}
-		}
-		return null;
-	}
+ 
+//	private void setVehicleSelected(boolean status) {
+//		vehicleSelected=status;
+//	}
+//	
+//	public Vehicle getSelectedVehicle() {
+//		if(vehicleSelected) {
+//			for(VehicleSelectButton vS: vehicleSelectButtons) {
+//				if (vS.isSelected()) {return vS.getVehicle();}
+//			}
+//		}
+//		return null;
+//	}
 }
