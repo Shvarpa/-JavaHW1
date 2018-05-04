@@ -152,7 +152,7 @@ public class MainFrame extends JFrame {
 							
 							@Override
 							public void windowClosed(WindowEvent event) {
-								dataPanel.processIsSelected();
+								updateToString();
 							}
 							
 							@Override
