@@ -91,7 +91,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		listenerList.add(ActionListener.class, l);
 	}
 
-	public VehicleSelectButton getSelectedVehicle() {
+	public VehicleSelectButton getVehicleSelectButton() {
 		for (VehicleSelectButton vS : vehicleSelectButtons) {
 			if (vS.isSelected()) {
 				return vS;

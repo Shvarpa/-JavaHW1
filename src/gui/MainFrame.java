@@ -1,61 +1,57 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
+
 
 import classes.Database;
 import classes.Vehicle;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import javax.swing.DropMode;
 
 public class MainFrame extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel contentPanel;
 	private JButton addVehicleButton;
 	private JButton buyVehicleButton;
 	private JButton testDriveButton;
 	private JButton resetDistancesButton;
 	private JButton changeFlagsButton;
 	private DataPanel dataPanel;
-	private JLabel status;
-	private String defaultStatus = "current status:";
+	private JTextArea toStringTextArea;
+	private String defaultToStringLabel = "current vehicle: ";
 	private JButton refreshButton;
+	TestDrive testDriveWindow;
 	private Database db = Database.getInstance();
 
 	public MainFrame() {
 		setTitle("Car Agency");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 345);
-		contentPane = new JPanel();
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		setPreferredSize(new Dimension(600, 350));
+		contentPanel = new JPanel();
+		setContentPane(contentPanel);
+		contentPanel.setLayout(new BorderLayout(0, 0));
 
 		JPanel rightPanel = new JPanel();
-		contentPane.add(rightPanel, BorderLayout.EAST);
+		contentPanel.add(rightPanel, BorderLayout.EAST);
 		rightPanel.setLayout(new GridLayout(6, 1, 0, 0));
 
 		/// buttons
@@ -105,77 +101,120 @@ public class MainFrame extends JFrame {
 
 			}
 		});
-		
+
 		buyVehicleButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				VehicleSelectButton vS=dataPanel.getSelectedVehicle();
-				if (vS==null) return;
+				VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
+				if (vS == null)
+					return;
 				vS.setSelected(false);
 				db.buyVehicle(vS.getVehicle());
 				dataPanel.refresh();
 			}
 		});
-		
+
 		testDriveButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				Vehicle currVehicle= dataPanel.getSelectedVehicle().getVehicle();
-				if(currVehicle==null) return;
+				Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
+				if (currVehicle == null)
+					return;
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						TestDrive testDriveWindow = new TestDrive(currVehicle);
+						testDriveWindow = new TestDrive(currVehicle);
 						testDriveWindow.setVisible(true);
 						testDriveWindow.setLocationRelativeTo(null);
+						testDriveWindow.addWindowListener(new WindowListener() {
+							
+							@Override
+							public void windowOpened(WindowEvent arg0) {
+							}
+							
+							@Override
+							public void windowIconified(WindowEvent arg0) {								
+							}
+							
+							@Override
+							public void windowDeiconified(WindowEvent arg0) {								
+							}
+							
+							@Override
+							public void windowDeactivated(WindowEvent arg0) {								
+							}
+							
+							@Override
+							public void windowClosing(WindowEvent arg0) {								
+							}
+							
+							@Override
+							public void windowClosed(WindowEvent event) {
+								dataPanel.processIsSelected();
+							}
+							
+							@Override
+							public void windowActivated(WindowEvent arg0) {								
+							}
+						});
 					}
 				});
 			}
 		});
 
-		dataPanel = new DataPanel();		
+		dataPanel = new DataPanel();
 		dataPanel.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				String eventName = event.getPropertyName();
 				if (eventName.equals("isEmpty")) {
-					if(event.getNewValue().equals(true)) {
+					if (event.getNewValue().equals(true)) {
 						resetDistancesButton.setEnabled(false);
 						changeFlagsButton.setEnabled(false);
 						buyVehicleButton.setEnabled(false);
 						testDriveButton.setEnabled(false);
-					}
-					else {
+					} else {
 						resetDistancesButton.setEnabled(true);
 						changeFlagsButton.setEnabled(true);
 					}
-				}
-				else if(eventName.equals("isSelected")) {
+				} else if (eventName.equals("isSelected")) {
 					if (event.getNewValue().equals(true)) {
 						buyVehicleButton.setEnabled(true);
 						testDriveButton.setEnabled(true);
-					}
-					else {
+					} else {
 						buyVehicleButton.setEnabled(false);
 						testDriveButton.setEnabled(false);
 					}
+					updateToString();
 				}
 			}
 		});
-				
-		
-		contentPane.add(dataPanel, BorderLayout.CENTER);
+
+		contentPanel.add(dataPanel, BorderLayout.CENTER);
 
 		JPanel toStringPanel = new JPanel();
-		contentPane.add(toStringPanel, BorderLayout.SOUTH);
-		toStringPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+		toStringPanel.setLayout(new BorderLayout());
 
 		// labels
-		status = new JLabel(defaultStatus);
-		status.setForeground(Color.GRAY);
-		toStringPanel.add(status);
+		toStringTextArea = new JTextArea(defaultToStringLabel);
+		toStringTextArea.setOpaque(false);
+		toStringTextArea.setEditable(false);
+		toStringTextArea.setFocusable(false);
+		toStringTextArea.setBorder(null);
+		toStringTextArea.setLineWrap(true);
+		toStringTextArea.setWrapStyleWord(true);
+		toStringTextArea.setForeground(Color.GRAY);
+		
+		toStringPanel.add(toStringTextArea,BorderLayout.CENTER);
+		contentPanel.add(toStringPanel, BorderLayout.SOUTH);
+	}
+	
 
+	
+	private void updateToString() {
+		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
+		toStringTextArea.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
 	}
 }
