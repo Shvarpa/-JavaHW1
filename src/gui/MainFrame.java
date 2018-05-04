@@ -218,6 +218,6 @@ public class MainFrame extends JFrame {
 	
 	private void updateToString() {
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-//		toStringTextArea.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
+		toStringTextArea.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
 	}
 }
