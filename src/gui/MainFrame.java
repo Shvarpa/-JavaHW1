@@ -111,6 +111,11 @@ public class MainFrame extends JFrame {
 					return;
 				vS.setSelected(false);
 				db.buyVehicle(vS.getVehicle());
+				SwingUtilities.invokeLater(()->{
+					ConfirmationDialog notify = new ConfirmationDialog("The vehicle bought succesfully!");
+					notify.setVisible(true);
+					notify.setLocationRelativeTo(null);
+					});
 				dataPanel.refresh();
 			}
 		});
