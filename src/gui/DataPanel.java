@@ -3,18 +3,16 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import classes.Database;
 import classes.Vehicle;
 
 public class DataPanel extends JScrollPane implements ActionListener {
-
-	private List<ItemListener> itemListeners = new ArrayList<ItemListener>();
 
 	private WrapLayout layout = new WrapLayout(WrapLayout.LEFT, 15, 10);
 
@@ -24,7 +22,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		DataPanel.preferedImageSize = size;
 	}
 
-	Database db = Database.getInstance();
+	private DBConnect db = DBConnect.getConnection();
 
 	List<VehicleSelectButton> vehicleSelectButtons = new ArrayList<VehicleSelectButton>();
 	ButtonGroup group = new ButtonGroup();
@@ -81,6 +79,11 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		super.setViewportView(content);
 		// super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		content.setLayout(layout);
+		db.addPropertyChangeListener("addVehicle",(event)->{refresh();});
+		db.addPropertyChangeListener("buyVehicle",(event)->{refresh();});
+		db.addPropertyChangeListener("testDriveVehicle",(event)->{refresh();});
+		db.addPropertyChangeListener("resetDistances",(event)->{refresh();});
+		db.addPropertyChangeListener("changeFlags",(event)->{refresh();});
 		refresh();
 	}
 

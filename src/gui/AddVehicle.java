@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 class AddVehicle extends JDialog {
 	
-	private Database data = Database.getInstance();
 	private CardLayout cl = new CardLayout();
 	private JPanel formPanel;
 	

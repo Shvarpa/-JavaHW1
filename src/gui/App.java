@@ -13,9 +13,9 @@ public class App {
 	private static void test() {
 		Vehicle n = new Jeep("a", 5, 5, 5);
 		n.setImagePath("images\\Jeep.png");
-		Database.getInstance().addVehicle(n);
-		Database.getInstance().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
-		Database.getInstance().addVehicle((Vehicle)(new Jeep("c", 5, 5, 5)));
+		DBConnect.getConnection().addVehicle(n);
+		DBConnect.getConnection().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
+		DBConnect.getConnection().addVehicle((Vehicle)(new Jeep("c", 5, 5, 5)));
 
 
 	}

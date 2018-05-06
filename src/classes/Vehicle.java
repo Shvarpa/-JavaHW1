@@ -33,7 +33,7 @@ public abstract class Vehicle{
         this.model = model;
     }
 
-    private double getTotalDistance() {
+    public double getTotalDistance() {
         return this.totalDistance;
     }
 
@@ -65,7 +65,7 @@ public abstract class Vehicle{
         this.speed = speed;
     }
 
-    public void resetTotalDistance() {
+    void resetTotalDistance() {
         this.setTotalDistance(0);
     }
 

@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-
 import classes.Database;
 import classes.Vehicle;
 
@@ -35,12 +34,12 @@ public class MainFrame extends JFrame {
 	private JButton testDriveButton;
 	private JButton resetDistancesButton;
 	private JButton changeFlagsButton;
-	private DataPanel dataPanel;
+	private DataPanel dataPanel = new DataPanel();
 	private JTextArea toStringTextArea;
 	private String defaultToStringLabel = "current vehicle: ";
 	private JButton refreshButton;
 	TestDrive testDriveWindow;
-	private Database db = Database.getInstance();
+	private DBConnect db = DBConnect.getConnection();
 
 	public MainFrame() {
 		setTitle("Car Agency");
@@ -71,12 +70,8 @@ public class MainFrame extends JFrame {
 		changeFlagsButton.setEnabled(false);
 
 		refreshButton = new JButton("refresh");
-		refreshButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				dataPanel.refresh();
-			}
+		refreshButton.addActionListener((event) -> {
+			dataPanel.refresh();
 		});
 
 		rightPanel.add(addVehicleButton);
@@ -87,37 +82,25 @@ public class MainFrame extends JFrame {
 		rightPanel.add(refreshButton);
 
 		// actions
-		addVehicleButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						AddVehicle addVehicleWindow = new AddVehicle();
-						addVehicleWindow.setVisible(true);
-						addVehicleWindow.setLocationRelativeTo(null);
-					}
-				});
-
-			}
+		addVehicleButton.addActionListener((event) -> {
+			SwingUtilities.invokeLater(() -> {
+				AddVehicle addVehicleWindow = new AddVehicle();
+				addVehicleWindow.setVisible(true);
+				addVehicleWindow.setLocationRelativeTo(null);
+			});
 		});
 
-		buyVehicleButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-				if (vS == null)
-					return;
-				vS.setSelected(false);
-				db.buyVehicle(vS.getVehicle());
-				SwingUtilities.invokeLater(()->{
-					ConfirmationDialog notify = new ConfirmationDialog("The vehicle bought succesfully!");
-					notify.setVisible(true);
-					notify.setLocationRelativeTo(null);
-					});
-				dataPanel.refresh();
-			}
+		buyVehicleButton.addActionListener((event) -> {
+			VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
+			if (vS == null)
+				return;
+			vS.setSelected(false);
+			db.buyVehicle(vS.getVehicle());
+			SwingUtilities.invokeLater(() -> {
+				ConfirmationDialog notify = new ConfirmationDialog("The vehicle bought succesfully!");
+				notify.setVisible(true);
+				notify.setLocationRelativeTo(null);
+			});
 		});
 
 		testDriveButton.addActionListener(new ActionListener() {
@@ -134,67 +117,60 @@ public class MainFrame extends JFrame {
 						testDriveWindow.setVisible(true);
 						testDriveWindow.setLocationRelativeTo(null);
 						testDriveWindow.addWindowListener(new WindowListener() {
-							
+
 							@Override
 							public void windowOpened(WindowEvent arg0) {
 							}
-							
+
 							@Override
-							public void windowIconified(WindowEvent arg0) {								
+							public void windowIconified(WindowEvent arg0) {
 							}
-							
+
 							@Override
-							public void windowDeiconified(WindowEvent arg0) {								
+							public void windowDeiconified(WindowEvent arg0) {
 							}
-							
+
 							@Override
-							public void windowDeactivated(WindowEvent arg0) {								
+							public void windowDeactivated(WindowEvent arg0) {
 							}
-							
+
 							@Override
-							public void windowClosing(WindowEvent arg0) {								
+							public void windowClosing(WindowEvent arg0) {
 							}
-							
+
 							@Override
 							public void windowClosed(WindowEvent event) {
 								updateToString();
 							}
-							
+
 							@Override
-							public void windowActivated(WindowEvent arg0) {								
+							public void windowActivated(WindowEvent arg0) {
 							}
 						});
 					}
 				});
 			}
 		});
-
-		dataPanel = new DataPanel();
-		dataPanel.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				String eventName = event.getPropertyName();
-				if (eventName.equals("isEmpty")) {
-					if (event.getNewValue().equals(true)) {
-						resetDistancesButton.setEnabled(false);
-						changeFlagsButton.setEnabled(false);
-						buyVehicleButton.setEnabled(false);
-						testDriveButton.setEnabled(false);
-					} else {
-						resetDistancesButton.setEnabled(true);
-						changeFlagsButton.setEnabled(true);
-					}
-				} else if (eventName.equals("isSelected")) {
-					if (event.getNewValue().equals(true)) {
-						buyVehicleButton.setEnabled(true);
-						testDriveButton.setEnabled(true);
-					} else {
-						buyVehicleButton.setEnabled(false);
-						testDriveButton.setEnabled(false);
-					}
-					updateToString();
-				}
+		dataPanel.addPropertyChangeListener("isEmpty", (event) -> {
+			if (event.getNewValue().equals(true)) {
+				resetDistancesButton.setEnabled(false);
+				changeFlagsButton.setEnabled(false);
+				buyVehicleButton.setEnabled(false);
+				testDriveButton.setEnabled(false);
+			} else {
+				resetDistancesButton.setEnabled(true);
+				changeFlagsButton.setEnabled(true);
 			}
+		});
+		dataPanel.addPropertyChangeListener("isSelected", (event)->{
+			if (event.getNewValue().equals(true)) {
+				buyVehicleButton.setEnabled(true);
+				testDriveButton.setEnabled(true);
+			} else {
+				buyVehicleButton.setEnabled(false);
+				testDriveButton.setEnabled(false);
+			}
+			updateToString();
 		});
 
 		contentPanel.add(dataPanel, BorderLayout.CENTER);
@@ -211,18 +187,18 @@ public class MainFrame extends JFrame {
 		toStringTextArea.setLineWrap(true);
 		toStringTextArea.setWrapStyleWord(true);
 		toStringTextArea.setForeground(Color.GRAY);
-		
-		toStringPanel.add(toStringTextArea,BorderLayout.CENTER);
+
+		toStringPanel.add(toStringTextArea, BorderLayout.CENTER);
 		contentPanel.add(toStringPanel, BorderLayout.SOUTH);
 		
-		///Initial refresh does'nt account for the button creation.
+
+		/// Initial refresh does'nt account for the button creation.
 		dataPanel.refresh();
 	}
-	
 
-	
 	private void updateToString() {
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-		toStringTextArea.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
+		toStringTextArea
+				.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
 	}
 }

@@ -15,8 +15,6 @@ public class Database {
 	static final StringRange possibleVehicleTypes = new StringRange(
 			Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone"));
 
-	private static Database self = null;
-
 	private List<Vehicle> vehicleDatabase;
 	private List<ISeaVehicle> seaVehicleDatabase;
 	private List<IAirVehicle> airVehicleDatabase;
@@ -62,9 +60,6 @@ public class Database {
 		return true;
 	}
 
-	private boolean validIndex(int index) {
-		return (index >= 0 && index <= vehicleDatabase.size());
-	}
 
 	private Vehicle inputVehicle() {
 		String type;
@@ -187,7 +182,7 @@ public class Database {
 		return true;
 	}
 
-	private boolean changeFlags(String flag) {
+	public boolean changeFlags(String flag) {
 		if (seaVehicleDatabase.isEmpty()) {
 			System.out.println("no vehicles to change flags, returning");
 			return false;
@@ -208,20 +203,11 @@ public class Database {
 		return changeFlags(flag);
 	}
 
-	private Database() {
+	public Database() {
 		vehicleDatabase = new ArrayList<>();
 		seaVehicleDatabase = new ArrayList<>();
 		airVehicleDatabase = new ArrayList<>();
 		landVehicleDatabase = new ArrayList<>();
-	}
-
-	public static Database getInstance() {
-		if (Database.self != null) {
-			return Database.self;
-		} else {
-			Database.self = new Database();
-			return Database.self;
-		}
 	}
 
 	public List<Vehicle> getVehicles() {

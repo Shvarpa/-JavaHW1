@@ -27,7 +27,7 @@ public class TestDrive extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField distanceField;
 	JLabel statusLabel;
-	private Database db = Database.getInstance();
+	private DBConnect db = DBConnect.getConnection();
 
 	private void setBadStatus() {
 		String badStatus = "distance must be a number!!";
@@ -143,6 +143,8 @@ public class TestDrive extends JDialog {
 					});
 				}
 			});
+			
+			cancelButton.addActionListener((event)->{dispose();});
 		}
 	}
 
