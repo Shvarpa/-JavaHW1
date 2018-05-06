@@ -1,4 +1,4 @@
-package gui;
+package gui.Images;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -6,11 +6,11 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class ImageOpener {
-	protected static ImageIcon createImageIcon(String path) {
+	public static ImageIcon createImageIcon(String path) {
 		if (path == null) {
 			return null;
 		}
-		java.net.URL imgURL = ImageAndText.class.getResource(path);
+		java.net.URL imgURL = ImageOpener.class.getResource(path);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL);
 		} else {
@@ -19,11 +19,11 @@ public class ImageOpener {
 		}
 	}
 
-	static ImageIcon scaleImg(ImageIcon icon, Dimension d) {
+	public static ImageIcon scaleImg(ImageIcon icon, Dimension d) {
 		return scaleImg(icon, d.width, d.height);
 	}
 
-	static ImageIcon scaleImg(ImageIcon icon, int width, int height) {
+	public static ImageIcon scaleImg(ImageIcon icon, int width, int height) {
 		if (icon != null) {
 			Image image = icon.getImage(); // transform it
 			Image convertedImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH); // scale it the

@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
 
 import classes.Vehicle;
+import gui.Images.ImageOpener;
 
 public class VehicleSelectButton extends JRadioButton {
 

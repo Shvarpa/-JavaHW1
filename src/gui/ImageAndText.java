@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 
+import gui.Images.ImageOpener;
+
 
 class ImageAndText{
 	
