@@ -86,8 +86,9 @@ public class MainFrame extends JFrame {
 		addVehicleButton.addActionListener((event) -> {
 			SwingUtilities.invokeLater(() -> {
 				AddVehicle addVehicleWindow = new AddVehicle();
-				addVehicleWindow.setVisible(true);
+				addVehicleWindow.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				addVehicleWindow.setLocationRelativeTo(null);
+				addVehicleWindow.setVisible(true);
 			});
 		});
 
@@ -98,9 +99,10 @@ public class MainFrame extends JFrame {
 			vS.setSelected(false);
 			db.buyVehicle(vS.getVehicle());
 			SwingUtilities.invokeLater(() -> {
-				ConfirmationDialog notify = new ConfirmationDialog("The vehicle bought succesfully!");
-				notify.setVisible(true);
-				notify.setLocationRelativeTo(null);
+				ConfirmationDialog confirmation = new ConfirmationDialog("The vehicle bought succesfully!");
+				confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				confirmation.setLocationRelativeTo(null);
+				confirmation.setVisible(true);
 			});
 		});
 
@@ -113,6 +115,7 @@ public class MainFrame extends JFrame {
 					return;
 				SwingUtilities.invokeLater(() -> {
 					testDriveWindow = new TestDrive(currVehicle);
+					testDriveWindow.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					testDriveWindow.setVisible(true);
 					testDriveWindow.setLocationRelativeTo(null);
 				});
@@ -124,8 +127,17 @@ public class MainFrame extends JFrame {
 			SwingUtilities.invokeLater(() -> {
 				ConfirmationDialog confirmation = new ConfirmationDialog("all vehicles distances were reset!");
 				confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				confirmation.setVisible(true);
 				confirmation.setLocationRelativeTo(null);
+				confirmation.setVisible(true);
+			});
+		});
+		
+		changeFlagsButton.addActionListener((event)->{
+			SwingUtilities.invokeLater(()->{
+				ChangeFlags changeFlagsWindow = new ChangeFlags();
+				changeFlagsWindow.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				changeFlagsWindow.setLocationRelativeTo(null);
+				changeFlagsWindow.setVisible(true);
 			});
 		});
 

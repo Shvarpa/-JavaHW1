@@ -20,9 +20,14 @@ public class FlagsComboBox extends JComboBox<ImageAndText> {
 		return model;
 	}
 
+	public String getSelectedString() {
+		Object selected = getSelectedItem();
+		return (selected != null && selected instanceof ImageAndText ? selected.toString() : null);
+	}
+
 	public FlagsComboBox(Dimension d) {
+		super(populateComboBoxModel(d));
 		setRenderer(new ImageTextRenderer());
-		setModel(populateComboBoxModel(d));
 		setSelectedIndex(0);
 	}
 }
