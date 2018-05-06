@@ -27,7 +27,7 @@ class ImageAndText{
 	public ImageAndText(String path,String text, Dimension d) {
 		setImg(path);
 		setText(text);
-		scaleImg(d);
+		if(d!=null) scaleImg(d);
 	}
 	
 	public void scaleImg(Dimension d)	{
