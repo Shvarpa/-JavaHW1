@@ -47,9 +47,12 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		}
 		processIsEmpty();
 		processIsSelected();
+		processHasSeaVehicles();
 		repaint();
 		revalidate();
 	}
+	
+
 	
 	public boolean isEmpty() {
 		return vehicleSelectButtons.isEmpty();
@@ -63,7 +66,11 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		}
 		return false;
 	}
-
+	
+	private boolean hasSeaVehicles() {
+		return db.hasSeaVehicles();
+	}
+	
 	private void processIsEmpty() {
 		boolean isEmpty = isEmpty();
 		firePropertyChange("isEmpty", !isEmpty, isEmpty);
@@ -74,11 +81,18 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		firePropertyChange("isSelected", !selected, selected);
 	}
 	
+	private void processHasSeaVehicles() {
+		boolean hasSeaVehicles=hasSeaVehicles();
+		firePropertyChange("hasSeaVehicles", !hasSeaVehicles, hasSeaVehicles);
+	}
+	
 	public DataPanel() {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		super.setViewportView(content);
 		// super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		content.setLayout(layout);
+		
+		///subject to improve, meanwhile just resets the window components
 		db.addPropertyChangeListener("addVehicle",(event)->{refresh();});
 		db.addPropertyChangeListener("buyVehicle",(event)->{refresh();});
 		db.addPropertyChangeListener("testDriveVehicle",(event)->{refresh();});

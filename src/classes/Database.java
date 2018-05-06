@@ -88,6 +88,10 @@ public class Database {
 		return false;
 	}
 	
+	public boolean hasSeaVehicles() {
+		return !seaVehicleDatabase.isEmpty();
+	}
+	
 	public boolean addVehicle() {
 		Vehicle currVehicle = inputVehicle();
 		return addVehicle(currVehicle);

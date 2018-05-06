@@ -43,6 +43,10 @@ public class DBConnect extends JComponent {
 		return db.getVehicles();
 	}
 	
+	public boolean hasSeaVehicles() {
+		return db.hasSeaVehicles();
+	}
+	
 	public static DBConnect getConnection() {
 		if(self==null) {
 			self=new DBConnect();

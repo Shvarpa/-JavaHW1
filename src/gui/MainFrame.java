@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -110,59 +111,36 @@ public class MainFrame extends JFrame {
 				Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
 				if (currVehicle == null)
 					return;
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						testDriveWindow = new TestDrive(currVehicle);
-						testDriveWindow.setVisible(true);
-						testDriveWindow.setLocationRelativeTo(null);
-						testDriveWindow.addWindowListener(new WindowListener() {
-
-							@Override
-							public void windowOpened(WindowEvent arg0) {
-							}
-
-							@Override
-							public void windowIconified(WindowEvent arg0) {
-							}
-
-							@Override
-							public void windowDeiconified(WindowEvent arg0) {
-							}
-
-							@Override
-							public void windowDeactivated(WindowEvent arg0) {
-							}
-
-							@Override
-							public void windowClosing(WindowEvent arg0) {
-							}
-
-							@Override
-							public void windowClosed(WindowEvent event) {
-								updateToString();
-							}
-
-							@Override
-							public void windowActivated(WindowEvent arg0) {
-							}
-						});
-					}
+				SwingUtilities.invokeLater(() -> {
+					testDriveWindow = new TestDrive(currVehicle);
+					testDriveWindow.setVisible(true);
+					testDriveWindow.setLocationRelativeTo(null);
 				});
 			}
 		});
+
+		resetDistancesButton.addActionListener((event) -> {
+			db.resetDistances();
+			SwingUtilities.invokeLater(() -> {
+				ConfirmationDialog confirmation = new ConfirmationDialog("all vehicles distances were reset!");
+				confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				confirmation.setVisible(true);
+				confirmation.setLocationRelativeTo(null);
+			});
+		});
+
 		dataPanel.addPropertyChangeListener("isEmpty", (event) -> {
 			if (event.getNewValue().equals(true)) {
 				resetDistancesButton.setEnabled(false);
 				changeFlagsButton.setEnabled(false);
 				buyVehicleButton.setEnabled(false);
 				testDriveButton.setEnabled(false);
+				changeFlagsButton.setEnabled(false);
 			} else {
 				resetDistancesButton.setEnabled(true);
-				changeFlagsButton.setEnabled(true);
 			}
 		});
-		dataPanel.addPropertyChangeListener("isSelected", (event)->{
+		dataPanel.addPropertyChangeListener("isSelected", (event) -> {
 			if (event.getNewValue().equals(true)) {
 				buyVehicleButton.setEnabled(true);
 				testDriveButton.setEnabled(true);
@@ -171,6 +149,13 @@ public class MainFrame extends JFrame {
 				testDriveButton.setEnabled(false);
 			}
 			updateToString();
+		});
+		dataPanel.addPropertyChangeListener("hasSeaVehicles", (event)->{
+			if (event.getNewValue().equals(true)) {
+				changeFlagsButton.setEnabled(true);
+			} else {
+				changeFlagsButton.setEnabled(false);
+			}
 		});
 
 		contentPanel.add(dataPanel, BorderLayout.CENTER);
@@ -190,7 +175,6 @@ public class MainFrame extends JFrame {
 
 		toStringPanel.add(toStringTextArea, BorderLayout.CENTER);
 		contentPanel.add(toStringPanel, BorderLayout.SOUTH);
-		
 
 		/// Initial refresh does'nt account for the button creation.
 		dataPanel.refresh();
@@ -198,7 +182,6 @@ public class MainFrame extends JFrame {
 
 	private void updateToString() {
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-		toStringTextArea
-				.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
+		toStringTextArea.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
 	}
 }

@@ -5,6 +5,7 @@ package gui;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import classes.Database;
+import classes.Frigate;
 import classes.Jeep;
 import classes.Vehicle;
 
@@ -16,6 +17,7 @@ public class App {
 		DBConnect.getConnection().addVehicle(n);
 		DBConnect.getConnection().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
 		DBConnect.getConnection().addVehicle((Vehicle)(new Jeep("c", 5, 5, 5)));
+		DBConnect.getConnection().addVehicle((Vehicle)(new Frigate("d", 6, 6, true)));
 
 
 	}
