@@ -15,16 +15,16 @@ import gui.ImageTextRenderer;
 public class JeepForm extends Form {
 	private static String modelText = "model:";
 	private static String speedText = "speed:";
-	private static String avgFuelConsumptionText = "avgFuelConsumption:";
-	private static String avgMotorLifespanText = "avgMotorLifespan:";
-	private static String imagesComboBox = "imagesComboBox";
+	private static String avgFuelConsumptionText = "avg fuel consumption:";
+	private static String avgMotorLifespanText = "avg motor lifespan:";
+	private static String imagesComboBoxText = "image:";
 	
 	
 			
 			
 	public JeepForm() {
 		super(Arrays.asList(modelText,speedText,avgFuelConsumptionText,avgMotorLifespanText));
-		addComponent("imagesComboBox", createImagesComboBox(new Dimension(100, 75)));
+		addComponent(imagesComboBoxText, createImagesComboBox(new Dimension(100, 75)));
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class JeepForm extends Form {
 		double avgFuelConsumption = Double.parseDouble(getInput(avgFuelConsumptionText));
 		double avgMotorLifespan = Double.parseDouble(getInput(avgMotorLifespanText));
 		Jeep result = new Jeep(model, speed, avgFuelConsumption, avgMotorLifespan);
-		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBox)).getSelectedItem().toString());
+		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
 		return result;
 	}
 	

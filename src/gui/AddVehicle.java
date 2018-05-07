@@ -85,8 +85,8 @@ class AddVehicle extends JDialog {
 		cancelButton.setActionCommand("Cancel");
 		cancelButton.addActionListener((event)->{dispose();});
 		buttonPane.add(cancelButton);
-			
 		
+		pack();		
 	}
 
 
