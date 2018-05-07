@@ -8,13 +8,13 @@ import javax.swing.JDialog;
 
 import interfaces.ISeaVehicle;
 
-public class FlagsComboBox extends JComboBox<ImageAndText> {
+public class FlagsComboBox extends JComboBox<ImageText> {
 
-	private static DefaultComboBoxModel<ImageAndText> populateComboBoxModel(Dimension imageSize) {
+	private static DefaultComboBoxModel<ImageText> populateComboBoxModel(Dimension imageSize) {
 		String basePath = "Flags\\";
-		DefaultComboBoxModel<ImageAndText> model = new DefaultComboBoxModel<ImageAndText>();
+		DefaultComboBoxModel<ImageText> model = new DefaultComboBoxModel<ImageText>();
 		for (String type : ISeaVehicle.getPossibleFlags()) {
-			ImageAndText curr = new ImageAndText(basePath + type + ".png", type, imageSize);
+			ImageText curr = new ImageText(basePath + type + ".png", type, imageSize);
 			model.addElement(curr);
 		}
 		return model;
@@ -22,7 +22,7 @@ public class FlagsComboBox extends JComboBox<ImageAndText> {
 
 	public String getSelectedString() {
 		Object selected = getSelectedItem();
-		return (selected != null && selected instanceof ImageAndText ? selected.toString() : null);
+		return (selected != null && selected instanceof ImageText ? selected.toString() : null);
 	}
 
 	public FlagsComboBox(Dimension d) {

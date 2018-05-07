@@ -8,24 +8,24 @@ import javax.swing.ImageIcon;
 import gui.Images.ImageOpener;
 
 
-class ImageAndText{
+public class ImageText{
 	
 		
 	private ImageIcon img;
 	private String text;
 	
-	public ImageAndText() {
+	public ImageText() {
 		img=null;
 		setText("");	
 	}
 	
-	public ImageAndText(String path,String text) {
-		setImg(path);
+	public ImageText(String imagePath,String text) {
+		setImg(imagePath);
 		setText(text);
 	}
 	
-	public ImageAndText(String path,String text, Dimension d) {
-		setImg(path);
+	public ImageText(String imagePath,String text, Dimension d) {
+		setImg(imagePath);
 		setText(text);
 		if(d!=null) scaleImg(d);
 	}
@@ -39,7 +39,7 @@ class ImageAndText{
 	}
 	
 	public void setImg(ImageIcon img) {this.img=img;}
-	public void setImg(String path) {this.img=ImageOpener.createImageIcon(path);}
+	public void setImg(String imagePath) {this.img=ImageOpener.createImageIcon(imagePath);}
 	public void setText(String s) {this.text=s;}
 	public ImageIcon getImage() {return img;}
 	public String toString() {return text;}

@@ -1,15 +1,14 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageAndText> {
+public class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageText> {
+	
+	private boolean textVisable=true;
 	
 	public ImageTextRenderer() {
 	       setOpaque(true);
@@ -17,14 +16,14 @@ class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageAndText>
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList list, ImageAndText item, int index, boolean isSelected,
+	public Component getListCellRendererComponent(JList list, ImageText item, int index, boolean isSelected,
 			boolean cellHasFocus) {
 
 		ImageIcon img = item.getImage();
-		if (img != null) {
-			setIcon(item.getImage());
+		setIcon(item.getImage());
+		if (textVisable) {
+			setText(item.toString());
 		}
-		setText(item.toString());
 
 
         if (isSelected) {
@@ -39,6 +38,10 @@ class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageAndText>
 		setFont(list.getFont());
 		
 		return this;
+	}
+	
+	public void setTextVisable(boolean bool) {
+		textVisable=bool;
 	}
 
 }
