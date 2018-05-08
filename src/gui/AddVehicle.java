@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import classes.Vehicle;
 import gui.form.AmphibiousVehicleForm;
 import gui.form.BikeForm;
 import gui.form.CruiseShipForm;
@@ -42,6 +43,8 @@ class AddVehicle extends JDialog {
 	
 	private CardLayout cl = new CardLayout(10,15);
 	private JPanel formPanel;
+	JButton addButton;
+	
 	
 	public AddVehicle() {
 		setTitle("Add Vehicle");
@@ -51,7 +54,7 @@ class AddVehicle extends JDialog {
 		///select panel
 		JPanel selectPanel = new JPanel();
 		getContentPane().add(selectPanel, BorderLayout.NORTH);
-		FlowLayout fl_selectPanel = new FlowLayout(FlowLayout.LEFT, 20, 5);
+		FlowLayout fl_selectPanel = new FlowLayout(FlowLayout.CENTER, 20, 5);
 		fl_selectPanel.setAlignOnBaseline(true);
 		selectPanel.setLayout(fl_selectPanel);
 
@@ -59,17 +62,22 @@ class AddVehicle extends JDialog {
 		selectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		selectPanel.add(selectLabel);
 
-		final JComboBox<ImageText> typesComboBox = ComboBoxesCreator.createVehiclesComboBox(new Dimension(30,30));
-		typesComboBox.setPreferredSize(new Dimension(200,30));
-		typesComboBox.addActionListener((event)->{
-			String name =typesComboBox.getSelectedItem().toString();
+		final JComboBox<ImageText> vehiclesComboBox = ComboBoxesCreator.createVehiclesComboBox(new Dimension(30,30));
+		vehiclesComboBox.setPreferredSize(new Dimension(200,30));
+		vehiclesComboBox.addActionListener((event)->{
+			String name =vehiclesComboBox.getSelectedItem().toString();
 			if (forms.keySet().contains(name)){
 				cl.show(formPanel, name);
+				addButton.setEnabled(true);
 			}
-			else cl.show(formPanel, "Empty");
+			else {
+				cl.show(formPanel, "Empty");
+				addButton.setEnabled(false);
+			}
+
 		});
 		
-		selectPanel.add(typesComboBox);
+		selectPanel.add(vehiclesComboBox);
 		///form panel
 		
 		formPanel = new JPanel();
@@ -89,13 +97,25 @@ class AddVehicle extends JDialog {
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		
-		JButton addButton = new JButton("Add");
-		addButton.setActionCommand("Add");
+		addButton = new JButton("Add");
+		addButton.setEnabled(false);
+		addButton.addActionListener((event)->{
+			String selectedType = vehiclesComboBox.getSelectedItem().toString();
+			if (!forms.containsKey(selectedType)) return;
+			Vehicle v;
+			try{
+				v= forms.get(selectedType).createVehicle();
+				DBConnect.getConnection().addVehicle(v);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				// TODO: handle exception
+			}
+		});
 		buttonPane.add(addButton);
 		getRootPane().setDefaultButton(addButton);
 
 		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setActionCommand("Cancel");
 		cancelButton.addActionListener((event)->{dispose();});
 		buttonPane.add(cancelButton);
 		

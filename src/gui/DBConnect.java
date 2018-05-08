@@ -16,7 +16,7 @@ public class DBConnect extends JComponent {
 	
 	public void addVehicle(Vehicle v) {
 		db.addVehicle(v);
-		firePropertyChange("addVhicle", null, v);
+		firePropertyChange("addVehicle", null, v);
 	}
 	
 	public void buyVehicle(Vehicle v) {

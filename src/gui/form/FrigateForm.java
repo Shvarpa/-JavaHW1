@@ -25,7 +25,7 @@ public class FrigateForm extends Form{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	Vehicle createVehicle() throws NumberFormatException,NullPointerException{
+	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
 		int seats = Integer.parseInt(getInput(seatsText));
 		float speed = Float.parseFloat(getInput(speedText));

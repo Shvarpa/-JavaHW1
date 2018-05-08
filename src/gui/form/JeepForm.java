@@ -28,7 +28,7 @@ public class JeepForm extends Form {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	Vehicle createVehicle() throws NumberFormatException,NullPointerException{
+	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
 		float speed = Float.parseFloat(getInput(speedText));
 		double avgFuelConsumption = Double.parseDouble(getInput(avgFuelConsumptionText));

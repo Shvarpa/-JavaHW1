@@ -14,11 +14,12 @@ import javax.swing.JTextField;
 import classes.Vehicle;
 
 public abstract class Form extends JPanel {
-	abstract Vehicle createVehicle();
+	
+	public abstract Vehicle createVehicle();
 	
 	protected static Dimension preferredImageSize= new Dimension(60, 45);
 	
-	protected List<String> parameters;
+	protected List<String> parameters = new ArrayList<String>();
 	protected List<JLabel> labels = new ArrayList<JLabel>();
 	protected List<JComponent> components = new ArrayList<JComponent>();
 	protected GridBagLayout gridBagLayout;
@@ -41,6 +42,7 @@ public abstract class Form extends JPanel {
 	}
 		
 	protected void addComponent(String source,JComponent component) {
+		parameters.add(source);		
 		GridBagConstraints gbc;
 		
 		labels.add(new JLabel(source));

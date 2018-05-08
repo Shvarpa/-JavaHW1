@@ -17,7 +17,7 @@ public class AmphibiousVehicleForm extends Form {
 	private static String seatsText = "seats:";
 	private static String speedText = "speed:";
 	private static String wheelsText = "wheels:";
-	private static String withWindDiractionText = "withWindDiraction:";
+	private static String withWindDiractionText = "with wind diraction?:";
 	private static String flagText = "flag:";
 	private static String avgFuelConsumptionText = "avg fuel consumption:";
 	private static String avgMotorLifespanText = "avg motor lifespan:";
@@ -34,7 +34,7 @@ public class AmphibiousVehicleForm extends Form {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	Vehicle createVehicle() throws NumberFormatException,NullPointerException{
+	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
 		int seats = Integer.parseInt(getInput(seatsText));
 		float speed = Float.parseFloat(getInput(speedText));
