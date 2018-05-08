@@ -26,6 +26,7 @@ public class JeepForm extends Form {
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createJeepsComboBox(new Dimension(100, 75)));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);

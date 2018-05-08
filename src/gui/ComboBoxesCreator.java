@@ -14,8 +14,7 @@ public class ComboBoxesCreator {
 		// empty selection addition:
 		model.addElement(new ImageText());
 		
-		String[] vehicles = { "Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike",
-		"CruiseShip" };
+		String[] vehicles = { "Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike", "CruiseShip" };
 		String basePath = "Icons\\";
 		
 		for (String type : vehicles) {
@@ -97,5 +96,9 @@ public class ComboBoxesCreator {
 	
 	public static JComboBox<ImageText> createBikesComboBox(Dimension d) {
 		return createTypesComboBox("Bike", "jpg", 3, d);
+	}
+	
+	public static JComboBox<ImageText> createCruiseShipsComboBox(Dimension d) {
+		return createTypesComboBox("CruiseShip", "jpg", 3, d);
 	}
 }
