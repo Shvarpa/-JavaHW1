@@ -1,5 +1,6 @@
 package gui.form;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import classes.Vehicle;
 public abstract class Form extends JPanel {
 	abstract Vehicle createVehicle();
 	
+	protected static Dimension preferredImageSize= new Dimension(60, 45);
+	
 	protected List<String> parameters;
 	protected List<JLabel> labels = new ArrayList<JLabel>();
 	protected List<JComponent> components = new ArrayList<JComponent>();
@@ -22,7 +25,7 @@ public abstract class Form extends JPanel {
 	private int currentRow=0;
 	
 	
-	private static int textColumns = 10;
+	protected static int textColumns = 10;
 	
 	protected Form() {
 		gridBagLayout=new GridBagLayout();

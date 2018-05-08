@@ -19,7 +19,7 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 	double avgMotorLifespan;
 
 	
-	protected AmphibiousVehicle(String model, int seats, float speed,int wheels,boolean withWindDiraction,String flag,double avgFuelConsumption,double avgMotorLifespan) {
+	public AmphibiousVehicle(String model, int seats, float speed,int wheels,boolean withWindDiraction,String flag,double avgFuelConsumption,double avgMotorLifespan) {
 		super(model, seats, speed);
 		setWheels(wheels);
 		setWithWindDiraction(withWindDiraction);

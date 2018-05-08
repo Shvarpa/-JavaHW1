@@ -23,7 +23,7 @@ public class JeepForm extends Form {
 			
 	public JeepForm() {
 		super(Arrays.asList(modelText,speedText,avgFuelConsumptionText,avgMotorLifespanText));
-		addComponent(imagesComboBoxText, ComboBoxesCreator.createJeepsComboBox(new Dimension(100, 75)));
+		addComponent(imagesComboBoxText, ComboBoxesCreator.createJeepsComboBox(preferredImageSize));
 	}
 
 	@SuppressWarnings("unchecked")
