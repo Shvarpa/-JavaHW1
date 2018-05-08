@@ -47,6 +47,8 @@ public abstract class Form extends JPanel {
 		gbc = new GridBagConstraints();
 		gbc.gridy=currentRow;
 		gbc.gridx=0;
+		gbc.weightx=0;
+		gbc.weighty=0;
 		gbc.ipadx=5;
 		gbc.anchor=GridBagConstraints.EAST;
 		add(labels.get(currentRow),gbc);
@@ -56,6 +58,8 @@ public abstract class Form extends JPanel {
 		gbc.gridy=currentRow;
 		gbc.gridx=1;
 		gbc.ipadx=5;
+		gbc.weightx=1;
+		gbc.weighty=0;
 		gbc.gridwidth=3;
 		gbc.fill=GridBagConstraints.HORIZONTAL;
 		add(components.get(currentRow),gbc);

@@ -11,8 +11,9 @@ public class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageT
 	private boolean textVisable=true;
 	
 	public ImageTextRenderer() {
-	       setOpaque(true);
-           setVerticalAlignment(CENTER);
+		super();
+		setOpaque(true);
+		setVerticalAlignment(CENTER);
 	}
 
 	@Override
@@ -25,7 +26,11 @@ public class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageT
 			setText(item.toString());
 		}
 
-
+        JList.DropLocation dropLocation = list.getDropLocation();
+        if (dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index) {
+			setBackground(list.getSelectionBackground());
+			setForeground(list.getSelectionForeground());
+        }
         if (isSelected) {
 			setBackground(list.getSelectionBackground());
 			setForeground(list.getSelectionForeground());
