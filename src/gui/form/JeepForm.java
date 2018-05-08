@@ -9,22 +9,21 @@ import javax.swing.JComboBox;
 
 import classes.Jeep;
 import classes.Vehicle;
+import gui.ComboBoxesCreator;
 import gui.ImageText;
 import gui.ImageTextRenderer;
+import javafx.scene.control.ComboBox;
 
 public class JeepForm extends Form {
 	private static String modelText = "model:";
 	private static String speedText = "speed:";
 	private static String avgFuelConsumptionText = "avg fuel consumption:";
 	private static String avgMotorLifespanText = "avg motor lifespan:";
-	private static String imagesComboBoxText = "image:";
-	
-	
-			
+	private static String imagesComboBoxText = "image:";	
 			
 	public JeepForm() {
 		super(Arrays.asList(modelText,speedText,avgFuelConsumptionText,avgMotorLifespanText));
-		addComponent(imagesComboBoxText, createImagesComboBox(new Dimension(100, 75)));
+		addComponent(imagesComboBoxText, ComboBoxesCreator.createJeepsComboBox(new Dimension(100, 75)));
 	}
 
 	@Override
@@ -38,22 +37,5 @@ public class JeepForm extends Form {
 		return result;
 	}
 	
-	public static JComboBox<ImageText> createImagesComboBox(Dimension preferredSize) {
-		List<String> imagePaths = Arrays.asList("Jeep1.jpg","Jeep2.jpg","Jeep3.jpg");
-		String basePath = "VehicleTypes\\Jeep\\";
-				
-		DefaultComboBoxModel<ImageText> model= new DefaultComboBoxModel<ImageText>();
-		for(String imagePath: imagePaths) {
-			imagePath=basePath + imagePath;
-			model.addElement(new ImageText(imagePath, imagePath, preferredSize));
-		}
-		
-		JComboBox<ImageText> combo = new JComboBox<ImageText>(model);
-		
-		ImageTextRenderer renderer= new ImageTextRenderer();
-		renderer.setTextVisable(false);
-		combo.setRenderer(renderer);
-		
-		return combo;
-	}
+
 }

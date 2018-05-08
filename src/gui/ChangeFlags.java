@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -30,7 +31,7 @@ public class ChangeFlags extends JDialog {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		FlagsComboBox combo = new FlagsComboBox(ChangeFlags.preferdFlagsSize);
+		JComboBox<ImageText> combo = ComboBoxesCreator.createFlagsComboBox(preferdFlagsSize);
 		JButton okButton = new JButton("OK");
 		JButton cancelButton = new JButton("Cancel");
 
@@ -39,7 +40,7 @@ public class ChangeFlags extends JDialog {
 		buttonPanel.add(cancelButton);
 
 		okButton.addActionListener((event) -> {
-			String flag = combo.getSelectedString();
+			String flag = combo.getSelectedItem().toString();
 			if (flag == null)
 				return;
 			db.changeFlags(flag);

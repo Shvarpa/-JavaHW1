@@ -12,22 +12,6 @@ class AddVehicle extends JDialog {
 	private CardLayout cl = new CardLayout(10,15);
 	private JPanel formPanel;
 	
-	private static String[] types = {"Jeep", "Frigate","SpyDrone","PlayDrone","AmphibiousVehicle","Bike","CruiseShip"};
-	
-	private static DefaultComboBoxModel<ImageText> populateComboBoxModel(Dimension imageSize) {
-		DefaultComboBoxModel<ImageText> model = new DefaultComboBoxModel<ImageText>();
-		
-		//empty selection addition:		
-		model.addElement(new ImageText());
-		
-		String basePath = "Icons\\";
-		for (String type:types) {
-			ImageText curr = new ImageText(basePath+type+".png",type,imageSize);
-			model.addElement(curr);
-		}
-		return model;
-	}
-
 	public AddVehicle() {
 		setTitle("Add Vehicle");
 		setBounds(100, 100, 450, 300);
@@ -44,10 +28,8 @@ class AddVehicle extends JDialog {
 		selectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		selectPanel.add(selectLabel);
 
-		final JComboBox<ImageText> typesComboBox = new JComboBox<ImageText>();
+		final JComboBox<ImageText> typesComboBox = ComboBoxesCreator.createVehiclesComboBox(new Dimension(30,30));
 		typesComboBox.setPreferredSize(new Dimension(200,30));
-		typesComboBox.setModel(populateComboBoxModel(new Dimension(30,30)));
-		typesComboBox.setRenderer(new ImageTextRenderer());
 		typesComboBox.addActionListener((event)->{
 			if (typesComboBox.getSelectedItem().toString().equals("Jeep")){
 				cl.show(formPanel, "Jeep");
