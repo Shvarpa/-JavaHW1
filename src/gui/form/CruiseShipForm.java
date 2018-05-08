@@ -30,7 +30,6 @@ public class CruiseShipForm extends Form {
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createCruiseShipsComboBox(preferredImageSize));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);

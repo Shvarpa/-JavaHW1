@@ -19,7 +19,6 @@ public class SpyDroneForm extends Form {
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createSpyDronesComboBox(preferredImageSize));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String energySource = getInput(energySourceText);

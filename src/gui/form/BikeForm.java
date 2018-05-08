@@ -26,13 +26,12 @@ public class BikeForm extends Form{
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createBikesComboBox(preferredImageSize));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
 		int seats = Integer.parseInt(getInput(seatsText));
 		float speed = Float.parseFloat(getInput(speedText));
-		String roadType = ((JComboBox<String>)getComponent(roadTypeText)).toString();
+		String roadType = ((JComboBox<String>)getComponent(roadTypeText)).getSelectedItem().toString();
 		Bike result = new Bike(model, seats , speed, roadType);
 		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
 		return result;

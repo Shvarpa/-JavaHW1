@@ -32,7 +32,6 @@ public class AmphibiousVehicleForm extends Form {
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createAmphibiousVehiclesComboBox(preferredImageSize));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);

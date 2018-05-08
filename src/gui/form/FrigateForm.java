@@ -23,7 +23,6 @@ public class FrigateForm extends Form{
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createFrigatesComboBox(preferredImageSize));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
