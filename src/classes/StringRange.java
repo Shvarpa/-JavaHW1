@@ -31,4 +31,8 @@ public class StringRange extends ArrayList<String>{
 		int index=this.indexOfIgnoreCaps(input);
 		return (index>-1 ? this.get(index) : input);
 	}
+	
+	public String[] toStringArray() {
+		return this.toArray(new String[this.size()]);
+	}
 }

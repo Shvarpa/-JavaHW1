@@ -11,7 +11,7 @@ public class Bike extends LandVehicle implements NonMotorized {
 	public static final String defaultEnergySource = "Manual";
 
 	
-    protected Bike(String model, int seats, float speed, String roadType) {
+    public Bike(String model, int seats, float speed, String roadType) {
         super(model, seats, speed, 2, roadType);
     }
 

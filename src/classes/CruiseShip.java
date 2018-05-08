@@ -13,7 +13,7 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	private double avgFuelConsumption;
 	private double avgMotorLifespan;
 	
-	protected CruiseShip(String model, int seats, float speed, String flag,double avgFuelConsumption, double avgMotorLifespan) {
+	public CruiseShip(String model, int seats, float speed, String flag,double avgFuelConsumption, double avgMotorLifespan) {
 		super(model, seats, speed, true, flag);
 		setAvgFuelConsumption(avgFuelConsumption);
 		setAvgMotorLifespan(avgMotorLifespan);
