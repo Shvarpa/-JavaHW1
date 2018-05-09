@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,10 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import classes.Database;
 import classes.Vehicle;
-import interfaces.Inputable;
-
 import java.awt.Color;
 
 public class TestDrive extends JDialog {
@@ -84,12 +81,15 @@ public class TestDrive extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent event) {
 					String input = distanceField.getText();
-					if (!Inputable.isNumeric(input)) {
+					Scanner inputScanner = new Scanner(input);
+					if (!inputScanner.hasNextDouble()) {
 						setBadStatus();
+						inputScanner.close();
 						return;
 					}
 					clearStatus();
-					Double distance = Double.parseDouble(input);
+					Double distance = inputScanner.nextDouble();
+					inputScanner.close();
 					db.testDriveVehicle(currVehicle, distance);
 					SwingUtilities.invokeLater(() -> {
 						ConfirmationDialog confirmation = new ConfirmationDialog(
