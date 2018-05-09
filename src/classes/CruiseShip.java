@@ -4,7 +4,6 @@ package classes;
 
 import interfaces.Motorized;
 import interfaces.Commercial;
-import interfaces.Inputable;
 
 public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	
@@ -37,12 +36,12 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	
     public static CruiseShip inputCruiseShip() {
         try {
-            String model = Inputable.input("model:");
-            int seats= Inputable.inputInteger("seats:");
-            float speed = Inputable.inputFloat("speed:");
-            String flag = Inputable.input("flag:");
-            double avgFuelConsumption = Inputable.inputDouble("average fuel consumption:");
-            double avgMotorLifespan = Inputable.inputDouble("average motor lifespan:");
+            String model = Input.input("model:");
+            int seats= Input.inputInteger("seats:");
+            float speed = Input.inputFloat("speed:");
+            String flag = Input.input("flag:");
+            double avgFuelConsumption = Input.inputDouble("average fuel consumption:");
+            double avgMotorLifespan = Input.inputDouble("average motor lifespan:");
             return new CruiseShip(model,seats,speed,flag,avgFuelConsumption,avgMotorLifespan);
         } catch (NumberFormatException e) {
             System.out.println("bad input " + e.getLocalizedMessage() + ", returning");

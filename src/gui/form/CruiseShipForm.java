@@ -8,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import classes.CruiseShip;
+import classes.Input;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
 
@@ -32,8 +33,8 @@ public class CruiseShipForm extends Form {
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
-		int seats = Integer.parseInt(getInput(seatsText));
-		float speed = Float.parseFloat(getInput(speedText));
+		int seats = Input.parseInt(seatsText,getInput(seatsText));
+		float speed = Input.parseFloat(speedText,getInput(speedText));
 		
 		String flag =null;
 		JComponent comboFlag = getComponent(flagText);
@@ -41,8 +42,9 @@ public class CruiseShipForm extends Form {
 			flag = (((JComboBox<?>)comboFlag).getSelectedItem().toString());
 		}
 		
-		double avgFuelConsumption = Double.parseDouble(getInput(avgFuelConsumptionText));
-		double avgMotorLifespan = Double.parseDouble(getInput(avgMotorLifespanText));
+		double avgFuelConsumption = Input.parseDouble(avgFuelConsumptionText,getInput(avgFuelConsumptionText));
+		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
+		
 		CruiseShip result = new CruiseShip(model, seats , speed, flag, avgFuelConsumption, avgMotorLifespan);
 		
 		JComponent comboImage = getComponent(imagesComboBoxText);

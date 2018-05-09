@@ -2,8 +2,6 @@
 
 package classes;
 
-import interfaces.Inputable;
-
 public class SpyDrone extends Drone {
 	
 	public final static String defaultModel="Classified";
@@ -17,7 +15,7 @@ public class SpyDrone extends Drone {
     }
 
     public static SpyDrone inputSpyDrone() {
-        String enertgySource = Inputable.input("energy source:");
+        String enertgySource = Input.input("energy source:");
         return new SpyDrone(enertgySource);
     }
 }

@@ -2,7 +2,6 @@
 
 package classes;
 
-import interfaces.Inputable;
 import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {
@@ -17,10 +16,10 @@ public class Bike extends LandVehicle implements NonMotorized {
 
     public static Bike inputBike() {
         try {
-            String model = Inputable.input("model:");
-            int seats = Inputable.inputInteger("seats:");
-            float speed = Inputable.inputFloat("speed:");
-            String roadType = Inputable.input("road type:");
+            String model = Input.input("model:");
+            int seats = Input.inputInteger("seats:");
+            float speed = Input.inputFloat("speed:");
+            String roadType = Input.input("road type:");
             return new Bike(model, seats, speed, roadType);
         } catch (NumberFormatException e) {
             System.out.println("bad input " + e.getLocalizedMessage() + ", returning");

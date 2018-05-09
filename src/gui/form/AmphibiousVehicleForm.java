@@ -10,6 +10,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import classes.AmphibiousVehicle;
+import classes.Input;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
 
@@ -37,20 +38,27 @@ public class AmphibiousVehicleForm extends Form {
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
-		int seats = Integer.parseInt(getInput(seatsText));
-		float speed = Float.parseFloat(getInput(speedText));
-		int wheels = Integer.parseInt(getInput(wheelsText));
-		boolean withWindDiraction = ((JRadioButton)getComponent(withWindDiractionText)).isSelected();
+		int seats = Input.parseInt(seatsText,getInput(seatsText));
+		float speed = Input.parseFloat(speedText,getInput(speedText));
+		int wheels = Input.parseInt(wheelsText,getInput(wheelsText));
 		
-		String flag =null;
+		Boolean withWindDiraction=null;
+		JComponent radioWind = getComponent(withWindDiractionText);
+		if(radioWind instanceof JRadioButton) {
+			withWindDiraction = ((JRadioButton)getComponent(withWindDiractionText)).isSelected();
+		}
+		
+		String flag = null;
 		JComponent comboFlag = getComponent(flagText);
 		if (comboFlag instanceof JComboBox<?>) {
 			flag = (((JComboBox<?>)comboFlag).getSelectedItem().toString());
 		}
 		
-		double avgFuelConsumption = Double.parseDouble(getInput(avgFuelConsumptionText));
-		double avgMotorLifespan = Double.parseDouble(getInput(avgMotorLifespanText));
+		double avgFuelConsumption = Input.parseDouble(avgFuelConsumptionText,getInput(avgFuelConsumptionText));
+		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
+		
 		AmphibiousVehicle result = new AmphibiousVehicle(model, seats , speed, wheels, withWindDiraction, flag, avgFuelConsumption, avgMotorLifespan);
+		
 		JComponent comboImage = getComponent(imagesComboBoxText);
 		if (comboImage instanceof JComboBox<?>) {
 			result.setImagePath(((JComboBox<?>)comboImage).getSelectedItem().toString());

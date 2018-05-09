@@ -9,7 +9,6 @@ import java.util.List;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
-import interfaces.Inputable;
 
 public class Database {
 	static final StringRange possibleVehicleTypes = new StringRange(
@@ -37,7 +36,7 @@ public class Database {
 		"4)reset all vehicle distances\n" + 
 		"5)change flags\n" + 
 		"6)exit\n\n");
-		int option = Inputable.in.nextInt();
+		int option = Input.in.nextInt();
 		switch (option) {
 		case 1:
 			this.addVehicle();
@@ -63,7 +62,7 @@ public class Database {
 
 	private Vehicle inputVehicle() {
 		String type;
-		type = Inputable.input("what is the vehicle's type?");
+		type = Input.input("what is the vehicle's type?");
 		type = possibleVehicleTypes.FixCaps(type);
 		switch (type) {
 		case "Jeep":
@@ -153,7 +152,7 @@ public class Database {
 		if (vehicleDatabase.contains(currVehicle)) {
 			double distance;
 			try {
-				distance = Inputable.inputDouble("enter test drive distance:");
+				distance = Input.inputDouble("enter test drive distance:");
 			}
 			catch (NumberFormatException e) {
 				System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
@@ -203,7 +202,7 @@ public class Database {
 			System.out.println("no vehicles to change flags, returning");
 			return false;
 		}
-		String flag = Inputable.input("enter flag name:");
+		String flag = Input.input("enter flag name:");
 		return changeFlags(flag);
 	}
 

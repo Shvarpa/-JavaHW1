@@ -8,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JRadioButton;
 import classes.Frigate;
+import classes.Input;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
 
@@ -28,9 +29,16 @@ public class FrigateForm extends Form{
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
-		int seats = Integer.parseInt(getInput(seatsText));
-		float speed = Float.parseFloat(getInput(speedText));
-		boolean withWindDiraction = ((JRadioButton)getComponent(withWindDiractionText)).isSelected();
+		
+		int seats = Input.parseInt(seatsText,getInput(seatsText));
+		float speed = Input.parseFloat(speedText,getInput(speedText));
+		
+		Boolean withWindDiraction=null;
+		JComponent radioWind = getComponent(withWindDiractionText);
+		if(radioWind instanceof JRadioButton) {
+			withWindDiraction = ((JRadioButton)getComponent(withWindDiractionText)).isSelected();
+		}		
+		
 		Frigate result = new Frigate(model, seats , speed, withWindDiraction);
 		
 		JComponent comboImage = getComponent(imagesComboBoxText);

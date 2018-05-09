@@ -1,11 +1,11 @@
 //Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
 
 
-package interfaces;
+package classes;
 
 import java.util.Scanner;
 
-public interface Inputable {
+public class Input {
 	static Scanner in=new Scanner(System.in);
 	static String input(String msg) {
 		System.out.println(msg);
@@ -38,4 +38,32 @@ public interface Inputable {
 			return false;
 		}
 	}
+	
+	public static int parseInt(String target,String input) {
+		try {
+			return Integer.parseInt(input);
+		}
+		catch (NumberFormatException e) {
+			throw new NumberFormatException(target +" must be Integer");
+		}
+	}
+	
+	public static double parseDouble(String target,String input) {
+		try {
+			return Double.parseDouble(input);
+		}
+		catch (NumberFormatException e) {
+			throw new NumberFormatException(target +" must be Double");
+		}
+	}
+	
+	public static float parseFloat(String target,String input) {
+		try {
+			return Float.parseFloat(input);
+		}
+		catch (NumberFormatException e) {
+			throw new NumberFormatException(target +" must be Float");
+		}
+	}
+	
 }

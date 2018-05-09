@@ -4,7 +4,6 @@ package classes;
 
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
-import interfaces.Inputable;
 import interfaces.Motorized;
 
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{
@@ -58,14 +57,14 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 	
     public static AmphibiousVehicle inputAmphibiousVehicle() {
         try {
-            String model = Inputable.input("model:");
-            int seats= Inputable.inputInteger("seats:");
-            float speed = Inputable.inputFloat("speed:");
-            int wheels= Inputable.inputInteger("Wheels:");
-            boolean withWindDiraction=Inputable.inputBoolean("with wind diraction?:");
-            String flag = Inputable.input("flag:");
-            double avgFuelConsumption = Inputable.inputDouble("average fuel consumption:");
-            double avgMotorLifespan = Inputable.inputDouble("average motor lifespan:");
+            String model = Input.input("model:");
+            int seats= Input.inputInteger("seats:");
+            float speed = Input.inputFloat("speed:");
+            int wheels= Input.inputInteger("Wheels:");
+            boolean withWindDiraction=Input.inputBoolean("with wind diraction?:");
+            String flag = Input.input("flag:");
+            double avgFuelConsumption = Input.inputDouble("average fuel consumption:");
+            double avgMotorLifespan = Input.inputDouble("average motor lifespan:");
             return new AmphibiousVehicle(model,seats,speed,wheels,withWindDiraction,flag,avgFuelConsumption,avgMotorLifespan);
         } catch (NumberFormatException e) {
             System.out.println("bad input " + e.getLocalizedMessage() + ", returning");

@@ -2,7 +2,6 @@
 
 package classes;
 
-import interfaces.Inputable;
 import interfaces.Motorized;
 
 public class Frigate extends SeaVehicle implements Motorized {
@@ -20,10 +19,10 @@ public class Frigate extends SeaVehicle implements Motorized {
 
     public static Frigate inputFrigate() {
         try {
-            String model = Inputable.input("model:");
-            int seats = Inputable.inputInteger("seats:");
-            float speed = Inputable.inputFloat("speed:");
-            boolean withWindDiraction = Inputable.inputBoolean("with wind diraction?:");
+            String model = Input.input("model:");
+            int seats = Input.inputInteger("seats:");
+            float speed = Input.inputFloat("speed:");
+            boolean withWindDiraction = Input.inputBoolean("with wind diraction?:");
             return new Frigate(model, seats, speed, withWindDiraction);
         } catch (NumberFormatException e) {
             System.out.println("bad input " + e.getLocalizedMessage() + ", returning");

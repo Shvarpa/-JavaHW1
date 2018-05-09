@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import classes.Bike;
+import classes.Input;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
 import interfaces.ILandVehicle;
@@ -30,8 +31,8 @@ public class BikeForm extends Form{
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
-		int seats = Integer.parseInt(getInput(seatsText));
-		float speed = Float.parseFloat(getInput(speedText));
+		int seats = Input.parseInt(seatsText,getInput(seatsText));
+		float speed = Input.parseFloat(speedText,getInput(speedText));
 		
 		String roadType = null;		
 		JComponent comboRoadType = getComponent(roadTypeText);

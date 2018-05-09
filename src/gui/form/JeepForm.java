@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+
+import classes.Input;
 import classes.Jeep;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
@@ -25,9 +27,9 @@ public class JeepForm extends Form {
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException {
 		String model = getInput(modelText);
-		float speed = Float.parseFloat(getInput(speedText));
-		double avgFuelConsumption = Double.parseDouble(getInput(avgFuelConsumptionText));
-		double avgMotorLifespan = Double.parseDouble(getInput(avgMotorLifespanText));
+		float speed = Input.parseFloat(speedText,getInput(speedText));
+		double avgFuelConsumption = Input.parseDouble(avgFuelConsumptionText,getInput(avgFuelConsumptionText));
+		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
 		Jeep result = new Jeep(model, speed, avgFuelConsumption, avgMotorLifespan);
 
 		JComponent comboImage = getComponent(imagesComboBoxText);

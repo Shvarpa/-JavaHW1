@@ -3,7 +3,6 @@
 package classes;
 
 import interfaces.Commercial;
-import interfaces.Inputable;
 import interfaces.Motorized;
 
 public class Jeep extends LandVehicle implements Commercial, Motorized {
@@ -24,10 +23,10 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
 
     public static Jeep inputJeep() {
         try {
-            String model = Inputable.input("model:");
-            float speed = Inputable.inputFloat("speed:");
-            double avgFuelConsumption = Inputable.inputDouble("average fuel consumption:");
-            double avgMotorLifespan = Inputable.inputDouble("average motor lifespan:");
+            String model = Input.input("model:");
+            float speed = Input.inputFloat("speed:");
+            double avgFuelConsumption = Input.inputDouble("average fuel consumption:");
+            double avgMotorLifespan = Input.inputDouble("average motor lifespan:");
             return new Jeep(model, speed, avgFuelConsumption, avgMotorLifespan);
         } catch (NumberFormatException e) {
             System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
