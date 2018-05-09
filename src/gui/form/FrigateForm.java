@@ -3,6 +3,7 @@ package gui.form;
 import java.util.Arrays;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JRadioButton;
 import classes.Frigate;
 import classes.Vehicle;
@@ -30,7 +31,11 @@ public class FrigateForm extends Form{
 		float speed = Float.parseFloat(getInput(speedText));
 		boolean withWindDiraction = ((JRadioButton)getComponent(withWindDiractionText)).isSelected();
 		Frigate result = new Frigate(model, seats , speed, withWindDiraction);
-		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
+		
+		JComponent comboImage = getComponent(imagesComboBoxText);
+		if (comboImage instanceof JComboBox<?>) {
+			result.setImagePath(((JComboBox<?>)comboImage).getSelectedItem().toString());
+		}
 		return result;
 	}
 

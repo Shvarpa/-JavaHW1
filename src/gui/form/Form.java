@@ -3,8 +3,9 @@ package gui.form;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -18,10 +19,9 @@ public abstract class Form extends JPanel {
 	public abstract Vehicle createVehicle();
 	
 	protected static Dimension preferredImageSize= new Dimension(60, 45);
+		
+	protected Map<String,JComponent> dict = new Hashtable<String,JComponent>();
 	
-	protected List<String> parameters = new ArrayList<String>();
-	protected List<JLabel> labels = new ArrayList<JLabel>();
-	protected List<JComponent> components = new ArrayList<JComponent>();
 	protected GridBagLayout gridBagLayout;
 	private int currentRow=0;
 	
@@ -42,10 +42,9 @@ public abstract class Form extends JPanel {
 	}
 		
 	protected void addComponent(String source,JComponent component) {
-		parameters.add(source);		
+		dict.put(source, component);
 		GridBagConstraints gbc;
 		
-		labels.add(new JLabel(source));
 		gbc = new GridBagConstraints();
 		gbc.gridy=currentRow;
 		gbc.gridx=0;
@@ -53,9 +52,8 @@ public abstract class Form extends JPanel {
 		gbc.weighty=0;
 		gbc.ipadx=5;
 		gbc.anchor=GridBagConstraints.EAST;
-		add(labels.get(currentRow),gbc);
+		add(new JLabel(source),gbc);
 		
-		components.add(component);
 		gbc = new GridBagConstraints();
 		gbc.gridy=currentRow;
 		gbc.gridx=1;
@@ -64,13 +62,13 @@ public abstract class Form extends JPanel {
 		gbc.weighty=0;
 		gbc.gridwidth=3;
 		gbc.fill=GridBagConstraints.HORIZONTAL;
-		add(components.get(currentRow),gbc);
+		add(component,gbc);
 		
 		currentRow++;
 	}
 	
 	protected JComponent getComponent(String source) {
-		return components.get(parameters.indexOf(source));
+		return dict.get(source);
 	}
 	
 	protected String getInput(String source) {

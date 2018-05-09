@@ -3,6 +3,7 @@ package gui.form;
 import java.util.Arrays;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import classes.Bike;
 import classes.Vehicle;
@@ -31,9 +32,18 @@ public class BikeForm extends Form{
 		String model = getInput(modelText);
 		int seats = Integer.parseInt(getInput(seatsText));
 		float speed = Float.parseFloat(getInput(speedText));
-		String roadType = ((JComboBox<String>)getComponent(roadTypeText)).getSelectedItem().toString();
+		
+		String roadType = null;		
+		JComponent comboRoadType = getComponent(roadTypeText);
+		if (comboRoadType instanceof JComboBox<?>) {
+			roadType = (((JComboBox<?>)comboRoadType).getSelectedItem().toString());
+		}
+		
 		Bike result = new Bike(model, seats , speed, roadType);
-		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
+		JComponent comboImage = getComponent(imagesComboBoxText);
+		if (comboImage instanceof JComboBox<?>) {
+			result.setImagePath(((JComboBox<?>)comboImage).getSelectedItem().toString());
+		}
 		return result;
 	}
 

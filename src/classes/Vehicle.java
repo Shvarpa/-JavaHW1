@@ -2,8 +2,6 @@
 
 package classes;
 
-import javax.swing.ImageIcon;
-
 public abstract class Vehicle{
 	
 	private String imagePath=null;

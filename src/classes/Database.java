@@ -120,9 +120,9 @@ public class Database {
 		if (vehicleDatabase.contains(currVehicle)) {
 			this.vehicleDatabase.remove(currVehicle);
 			if (currVehicle instanceof ISeaVehicle)
-				this.seaVehicleDatabase.remove(currVehicle);
+				this.seaVehicleDatabase.remove((ISeaVehicle)currVehicle);
 			if (currVehicle instanceof ILandVehicle)
-				this.landVehicleDatabase.remove(currVehicle);
+				this.landVehicleDatabase.remove((ILandVehicle)currVehicle);
 			System.out.println("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
 		}

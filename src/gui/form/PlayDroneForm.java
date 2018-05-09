@@ -2,10 +2,11 @@ package gui.form;
 
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
 import classes.PlayDrone;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
-import gui.ImageText;
 
 public class PlayDroneForm extends Form {
 	
@@ -18,7 +19,11 @@ public class PlayDroneForm extends Form {
 	@Override
 	public Vehicle createVehicle() {
 		PlayDrone result = new PlayDrone();
-		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
+		
+		JComponent comboImage = getComponent(imagesComboBoxText);
+		if (comboImage instanceof JComboBox<?>) {
+			result.setImagePath(((JComboBox<?>)comboImage).getSelectedItem().toString());
+		}
 		return result;
 	}
 

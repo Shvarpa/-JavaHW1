@@ -3,6 +3,8 @@ package gui.form;
 import java.util.Arrays;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
 import classes.SpyDrone;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
@@ -23,7 +25,11 @@ public class SpyDroneForm extends Form {
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String energySource = getInput(energySourceText);
 		SpyDrone result = new SpyDrone(energySource);
-		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
+		
+		JComponent comboImage = getComponent(imagesComboBoxText);
+		if (comboImage instanceof JComboBox<?>) {
+			result.setImagePath(((JComboBox<?>)comboImage).getSelectedItem().toString());
+		}
 		return result;
 	}
 

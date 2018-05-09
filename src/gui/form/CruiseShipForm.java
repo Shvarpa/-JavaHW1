@@ -3,6 +3,7 @@ package gui.form;
 import java.util.Arrays;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -35,11 +36,21 @@ public class CruiseShipForm extends Form {
 		String model = getInput(modelText);
 		int seats = Integer.parseInt(getInput(seatsText));
 		float speed = Float.parseFloat(getInput(speedText));
-		String flag = ((JComboBox<ImageText>)getComponent(flagText)).getSelectedItem().toString();
+		
+		String flag =null;
+		JComponent comboFlag = getComponent(flagText);
+		if (comboFlag instanceof JComboBox<?>) {
+			flag = (((JComboBox<?>)comboFlag).getSelectedItem().toString());
+		}
+		
 		double avgFuelConsumption = Double.parseDouble(getInput(avgFuelConsumptionText));
 		double avgMotorLifespan = Double.parseDouble(getInput(avgMotorLifespanText));
 		CruiseShip result = new CruiseShip(model, seats , speed, flag, avgFuelConsumption, avgMotorLifespan);
-		result.setImagePath(((JComboBox<ImageText>)getComponent(imagesComboBoxText)).getSelectedItem().toString());
+		
+		JComponent comboImage = getComponent(imagesComboBoxText);
+		if (comboImage instanceof JComboBox<?>) {
+			result.setImagePath(((JComboBox<?>)comboImage).getSelectedItem().toString());
+		}
 		return result;
 	}
 
