@@ -1,10 +1,10 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;

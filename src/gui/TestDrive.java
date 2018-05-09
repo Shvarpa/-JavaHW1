@@ -1,3 +1,5 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.BorderLayout;
@@ -7,14 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Scanner;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
 import classes.Vehicle;
 import java.awt.Color;
 

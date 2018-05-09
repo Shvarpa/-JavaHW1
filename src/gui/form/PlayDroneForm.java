@@ -1,9 +1,10 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui.form;
 
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-
 import classes.PlayDrone;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;

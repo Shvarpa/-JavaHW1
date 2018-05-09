@@ -1,3 +1,5 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui.form;
 
 import java.awt.Dimension;
@@ -6,7 +8,6 @@ import java.awt.GridBagLayout;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

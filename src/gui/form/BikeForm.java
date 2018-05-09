@@ -1,14 +1,14 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui.form;
 
 import java.util.Arrays;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-
 import classes.Bike;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
-import gui.ImageText;
 import interfaces.ILandVehicle;
 
 public class BikeForm extends Form{

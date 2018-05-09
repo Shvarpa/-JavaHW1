@@ -1,10 +1,10 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.Dimension;
-
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
-
 import classes.Vehicle;
 import gui.Images.ImageOpener;
 

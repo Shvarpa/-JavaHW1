@@ -4,25 +4,10 @@ package gui;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import classes.Frigate;
-import classes.Jeep;
-import classes.Vehicle;
 
 public class App {
 	
-	private static void test() {
-		Vehicle n = new Jeep("a", 5, 5, 5);
-		n.setImagePath("icons\\Jeep.png");
-		DBConnect.getConnection().addVehicle(n);
-		DBConnect.getConnection().addVehicle((Vehicle)(new Jeep("b", 5, 5, 5)));
-		DBConnect.getConnection().addVehicle((Vehicle)(new Jeep("c", 5, 5, 5)));
-		DBConnect.getConnection().addVehicle((Vehicle)(new Frigate("d", 6, 6, true)));
-
-
-	}
-	
 	public static void main(String[] args) {
-		test();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame app = new MainFrame();

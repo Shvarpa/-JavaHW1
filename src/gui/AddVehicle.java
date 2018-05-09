@@ -1,3 +1,5 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.BorderLayout;

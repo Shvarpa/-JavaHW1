@@ -1,14 +1,13 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui.form;
 
 import java.util.Arrays;
-
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-
 import classes.SpyDrone;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
-import gui.ImageText;
 
 public class SpyDroneForm extends Form {
 

@@ -1,3 +1,5 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui.form;
 
 import java.util.Arrays;
@@ -8,7 +10,6 @@ import javax.swing.JRadioButton;
 import classes.Frigate;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
-import gui.ImageText;
 
 public class FrigateForm extends Form{
 

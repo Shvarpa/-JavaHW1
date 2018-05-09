@@ -1,7 +1,8 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.Component;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -19,8 +20,7 @@ public class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageT
 	@Override
 	public Component getListCellRendererComponent(JList list, ImageText item, int index, boolean isSelected,
 			boolean cellHasFocus) {
-
-		ImageIcon img = item.getImage();
+		
 		setIcon(item.getImage());
 		if (textVisable) {
 			setText(item.toString());

@@ -1,19 +1,14 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui.form;
 
-import java.awt.Dimension;
 import java.util.Arrays;
-import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-
 import classes.Jeep;
 import classes.Vehicle;
 import gui.ComboBoxesCreator;
-import gui.ImageText;
-import gui.ImageTextRenderer;
-import javafx.scene.control.ComboBox;
 
 public class JeepForm extends Form {
 	private static String modelText = "model:";

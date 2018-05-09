@@ -1,31 +1,20 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-
-import classes.Database;
 import classes.Vehicle;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import javax.swing.DropMode;
 
 public class MainFrame extends JFrame {
 
@@ -38,7 +27,6 @@ public class MainFrame extends JFrame {
 	private DataPanel dataPanel = new DataPanel();
 	private JTextArea toStringTextArea;
 	private String defaultToStringLabel = "current vehicle: ";
-	private JButton refreshButton;
 	TestDrive testDriveWindow;
 	private DBConnect db = DBConnect.getConnection();
 
@@ -52,7 +40,7 @@ public class MainFrame extends JFrame {
 
 		JPanel rightPanel = new JPanel();
 		contentPanel.add(rightPanel, BorderLayout.EAST);
-		rightPanel.setLayout(new GridLayout(6, 1, 0, 0));
+		rightPanel.setLayout(new GridLayout(5, 1, 0, 0));
 
 		/// buttons
 		addVehicleButton = new JButton("Add Vehicle");
@@ -70,17 +58,11 @@ public class MainFrame extends JFrame {
 		changeFlagsButton = new JButton("Change Flags");
 		changeFlagsButton.setEnabled(false);
 
-		refreshButton = new JButton("refresh");
-		refreshButton.addActionListener((event) -> {
-			dataPanel.refresh();
-		});
-
 		rightPanel.add(addVehicleButton);
 		rightPanel.add(buyVehicleButton);
 		rightPanel.add(testDriveButton);
 		rightPanel.add(resetDistancesButton);
 		rightPanel.add(changeFlagsButton);
-		rightPanel.add(refreshButton);
 
 		// actions
 		addVehicleButton.addActionListener((event) -> {
