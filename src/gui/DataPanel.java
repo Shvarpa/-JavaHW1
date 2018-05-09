@@ -92,7 +92,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		// super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		content.setLayout(layout);
 		
-		///subject to improve, meanwhile just resets the window components
+		// TODO: improve actions, meanwhile just resets the window components for each operation
 		db.addPropertyChangeListener("addVehicle",(event)->{refresh();});
 		db.addPropertyChangeListener("buyVehicle",(event)->{refresh();});
 		db.addPropertyChangeListener("testDriveVehicle",(event)->{refresh();});

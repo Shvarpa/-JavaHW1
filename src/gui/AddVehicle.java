@@ -125,9 +125,14 @@ class AddVehicle extends JDialog {
 			try {
 				v = forms.get(selectedType).createVehicle();
 			} catch (NumberFormatException e) {
-				// TODO: handle exception better
-				statusLabel.setText("cannot create " + selectedType + " because of :" + e.getMessage());
+				String log = "cannot create " + selectedType + " because of :" + e.getMessage();
+				System.out.println(log);
+				statusLabel.setText(log);
 				pack();
+				return;
+			}
+			catch (Exception e) {
+				System.out.println("this should not happen, form not created properly");
 				return;
 			}
 			DBConnect.getConnection().addVehicle(v);
