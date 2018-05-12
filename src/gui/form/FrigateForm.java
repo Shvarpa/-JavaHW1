@@ -31,8 +31,11 @@ public class FrigateForm extends Form{
 		String model = getInput(modelText);
 		
 		int seats = Input.parseInt(seatsText,getInput(seatsText));
-		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(seatsText, seats);
 		
+		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(speedText, speed);
+
 		Boolean withWindDiraction=null;
 		JComponent radioWind = getComponent(withWindDiractionText);
 		if(radioWind instanceof JRadioButton) {

@@ -28,17 +28,7 @@ public class Input {
 		String inputStr=input(msg+" (boolean)");
 		return Boolean.parseBoolean(inputStr)||"yes".equalsIgnoreCase(inputStr)||"1".equalsIgnoreCase(inputStr)||"on".equalsIgnoreCase(inputStr)||"y".equalsIgnoreCase(inputStr);
 	}
-	
-	public static boolean isNumeric(String input) {
-		try {
-			Double.parseDouble(input);
-			return true;
-		}
-		catch (Exception e) {
-			return false;
-		}
-	}
-	
+		
 	public static int parseInt(String target,String input) {
 		try {
 			return Integer.parseInt(input);
@@ -64,6 +54,10 @@ public class Input {
 		catch (NumberFormatException e) {
 			throw new NumberFormatException(target +" must be Float");
 		}
+	}
+	
+	public static void parsePositive(String target,double input) {
+		if(input<0) throw new NumberFormatException(target +" must be positive");
 	}
 	
 }

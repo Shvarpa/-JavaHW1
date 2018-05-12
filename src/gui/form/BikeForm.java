@@ -31,9 +31,13 @@ public class BikeForm extends Form{
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
-		int seats = Input.parseInt(seatsText,getInput(seatsText));
-		float speed = Input.parseFloat(speedText,getInput(speedText));
 		
+		int seats = Input.parseInt(seatsText,getInput(seatsText));
+		Input.parsePositive(seatsText, seats);
+
+		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(speedText, speed);
+
 		String roadType = null;		
 		JComponent comboRoadType = getComponent(roadTypeText);
 		if (comboRoadType instanceof JComboBox<?>) {

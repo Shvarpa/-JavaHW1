@@ -27,9 +27,16 @@ public class JeepForm extends Form {
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException {
 		String model = getInput(modelText);
+		
 		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(speedText, speed);
+		
 		double avgFuelConsumption = Input.parseDouble(avgFuelConsumptionText,getInput(avgFuelConsumptionText));
+		Input.parsePositive(avgFuelConsumptionText, avgFuelConsumption);
+
 		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
+		Input.parsePositive(avgMotorLifespanText, avgMotorLifespan);
+
 		Jeep result = new Jeep(model, speed, avgFuelConsumption, avgMotorLifespan);
 
 		JComponent comboImage = getComponent(imagesComboBoxText);

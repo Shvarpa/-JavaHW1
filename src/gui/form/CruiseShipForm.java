@@ -34,8 +34,11 @@ public class CruiseShipForm extends Form {
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
 		int seats = Input.parseInt(seatsText,getInput(seatsText));
-		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(seatsText, seats);
 		
+		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(speedText, speed);
+
 		String flag =null;
 		JComponent comboFlag = getComponent(flagText);
 		if (comboFlag instanceof JComboBox<?>) {
@@ -43,7 +46,10 @@ public class CruiseShipForm extends Form {
 		}
 		
 		double avgFuelConsumption = Input.parseDouble(avgFuelConsumptionText,getInput(avgFuelConsumptionText));
+		Input.parsePositive(avgFuelConsumptionText, avgFuelConsumption);
+		
 		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
+		Input.parsePositive(avgMotorLifespanText, avgMotorLifespan);
 		
 		CruiseShip result = new CruiseShip(model, seats , speed, flag, avgFuelConsumption, avgMotorLifespan);
 		

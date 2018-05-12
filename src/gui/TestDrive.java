@@ -26,15 +26,6 @@ public class TestDrive extends JDialog {
 	JLabel statusLabel;
 	private DBConnect db = DBConnect.getConnection();
 
-	private void setBadStatus() {
-		String badStatus = "distance must be a number!!";
-		String currStatus = statusLabel.getText();
-		if (!currStatus.equals(badStatus)) {
-			statusLabel.setText(badStatus);
-		} else {
-			statusLabel.setText("* " + badStatus + " *");
-		}
-	}
 	private void clearStatus() {
 		statusLabel.setText("");
 	}
@@ -83,13 +74,17 @@ public class TestDrive extends JDialog {
 					String input = distanceField.getText();
 					Scanner inputScanner = new Scanner(input);
 					if (!inputScanner.hasNextDouble()) {
-						setBadStatus();
+						statusLabel.setText("distance must be a number!!");
 						inputScanner.close();
 						return;
 					}
 					clearStatus();
 					Double distance = inputScanner.nextDouble();
 					inputScanner.close();
+					if(distance<=0) {
+						statusLabel.setText("distance must be a positive!!");
+						return;
+					}
 					db.testDriveVehicle(currVehicle, distance);
 					SwingUtilities.invokeLater(() -> {
 						ConfirmationDialog confirmation = new ConfirmationDialog(

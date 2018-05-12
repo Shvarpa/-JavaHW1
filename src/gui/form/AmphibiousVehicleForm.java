@@ -38,9 +38,15 @@ public class AmphibiousVehicleForm extends Form {
 	@Override
 	public Vehicle createVehicle() throws NumberFormatException,NullPointerException{
 		String model = getInput(modelText);
+		
 		int seats = Input.parseInt(seatsText,getInput(seatsText));
+		Input.parsePositive(seatsText, seats);
+		
 		float speed = Input.parseFloat(speedText,getInput(speedText));
+		Input.parsePositive(speedText, speed);
+
 		int wheels = Input.parseInt(wheelsText,getInput(wheelsText));
+		Input.parsePositive(wheelsText, wheels);		
 		
 		Boolean withWindDiraction=null;
 		JComponent radioWind = getComponent(withWindDiractionText);
@@ -55,8 +61,11 @@ public class AmphibiousVehicleForm extends Form {
 		}
 		
 		double avgFuelConsumption = Input.parseDouble(avgFuelConsumptionText,getInput(avgFuelConsumptionText));
-		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
+		Input.parsePositive(avgFuelConsumptionText, avgFuelConsumption);
 		
+		double avgMotorLifespan = Input.parseDouble(avgMotorLifespanText,getInput(avgMotorLifespanText));
+		Input.parsePositive(avgMotorLifespanText, avgMotorLifespan);
+
 		AmphibiousVehicle result = new AmphibiousVehicle(model, seats , speed, wheels, withWindDiraction, flag, avgFuelConsumption, avgMotorLifespan);
 		
 		JComponent comboImage = getComponent(imagesComboBoxText);
