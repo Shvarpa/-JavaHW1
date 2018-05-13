@@ -56,6 +56,10 @@ public class Input {
 		}
 	}
 	
+	public static boolean parseBoolean(String input) {
+		return Boolean.parseBoolean(input)||"yes".equalsIgnoreCase(input)||"1".equalsIgnoreCase(input)||"on".equalsIgnoreCase(input)||"y".equalsIgnoreCase(input);
+	}
+	
 	public static void parsePositive(String target,double input) {
 		if(input<0) throw new NumberFormatException(target +" must be positive");
 	}
