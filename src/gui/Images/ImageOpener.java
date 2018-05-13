@@ -4,19 +4,27 @@ package gui.Images;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class ImageOpener {
+
 	public static ImageIcon createImageIcon(String path) {
 		if (path == null) {
 			return null;
 		}
-		java.net.URL imgURL = ImageOpener.class.getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path);
+		URL url = ImageOpener.class.getResource(path);
+		if (url != null) {
+			return new ImageIcon(url);
+		}
+		try {
+			return new ImageIcon(ImageIO.read(new File(path)));
+		} catch (IOException e) {
+			System.err.println("couldent find image in path : '" + path + "'");
 			return null;
 		}
 	}
