@@ -25,8 +25,8 @@ public class CruiseShipForm extends Form {
 	public CruiseShipForm() {
 		super(Arrays.asList(modelText,seatsText,speedText));
 		addComponent(flagText,ComboBoxesCreator.createFlagsComboBox(preferredImageSize));
-		addComponent(avgFuelConsumptionText, new JTextField(textColumns));
-		addComponent(avgMotorLifespanText, new JTextField(textColumns));
+		addComponent(avgFuelConsumptionText, new JTextField());
+		addComponent(avgMotorLifespanText, new JTextField());
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createCruiseShipsComboBox(preferredImageSize));
 	}
 

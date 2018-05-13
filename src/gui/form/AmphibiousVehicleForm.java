@@ -30,8 +30,8 @@ public class AmphibiousVehicleForm extends Form {
 		super(Arrays.asList(modelText,seatsText,speedText,wheelsText));
 		addComponent(withWindDiractionText, new JRadioButton());
 		addComponent(flagText,ComboBoxesCreator.createFlagsComboBox(preferredImageSize));
-		addComponent(avgFuelConsumptionText, new JTextField(textColumns));
-		addComponent(avgMotorLifespanText, new JTextField(textColumns));
+		addComponent(avgFuelConsumptionText, new JTextField());
+		addComponent(avgMotorLifespanText, new JTextField());
 		addComponent(imagesComboBoxText, ComboBoxesCreator.createAmphibiousVehiclesComboBox(preferredImageSize));
 	}
 

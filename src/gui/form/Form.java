@@ -8,12 +8,17 @@ import java.awt.GridBagLayout;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import classes.Vehicle;
+import gui.ImageText;
 
 public abstract class Form extends JPanel {
 	
@@ -26,9 +31,7 @@ public abstract class Form extends JPanel {
 	protected GridBagLayout gridBagLayout;
 	private int currentRow=0;
 	
-	
-	protected static int textColumns = 10;
-	
+		
 	protected Form() {
 		gridBagLayout=new GridBagLayout();
 		setLayout(gridBagLayout);
@@ -38,7 +41,7 @@ public abstract class Form extends JPanel {
 		gridBagLayout=new GridBagLayout();
 		setLayout(gridBagLayout);
 		for(String s:sources) {
-			addComponent(s,new JTextField(textColumns));
+			addComponent(s,new JTextField());
 		}
 	}
 		
@@ -78,5 +81,20 @@ public abstract class Form extends JPanel {
 			return ((JTextField)curr).getText();
 		}
 		return null;
+	}
+	
+	
+	
+	protected String imagePath=null;
+	protected void AddImageChoise(DefaultComboBoxModel<ImageText> model) {
+		JButton openImageSelect = new JButton();
+		openImageSelect.addActionListener((event)->{
+			SwingUtilities.invokeLater(()->{
+				ImageSelect imageWindow = new ImageSelect(model);
+				
+			});
+		});
+		addComponent("image:", openImageSelect);
+		
 	}
 }
