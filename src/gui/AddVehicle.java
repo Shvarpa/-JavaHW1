@@ -86,11 +86,15 @@ public class AddVehicle extends JFrame {
 		statusPanel = new JPanel();
 		
 		// Add the select and display panels to the main panel.
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.weightx = 1;
 		mainPanel.add(selectPanel, c);
 		c.gridx = 0;
 		c.gridy = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 4;
+		c.gridwidth = 2;
 		c.weightx = 1;
 		mainPanel.add(fieldPanel, c);
 		c.gridx = 0;
