@@ -484,6 +484,7 @@ public class AddVehicle extends JFrame {
 		statusLabel.setText("");
 		
 		///////////////////////////////////////////////////////////////
+		picpath = IMAGES_PATH + typschoices.getSelectedItem().toString() + "\\"+ typschoices.getSelectedItem().toString() + 1 + IMAGES_SUFIX;
 		jrb0.setSelected(true);
 		///////////////////////////////////////////////////////////////
 
