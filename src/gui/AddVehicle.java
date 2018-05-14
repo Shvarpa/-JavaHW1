@@ -263,7 +263,6 @@ public class AddVehicle extends JFrame {
 		statusPanel.add(statusLabel);
 		
 		
-		
 		updatefield(typschoices.getSelectedItem().toString());
 		pack();
 	}
@@ -483,6 +482,11 @@ public class AddVehicle extends JFrame {
 		
 		
 		statusLabel.setText("");
+		
+		///////////////////////////////////////////////////////////////
+		jrb0.setSelected(true);
+		///////////////////////////////////////////////////////////////
+
 		this.pack();
 
 	}
