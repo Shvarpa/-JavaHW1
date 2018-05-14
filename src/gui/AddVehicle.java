@@ -254,10 +254,9 @@ public class AddVehicle extends JFrame {
 		
 		//////////////////////////////// status panel ///////////////////////
 		
-		JPanel statusPanel = new JPanel(new BorderLayout());
-		statusLabel = new JLabel("a");
+		statusLabel = new JLabel();
 		statusLabel.setForeground(Color.RED);
-		statusPanel.add(statusLabel,BorderLayout.CENTER);
+		statusPanel.add(statusLabel);
 		
 		
 		
