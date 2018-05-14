@@ -306,7 +306,7 @@ public class AddVehicle extends JFrame {
 			speed = Input.parseFloat("Speed", jtf[2].getText());
 			Input.parsePositive("Speed", speed);
 
-			withWindDiraction = Input.parseBoolean(jtf[3].getText());
+			withWindDiraction = Input.parseBoolean("with Wind Diraction",jtf[3].getText());
 			result = new Frigate(model, seats, speed, withWindDiraction);
 			break;
 		case "SpyDrone":// SpyDrone(String energySource)
@@ -340,7 +340,7 @@ public class AddVehicle extends JFrame {
 			if (!Commercial.checkLicenseInput(licence)) {
 				throw new NumberFormatException("License must be in " + Commercial.possibleLicences.toString());
 			}
-			withWindDiraction = Input.parseBoolean(jtf[8].getText());
+			withWindDiraction = Input.parseBoolean("with Wind Diraction",jtf[8].getText());
 			flag = flagsComboBox.getSelectedItem().toString();
 			result = new AmphibiousVehicle(model, seats, speed, wheels, withWindDiraction, flag, avgFuelConsumption, avgMotorLifespan);
 			break;
