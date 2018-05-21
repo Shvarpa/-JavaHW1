@@ -88,8 +88,8 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 	}
 
 	public String toString() {
-		return super.toString() + ", " + ILandVehicle.toString(this) + ", " + ISeaVehicle.toString(this) + ", "
-				+ IAirVehicle.toString(this) + ", " + Motorized.toString(this);
+		return super.toString() + " " + ILandVehicle.toString(this) + " " + ISeaVehicle.toString(this) + " "
+				+ IAirVehicle.toString(this) + " " + Motorized.toString(this);
 	}
 
 	public boolean equals(Object other) {

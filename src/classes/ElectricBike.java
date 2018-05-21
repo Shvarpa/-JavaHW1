@@ -25,5 +25,12 @@ public class ElectricBike extends LandVehicle implements Motorized {
 	public double getAvgMotorLifespan() {
 		return this.avgMotorLifespan;
 	}
-
+	
+	public String toString() {
+		return super.toString() + " " + Motorized.toString(this);
+	}
+	
+	public boolean equals(Object other) {
+		return super.equals(other) && Motorized.equals(this, other);
+	}
 }
