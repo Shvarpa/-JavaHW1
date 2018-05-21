@@ -9,7 +9,7 @@ import interfaces.Motorized;
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{
 	
 	int wheels;	//ILandVehicle interface
-	public final static String defaultRoadType= "constructed";
+	public final static String defaultRoadType= "Constructed";
 	
 	boolean withWindDiraction;//ISeaVehicle interface
 	String flag;
@@ -55,20 +55,4 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 		return super.toString()+ " " +ILandVehicle.toString(this)+ " " + ISeaVehicle.toString(this) + " " + Motorized.toString(this);
 	}
 	
-    public static AmphibiousVehicle inputAmphibiousVehicle() {
-        try {
-            String model = Input.input("model:");
-            int seats= Input.inputInteger("seats:");
-            float speed = Input.inputFloat("speed:");
-            int wheels= Input.inputInteger("Wheels:");
-            boolean withWindDiraction=Input.inputBoolean("with wind diraction?:");
-            String flag = Input.input("flag:");
-            double avgFuelConsumption = Input.inputDouble("average fuel consumption:");
-            double avgMotorLifespan = Input.inputDouble("average motor lifespan:");
-            return new AmphibiousVehicle(model,seats,speed,wheels,withWindDiraction,flag,avgFuelConsumption,avgMotorLifespan);
-        } catch (NumberFormatException e) {
-            System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
-            return null;
-        }
-    }
 }

@@ -20,8 +20,7 @@ public abstract class Drone extends AirVehicle implements NonMotorized {
             this.energyRating = energyRating;
             return true;
         }
-        System.out.println("\n incorrect 'energy Rating' was entered,'a' use set by default.");
-        this.energyRating = "a";
+        System.out.println("\n incorrect 'energy Rating' was entered");
         return false;
     }
 

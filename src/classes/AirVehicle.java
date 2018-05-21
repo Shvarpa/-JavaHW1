@@ -16,8 +16,7 @@ public abstract class AirVehicle extends Vehicle implements IAirVehicle{
             this.vehicleUse = IAirVehicle.possibleVehicleUse.FixCaps(vehicleUse);
             return true;
         }
-        System.out.println("\n incorrect 'use' was entered,'Civilian' use set by default.");
-        this.vehicleUse = "Civilian";
+        System.out.println("\n incorrect 'use' was entered");
         return false;
     }
 

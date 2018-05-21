@@ -6,25 +6,13 @@ import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {
 	
-	public static final String defaultEnergyRating = "a";
+	public static int defaultWheels = 2;
+	public static final String defaultEnergyRating = "A";
 	public static final String defaultEnergySource = "Manual";
 
 	
     public Bike(String model, int seats, float speed, String roadType) {
-        super(model, seats, speed, 2, roadType);
-    }
-
-    public static Bike inputBike() {
-        try {
-            String model = Input.input("model:");
-            int seats = Input.inputInteger("seats:");
-            float speed = Input.inputFloat("speed:");
-            String roadType = Input.input("road type:");
-            return new Bike(model, seats, speed, roadType);
-        } catch (NumberFormatException e) {
-            System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
-            return null;
-        }
+        super(model, seats, speed, Bike.defaultWheels, roadType);
     }
 
     public String getEnergyRating() {

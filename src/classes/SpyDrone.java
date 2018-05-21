@@ -6,16 +6,11 @@ public class SpyDrone extends Drone {
 	
 	public final static String defaultModel="Classified";
 	public final static String defaultVehicleUse="Army";
-	public final static String defaultEnergyRating="c";
+	public final static String defaultEnergyRating="C";
 
-	
 
     public SpyDrone(String energySource) {
         super(SpyDrone.defaultModel, 1, 50, SpyDrone.defaultVehicleUse, energySource, SpyDrone.defaultEnergyRating);
     }
 
-    public static SpyDrone inputSpyDrone() {
-        String enertgySource = Input.input("energy source:");
-        return new SpyDrone(enertgySource);
-    }
 }

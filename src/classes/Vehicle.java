@@ -8,8 +8,6 @@ public abstract class Vehicle{
 	public void setImagePath(String path) {this.imagePath=path;}
 	public String getImagePath() {return imagePath;}
 
-	
-	
     private double totalDistance;
     private String model;
     private int seats;

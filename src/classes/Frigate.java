@@ -4,46 +4,21 @@ package classes;
 
 import interfaces.Motorized;
 
-public class Frigate extends SeaVehicle implements Motorized {
-    private double avgFuelConsumption; //Motorized Interface
-    private double avgMotorLifespan;
-    
+public class Frigate extends SeaVehicle implements Motorized {   
 	public final static String defaultFlag="Israel";
-
+	public final static double defaultAvgFuelConsumption=500;
+	public final static double defaultAvgMotorLifespan=4;
     
     public Frigate(String model, int seats, float speed, boolean withWindDiraction) {
         super(model, seats, speed, withWindDiraction, Frigate.defaultFlag);
-        setAvgFuelConsumption(500);
-        setAvgMotorLifespan(4);
-    }
-
-    public static Frigate inputFrigate() {
-        try {
-            String model = Input.input("model:");
-            int seats = Input.inputInteger("seats:");
-            float speed = Input.inputFloat("speed:");
-            boolean withWindDiraction = Input.inputBoolean("with wind diraction?:");
-            return new Frigate(model, seats, speed, withWindDiraction);
-        } catch (NumberFormatException e) {
-            System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
-            return null;
-        }
     }
 
     public double getAvgFuelConsumption() {
-        return this.avgFuelConsumption;
-    }
-
-    private void setAvgFuelConsumption(double avgFuelConsumption) {
-        this.avgFuelConsumption = avgFuelConsumption;
+        return Frigate.defaultAvgFuelConsumption;
     }
 
     public double getAvgMotorLifespan() {
-        return avgMotorLifespan;
-    }
-
-    private void setAvgMotorLifespan(double avgMotorLifespan) {
-        this.avgMotorLifespan = avgMotorLifespan;
+        return Frigate.defaultAvgMotorLifespan;
     }
 
     public String toString() {

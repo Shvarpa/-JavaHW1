@@ -3,7 +3,6 @@
 package classes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import interfaces.IAirVehicle;
@@ -11,73 +10,10 @@ import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
 
 public class Database {
-	static final StringRange possibleVehicleTypes = new StringRange(
-			Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone"));
-
 	private List<Vehicle> vehicleDatabase;
 	private List<ISeaVehicle> seaVehicleDatabase;
 	private List<IAirVehicle> airVehicleDatabase;
 	private List<ILandVehicle> landVehicleDatabase;
-
-	private void printDatabase() {
-		for (int i = 0; i < vehicleDatabase.size(); i++) {
-			System.out.println("index:" + i + ", " + (vehicleDatabase.get(i)).toString());
-		}
-	}
-
-	public boolean selectOption() {
-		if (!vehicleDatabase.isEmpty()) {
-			printDatabase();
-		}
-		System.out.println("\n Select form the following options:" + 
-		"1)addvehicle\n" + 
-		"2)buy vehicle\n" + 
-		"3)take a vehicle for a test-drive\n" + 
-		"4)reset all vehicle distances\n" + 
-		"5)change flags\n" + 
-		"6)exit\n\n");
-		int option = Input.in.nextInt();
-		switch (option) {
-		case 1:
-			this.addVehicle();
-			break;
-		case 2:
-			this.buyVehicle();
-			break;
-		case 3:
-			testDriveVehicle();
-			break;
-		case 4:
-			resetDistances();
-			break;
-		case 5:
-			changeFlags();
-			break;
-		case 6:
-			return false;
-		}
-		return true;
-	}
-
-
-	private Vehicle inputVehicle() {
-		String type;
-		type = Input.input("what is the vehicle's type?");
-		type = possibleVehicleTypes.FixCaps(type);
-		switch (type) {
-		case "Jeep":
-			return Jeep.inputJeep();
-		case "Frigate":
-			return Frigate.inputFrigate();
-		case "SpyDrone":
-			return SpyDrone.inputSpyDrone();
-		case "PlayDrone":
-			return PlayDrone.inputPlayDrone();
-		default:
-			System.out.println("this type is undefined. (" + possibleVehicleTypes.toString() + ")");
-			return null;
-		}
-	}
 
 	private boolean isEmpty() {
 		if (vehicleDatabase.isEmpty()) {
@@ -91,10 +27,6 @@ public class Database {
 		return !seaVehicleDatabase.isEmpty();
 	}
 	
-	public boolean addVehicle() {
-		Vehicle currVehicle = inputVehicle();
-		return addVehicle(currVehicle);
-	}
 	
 	public boolean addVehicle(Vehicle currVehicle) {
 		if (currVehicle != null) {
@@ -129,15 +61,6 @@ public class Database {
 		return false;
 	}
 
-	private boolean buyVehicle() {
-		if (!isEmpty()) {
-			Vehicle currVehicle = inputVehicle();
-			buyVehicle(currVehicle);
-		}
-		System.out.println("no vehicle to buy, returning");
-		return false;
-	}
-
 	public boolean testDriveVehicle(Vehicle currVehicle, double distance) {
 		if (vehicleDatabase.contains(currVehicle)) {
 			vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
@@ -163,16 +86,6 @@ public class Database {
 		return false;
 	}
 
-	private boolean testDriveVehicle() {
-		if (!isEmpty()) {
-			Vehicle currVehicle = inputVehicle();
-			return testDriveVehicle(currVehicle);
-		}
-		System.out.println("no vehicles to test ride, returning");
-		return false;
-	}
-	
-
 	public boolean resetDistances() {
 		if (isEmpty()) {
 			System.out.println("no vehicles to reset distance, returning");
@@ -197,14 +110,6 @@ public class Database {
 		return true;
 	}
 
-	private boolean changeFlags() {
-		if (seaVehicleDatabase.isEmpty()) {
-			System.out.println("no vehicles to change flags, returning");
-			return false;
-		}
-		String flag = Input.input("enter flag name:");
-		return changeFlags(flag);
-	}
 
 	public Database() {
 		vehicleDatabase = new ArrayList<>();
