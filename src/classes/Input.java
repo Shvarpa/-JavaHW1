@@ -54,13 +54,15 @@ public class Input {
 	}
 
 	public static boolean parseBoolean(String target, String input) {
-		if ("true".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input) || "1".equalsIgnoreCase(input)|| "on".equalsIgnoreCase(input) || "y".equalsIgnoreCase(input)) {
+		if ("true".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input) || "1".equalsIgnoreCase(input)
+				|| "on".equalsIgnoreCase(input) || "y".equalsIgnoreCase(input)) {
 			return true;
-		} else if ("false".equalsIgnoreCase(input) || "no".equalsIgnoreCase(input) || "0".equalsIgnoreCase(input)|| "off".equalsIgnoreCase(input) || "n".equalsIgnoreCase(input)) {
+		} else if ("false".equalsIgnoreCase(input) || "no".equalsIgnoreCase(input) || "0".equalsIgnoreCase(input)
+				|| "off".equalsIgnoreCase(input) || "n".equalsIgnoreCase(input)) {
 			return false;
+		} else {
+			throw new NumberFormatException(target + " must be Boolean (y/n)");
 		}
-		throw new NumberFormatException(target + " must be Boolean (y/n)");
-
 	}
 
 	public static void parsePositive(String target, double input) {

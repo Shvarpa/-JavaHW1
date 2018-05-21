@@ -1,0 +1,99 @@
+package classes;
+
+import interfaces.IAirVehicle;
+import interfaces.ILandVehicle;
+import interfaces.ISeaVehicle;
+import interfaces.Motorized;
+
+public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, IAirVehicle, Motorized {
+
+	static String vehicleUse = "Army";
+	static String roadType = "Constructed";
+
+	private int wheels;
+	private boolean withWindDiraction;
+	private String flag;
+	private double avgFuelConsumption;
+	private double avgMotorLifespan;
+
+	protected HybridPlane(String model, int seats, float speed, int wheels, boolean withWindDiraction, String flag,
+			double avgFuelConsumption, double avgMotorLifespan) {
+		super(model, seats, speed);
+		setWheels(wheels);
+		setWithWindDiraction(withWindDiraction);
+		setFlag(flag);
+		setAvgFuelConsumption(avgFuelConsumption);
+		SetAvgMotorLifespan(avgMotorLifespan);
+	}
+
+	private void setWithWindDiraction(boolean withWindDiraction) {
+		this.withWindDiraction = withWindDiraction;
+	}
+
+	private void SetAvgMotorLifespan(double avgMotorLifespan) {
+		this.avgMotorLifespan = avgMotorLifespan;
+	}
+
+	private void setAvgFuelConsumption(double avgFuelConsumption) {
+		this.avgFuelConsumption = avgFuelConsumption;
+	}
+
+	private void setWheels(int wheels) {
+		this.wheels = wheels;
+	}
+
+	// ILandVehicle
+	@Override
+	public int getWheels() {
+		return this.wheels;
+	}
+
+	@Override
+	public String getRoadType() {
+		return HybridPlane.roadType;
+	}
+
+	// ISeaVehicle
+	@Override
+	public boolean getWithWindDiraction() {
+		return this.withWindDiraction;
+	}
+
+	@Override
+	public String getFlag() {
+		return this.flag;
+	}
+
+	@Override
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+	// IAirVehicle
+	@Override
+	public String getVehicleUse() {
+		return HybridPlane.vehicleUse;
+	}
+
+	// Motorized
+	@Override
+	public double getAvgFuelConsumption() {
+		return this.avgFuelConsumption;
+	}
+
+	@Override
+	public double getAvgMotorLifespan() {
+		return this.avgMotorLifespan;
+
+	}
+
+	public String toString() {
+		return super.toString() + ", " + ILandVehicle.toString(this) + ", " + ISeaVehicle.toString(this) + ", "
+				+ IAirVehicle.toString(this) + ", " + Motorized.toString(this);
+	}
+
+	public boolean equals(Object other) {
+		return super.equals(other) && ILandVehicle.equals(this, other) && ISeaVehicle.equals(this, other)
+				&& IAirVehicle.equals(this, other) && Motorized.equals(this, other);
+	}
+}
