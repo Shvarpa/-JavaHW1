@@ -20,7 +20,7 @@ import gui.Images.ImageOpener;
 
 public class AddVehicleImages extends JPanel {
 
-	private String selectedImagePath, filePath;
+	private String imagesPath, filePath;
 	private JComboBox<ImageText> imagesCombo;
 	private JRadioButton imagesRadio,fileRadio;
 	private JPanel imagesPanel = new JPanel();
@@ -31,7 +31,11 @@ public class AddVehicleImages extends JPanel {
 			imagesCombo = ComboBoxesCreator.createTypesComboBox(type, "jpg", 3, new Dimension(80, 60));
 			imagesPanel.add(imagesCombo);
 			imagesPanel.revalidate();
-			selectedImagePath = imagesCombo.getSelectedItem().toString();
+			imagesCombo.addActionListener((event)->{
+				imagesPath = imagesCombo.getSelectedItem().toString();
+			});
+			imagesRadio.setSelected(true);
+			imagesPath = imagesCombo.getSelectedItem().toString();
 		}
 	}
 	
@@ -45,6 +49,7 @@ public class AddVehicleImages extends JPanel {
 		group.add(imagesRadio);
 		group.add(fileRadio);
 		
+		show(type);
 		JButton fileButton = new JButton("Browse");
 
 		JFileChooser browser = new JFileChooser();
@@ -53,14 +58,7 @@ public class AddVehicleImages extends JPanel {
 		browser.addChoosableFileFilter(new FileNameExtensionFilter("image", "jpg","png","gif"));
 		browser.setAcceptAllFileFilterUsed(false);
 		
-		imagesRadio.addActionListener((event)->{
-			selectedImagePath = imagesCombo.getSelectedItem().toString();
-		});
-		imagesRadio.setSelected(true);
-		fileRadio.addActionListener((event)->{
-			selectedImagePath = filePath;
-		});
-
+		
 		fileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (browser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -112,12 +110,12 @@ public class AddVehicleImages extends JPanel {
 		gbc.gridwidth = 3;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		add(fileButton,gbc);
-		
-		show(type);
 	}
 	
 	
 	public String getSelectedImage() {
-		return selectedImagePath;
+		if(imagesRadio.isSelected())	return imagesPath;
+		else if(fileRadio.isSelected()) return filePath;
+		else return null;
 	}
 }
