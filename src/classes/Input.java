@@ -65,9 +65,10 @@ public class Input {
 		}
 	}
 
-	public static void parsePositive(String target, double input) {
+	public static double parsePositive(String target, double input) {
 		if (input < 0)
 			throw new NumberFormatException(target + " must be positive");
+		return input;
 	}
 
 }

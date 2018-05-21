@@ -7,8 +7,8 @@ import interfaces.Motorized;
 
 public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, IAirVehicle, Motorized {
 
-	static String vehicleUse = "Army";
-	static String roadType = "Constructed";
+	public static String defaultVehicleUse = "Army";
+	public static String defaultRoadType = "Constructed";
 
 	private int wheels;
 	private boolean withWindDiraction;
@@ -16,7 +16,7 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 	private double avgFuelConsumption;
 	private double avgMotorLifespan;
 
-	protected HybridPlane(String model, int seats, float speed, int wheels, boolean withWindDiraction, String flag,
+	public HybridPlane(String model, int seats, float speed, int wheels, boolean withWindDiraction, String flag,
 			double avgFuelConsumption, double avgMotorLifespan) {
 		super(model, seats, speed);
 		setWheels(wheels);
@@ -50,7 +50,7 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 
 	@Override
 	public String getRoadType() {
-		return HybridPlane.roadType;
+		return HybridPlane.defaultVehicleUse;
 	}
 
 	// ISeaVehicle
@@ -72,7 +72,7 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 	// IAirVehicle
 	@Override
 	public String getVehicleUse() {
-		return HybridPlane.vehicleUse;
+		return HybridPlane.defaultRoadType;
 	}
 
 	// Motorized

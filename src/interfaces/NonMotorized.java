@@ -7,7 +7,7 @@ import java.util.Arrays;
 import classes.StringRange;
 
 public interface NonMotorized {
-	static StringRange possibleEnergyRating=new StringRange(Arrays.asList("a","b","c"));
+	static StringRange possibleEnergyRating=new StringRange(Arrays.asList("A","B","C"));
 		
 	static boolean checkEnergyRatingInput(String energyRating) {
 		return NonMotorized.possibleEnergyRating.containsIgnoreCaps(energyRating);

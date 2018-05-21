@@ -6,7 +6,7 @@ import classes.StringRange;
 
 public interface ILandVehicle {
 	
-	public static StringRange possibleRoadType = new StringRange(Arrays.asList("dirt", "constructed"));
+	public static StringRange possibleRoadType = new StringRange(Arrays.asList("Dirt", "Constructed"));
 
 	public static boolean checkRoadTypeInput(String roadType) {
         return ILandVehicle.possibleRoadType.containsIgnoreCaps(roadType);

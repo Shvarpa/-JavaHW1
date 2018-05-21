@@ -9,7 +9,7 @@ public class ElectricBike extends LandVehicle implements Motorized {
 	
 	private double avgMotorLifespan;
 	
-	protected ElectricBike(String model, int seats, float speed, String roadType, double avgMotorLifespan) {
+	public ElectricBike(String model, int seats, float speed, String roadType, double avgMotorLifespan) {
 		super(model, seats, speed, ElectricBike.defaultWheels, roadType);
 		setAvgMotorLifespan(avgMotorLifespan);
 	}

@@ -3,24 +3,27 @@
 package gui;
 
 import java.awt.Dimension;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import interfaces.ISeaVehicle;
 
 public class ComboBoxesCreator {
-
+	
+	public static List<String> vehicleTypes = Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike", "CruiseShip",
+			"HybridPlane", "ElectricBike");
+	
 	/// Vehicles
 	private static DefaultComboBoxModel<ImageText> populateVehicles(Dimension imageSize) {
 		DefaultComboBoxModel<ImageText> model = new DefaultComboBoxModel<ImageText>();
 
 		// empty selection addition:
 		model.addElement(new ImageText());
-
-		String[] vehicles = { "Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike", "CruiseShip",
-				"HybridPlane", "ElectricBike" };
 		String basePath = "Icons\\";
 
-		for (String type : vehicles) {
+		for (String type : vehicleTypes) {
 			ImageText curr = new ImageText(basePath + type + ".png", type, imageSize);
 			model.addElement(curr);
 		}
@@ -79,39 +82,39 @@ public class ComboBoxesCreator {
 		return combo;
 	}
 
-	public static JComboBox<ImageText> createJeepsComboBox(Dimension d) {
-		return createTypesComboBox("Jeep", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createFrigatesComboBox(Dimension d) {
-		return createTypesComboBox("Frigate", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createSpyDronesComboBox(Dimension d) {
-		return createTypesComboBox("SpyDrone", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createPlayDronesComboBox(Dimension d) {
-		return createTypesComboBox("PlayDrone", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createAmphibiousVehiclesComboBox(Dimension d) {
-		return createTypesComboBox("AmphibiousVehicle", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createBikesComboBox(Dimension d) {
-		return createTypesComboBox("Bike", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createCruiseShipsComboBox(Dimension d) {
-		return createTypesComboBox("CruiseShip", "jpg", 3, d);
-	}
-	
-	public static JComboBox<ImageText> createHybridPlaneComboBox(Dimension d) {
-		return createTypesComboBox("HybridPlane", "jpg", 3, d);
-	}
-
-	public static JComboBox<ImageText> createElectricBikeComboBox(Dimension d) {
-		return createTypesComboBox("ElectricBike", "jpg", 3, d);
-	}
+//	public static JComboBox<ImageText> createJeepsComboBox(Dimension d) {
+//		return createTypesComboBox("Jeep", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createFrigatesComboBox(Dimension d) {
+//		return createTypesComboBox("Frigate", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createSpyDronesComboBox(Dimension d) {
+//		return createTypesComboBox("SpyDrone", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createPlayDronesComboBox(Dimension d) {
+//		return createTypesComboBox("PlayDrone", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createAmphibiousVehiclesComboBox(Dimension d) {
+//		return createTypesComboBox("AmphibiousVehicle", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createBikesComboBox(Dimension d) {
+//		return createTypesComboBox("Bike", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createCruiseShipsComboBox(Dimension d) {
+//		return createTypesComboBox("CruiseShip", "jpg", 3, d);
+//	}
+//	
+//	public static JComboBox<ImageText> createHybridPlaneComboBox(Dimension d) {
+//		return createTypesComboBox("HybridPlane", "jpg", 3, d);
+//	}
+//
+//	public static JComboBox<ImageText> createElectricBikeComboBox(Dimension d) {
+//		return createTypesComboBox("ElectricBike", "jpg", 3, d);
+//	}
 }
