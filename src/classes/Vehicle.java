@@ -78,7 +78,7 @@ public abstract class Vehicle{
 
     public boolean equals(Object other) {
         if (other instanceof Vehicle) {
-            return this.model.equals(((Vehicle) other).getModel()) && this.totalDistance == ((Vehicle) other).getTotalDistance() && this.seats == ((Vehicle) other).getSeats() && this.speed == ((Vehicle) other).getSpeed();
+            return this.model.equals(((Vehicle) other).getModel()) && this.totalDistance == ((Vehicle) other).getTotalDistance() && this.seats == ((Vehicle) other).getSeats() && this.speed == ((Vehicle) other).getSpeed() && this.imagePath.equals(((Vehicle)other).imagePath);
         }
         return false;
     }
