@@ -13,7 +13,7 @@ public class App {
 		d.setLocationRelativeTo(null);
 		d.setVisible(true);
 	}
-	
+		
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

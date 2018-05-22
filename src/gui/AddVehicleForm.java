@@ -54,7 +54,7 @@ public class AddVehicleForm extends JPanel {
 			new JComboBox<String>(NonMotorized.possibleEnergyRating.toStringArray()));
 	
 	private Pair<JLabel, JComboBox<ImageText>> flag = new Pair<JLabel, JComboBox<ImageText>>(new JLabel("flag"),
-			ComboBoxesCreator.createFlagsComboBox(new Dimension(70, 50)));
+			Utilities.createFlagsComboBox(new Dimension(70, 50)));
 
 	private List<Pair<JLabel,?>> shown = new ArrayList<Pair<JLabel,?>>();
 	private String vehicleType;

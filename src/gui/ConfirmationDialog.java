@@ -4,6 +4,10 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -17,11 +21,12 @@ public class ConfirmationDialog extends JDialog{
 	JButton okButton;
 	
 	public ConfirmationDialog(String text) {
-		
-		contentPanel.setLayout(new BorderLayout());
+		setResizable(false);
+		contentPanel.setLayout(new GridBagLayout());
 		textLabel=new JLabel(text);
 		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPanel.add(textLabel,BorderLayout.CENTER);
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 25, 25);
+		contentPanel.add(textLabel,gbc);
 		
 		getContentPane().setLayout(new BorderLayout(100,0));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

@@ -60,7 +60,7 @@ public class AddVehicle extends JDialog {
 		///////////////////////////////////////////////// selectPanel/////////////
 		// Create combo box with vehicles types choices.
 		selectPanel = new JPanel();
-		typesChoice = ComboBoxesCreator.createVehiclesComboBox(new Dimension(60, 60));
+		typesChoice = Utilities.createVehiclesComboBox(new Dimension(60, 60));
 		typesChoice.setSelectedIndex(1);
 		// Add border around the select panel.
 		selectPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Select vehicles"),

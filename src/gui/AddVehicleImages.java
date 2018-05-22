@@ -27,9 +27,9 @@ public class AddVehicleImages extends JPanel {
 	private JPanel imagesPanel = new JPanel(new GridLayout(1,1));
 	
 	public void show(String type) {
-		if (ComboBoxesCreator.vehicleTypes.contains(type)) {
+		if (Utilities.vehicleTypes.contains(type)) {
 			if(imagesCombo != null) imagesPanel.remove(imagesCombo);
-			imagesCombo = ComboBoxesCreator.createTypesComboBox(type, "jpg", 3, new Dimension(80, 60));
+			imagesCombo = Utilities.createTypesComboBox(type, "jpg", 3, new Dimension(80, 60));
 			imagesPanel.add(imagesCombo);
 			imagesPanel.revalidate();
 			imagesCombo.addActionListener((event)->{

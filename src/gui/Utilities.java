@@ -8,9 +8,11 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.SwingWorker;
+
 import interfaces.ISeaVehicle;
 
-public class ComboBoxesCreator {
+public class Utilities {
 	
 	public static List<String> vehicleTypes = Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike", "CruiseShip",
 			"HybridPlane", "ElectricBike");
@@ -117,4 +119,34 @@ public class ComboBoxesCreator {
 //	public static JComboBox<ImageText> createElectricBikeComboBox(Dimension d) {
 //		return createTypesComboBox("ElectricBike", "jpg", 3, d);
 //	}
+	
+	public static void invokeAfter(long millis, Runnable code) {
+		new SwingWorker<Object, Object>() {
+			@Override
+			protected Object doInBackground() throws Exception {
+				Thread.sleep(millis);
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				code.run();
+			}
+		}.execute();
+	}
+
+	public static void invokeInBackground(Runnable background, Runnable after) {
+		new SwingWorker<Object, Object>() {
+			@Override
+			protected Object doInBackground() throws Exception {
+				background.run();
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				after.run();
+			}
+		}.execute();
+	}
 }

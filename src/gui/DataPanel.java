@@ -15,20 +15,17 @@ import classes.Vehicle;
 public class DataPanel extends JScrollPane implements ActionListener {
 
 	private WrapLayout layout = new WrapLayout(WrapLayout.LEFT, 15, 10);
+	private DBConnect db = DBConnect.getConnection();
+	private List<VehicleSelectButton> vehicleSelectButtons = new ArrayList<VehicleSelectButton>();
+	private ButtonGroup group = new ButtonGroup();
+	private JPanel content = new JPanel();
 
 	static Dimension preferedImageSize = new Dimension(50, 50);
-
 	public static void setPreferedImageSize(Dimension size) {
 		DataPanel.preferedImageSize = size;
 	}
-
-	private DBConnect db = DBConnect.getConnection();
-
-	List<VehicleSelectButton> vehicleSelectButtons = new ArrayList<VehicleSelectButton>();
-	ButtonGroup group = new ButtonGroup();
-
-	JPanel content = new JPanel();
-
+	
+	
 	public void refresh() {
 		for (VehicleSelectButton vS : vehicleSelectButtons) {
 			vS.removeActionListener(this);
@@ -59,12 +56,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 	}
 
 	public boolean isSelected() {
-		for (VehicleSelectButton vS : vehicleSelectButtons) {
-			if (vS.isSelected()) {
-				return true;
-			}
-		}
-		return false;
+		return (group.getSelection() != null);
 	}
 	
 	private boolean hasSeaVehicles() {

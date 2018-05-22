@@ -33,7 +33,7 @@ public class ChangeFlags extends JDialog {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		JComboBox<ImageText> combo = ComboBoxesCreator.createFlagsComboBox(preferdFlagsSize);
+		JComboBox<ImageText> combo = Utilities.createFlagsComboBox(preferdFlagsSize);
 		JButton okButton = new JButton("OK");
 		JButton cancelButton = new JButton("Cancel");
 
