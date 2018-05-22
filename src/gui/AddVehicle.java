@@ -109,6 +109,7 @@ public class AddVehicle extends JFrame {
 			catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
 				statusLabel.setText(e.getMessage());
+				pack();
 				return;
 			}
 			if (curr==null) return;

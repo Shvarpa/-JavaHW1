@@ -33,6 +33,7 @@ public class AddVehicleImages extends JPanel {
 			imagesPanel.add(imagesCombo);
 			imagesPanel.revalidate();
 			imagesCombo.addActionListener((event)->{
+				imagesRadio.setSelected(true);
 				imagesPath = imagesCombo.getSelectedItem().toString();
 			});
 			imagesRadio.setSelected(true);
@@ -67,6 +68,7 @@ public class AddVehicleImages extends JPanel {
 					uploadedPictureFile = browser.getSelectedFile();
 					if (uploadedPictureFile != null) // user actually chose a file
 					{
+						fileRadio.setSelected(true);
 						filePath = uploadedPictureFile.getAbsolutePath();
 						ImageIcon fileImage = ImageOpener.scaleImg(ImageOpener.createImageIcon(filePath), new Dimension(80, 60));
 						fileButton.setIcon(fileImage);
