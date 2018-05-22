@@ -32,12 +32,14 @@ public class VehicleSelectButton extends JRadioButton {
 	
 	private void setVehicle(Vehicle v) {
 		vehicle=v;
+		setToolTipText(vehicle.toString());
 	}
 	
 	
 	private void setImage(ImageIcon img) {
 		if(img!=null) {
 			setIcon(img);
+			setBorderPainted(true);
 		}
 		else {
 			setText(vehicle.getModel());

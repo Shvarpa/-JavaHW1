@@ -6,8 +6,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -129,6 +131,16 @@ public class MainFrame extends JFrame {
 			} else {
 				changeFlagsButton.setEnabled(false);
 			}
+		});
+		dataPanel.addMouseListener(new MouseListener() {		
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				if (event.getClickCount() == 2 && event.getButton() == MouseEvent.BUTTON1) {
+					System.err.println("wow");
+				}
+			}
+			@Override // unimplemented
+			public void mouseEntered(MouseEvent arg0) {} public void mouseExited(MouseEvent arg0) {} public void mousePressed(MouseEvent arg0) {} public void mouseReleased(MouseEvent arg0) {}
 		});
 
 		contentPanel.add(dataPanel, BorderLayout.CENTER);

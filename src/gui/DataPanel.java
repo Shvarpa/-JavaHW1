@@ -38,7 +38,6 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		vehicleSelectButtons.clear();
 		for (Vehicle v : db.getVehicles()) {
 			VehicleSelectButton vS = new VehicleSelectButton(v, DataPanel.preferedImageSize);
-			vS.setToolTipText(vS.getVehicle().toString());
 			vS.addActionListener(this);
 			vehicleSelectButtons.add(vS);
 		}
