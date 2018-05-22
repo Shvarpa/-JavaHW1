@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class ConfirmationDialog extends JDialog{
-
+		
 	private final JPanel contentPanel = new JPanel();
 	private JLabel textLabel;
 	JButton okButton;

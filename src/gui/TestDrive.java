@@ -89,9 +89,6 @@ public class TestDrive extends JDialog {
 					SwingUtilities.invokeLater(() -> {
 						ConfirmationDialog confirmation = new ConfirmationDialog(
 								"  the vehicle was taken for a test drive of " + distance + "km succesfully!  ");
-						confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-						confirmation.setVisible(true);
-						confirmation.setLocationRelativeTo(null);
 						confirmation.addWindowListener(new WindowListener() {
 
 							@Override
@@ -135,6 +132,7 @@ public class TestDrive extends JDialog {
 
 							}
 						});
+						App.showDialog(confirmation);
 					});
 				}
 			});

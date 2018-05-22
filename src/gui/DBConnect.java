@@ -16,36 +16,36 @@ public class DBConnect extends JComponent {
 		db = new Database();
 	}
 
-	public synchronized void addVehicle(Vehicle v) {
+	public void addVehicle(Vehicle v) {
 		db.addVehicle(v);
 		firePropertyChange("addVehicle", null, v);
 	}
 
-	public synchronized void buyVehicle(Vehicle v) {
+	public void buyVehicle(Vehicle v) {
 		db.buyVehicle(v);
 		firePropertyChange("buyVehicle", v, null);
 	}
 
-	public synchronized void testDriveVehicle(Vehicle v, double d) {
+	public void testDriveVehicle(Vehicle v, double d) {
 		db.testDriveVehicle(v, d);
 		firePropertyChange("testDriveVehicle", null, d);
 	}
 
-	public synchronized void resetDistances() {
+	public void resetDistances() {
 		db.resetDistances();
 		firePropertyChange("resetDistances", null, null);
 	}
 
-	public synchronized void changeFlags(String flag) {
+	public void changeFlags(String flag) {
 		db.changeFlags(flag);
 		firePropertyChange("changeFlags", null, flag);
 	}
 
-	public synchronized List<Vehicle> getVehicles() {
+	public List<Vehicle> getVehicles() {
 		return db.getVehicles();
 	}
 
-	public synchronized boolean hasSeaVehicles() {
+	public boolean hasSeaVehicles() {
 		return db.hasSeaVehicles();
 	}
 

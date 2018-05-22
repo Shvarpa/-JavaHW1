@@ -16,6 +16,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,7 +39,7 @@ import gui.Images.ImageOpener;
 import interfaces.Commercial;
 import interfaces.ILandVehicle;
 
-public class AddVehicle extends JFrame {
+public class AddVehicle extends JDialog {
 	JComboBox<ImageText> typesChoice;
 	JPanel mainPanel, selectPanel, buttonPanel , statusPanel;
 	JScrollPane fieldPanel;

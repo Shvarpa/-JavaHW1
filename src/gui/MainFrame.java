@@ -66,12 +66,7 @@ public class MainFrame extends JFrame {
 
 		// actions
 		addVehicleButton.addActionListener((event) -> {
-			SwingUtilities.invokeLater(() -> {
-				AddVehicle addVehicleWindow = new AddVehicle();
-				addVehicleWindow.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				addVehicleWindow.setLocationRelativeTo(null);
-				addVehicleWindow.setVisible(true);
-			});
+			SwingUtilities.invokeLater(() -> {App.showDialog(new AddVehicle());});
 		});
 
 		buyVehicleButton.addActionListener((event) -> {
@@ -80,12 +75,7 @@ public class MainFrame extends JFrame {
 				return;
 			vS.setSelected(false);
 			db.buyVehicle(vS.getVehicle());
-			SwingUtilities.invokeLater(() -> {
-				ConfirmationDialog confirmation = new ConfirmationDialog("The vehicle bought succesfully!");
-				confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				confirmation.setLocationRelativeTo(null);
-				confirmation.setVisible(true);
-			});
+			SwingUtilities.invokeLater(() -> {App.showDialog(new ConfirmationDialog("The vehicle bought succesfully!"));});
 		});
 
 		testDriveButton.addActionListener(new ActionListener() {
@@ -95,31 +85,20 @@ public class MainFrame extends JFrame {
 				Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
 				if (currVehicle == null)
 					return;
-				SwingUtilities.invokeLater(() -> {
-					testDriveWindow = new TestDrive(currVehicle);
-					testDriveWindow.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					testDriveWindow.setVisible(true);
-					testDriveWindow.setLocationRelativeTo(null);
-				});
+				SwingUtilities.invokeLater(() -> {App.showDialog(new TestDrive(currVehicle));});
 			}
 		});
 
 		resetDistancesButton.addActionListener((event) -> {
 			db.resetDistances();
 			SwingUtilities.invokeLater(() -> {
-				ConfirmationDialog confirmation = new ConfirmationDialog("all vehicles distances were reset!");
-				confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				confirmation.setLocationRelativeTo(null);
-				confirmation.setVisible(true);
+				App.showDialog(new ConfirmationDialog("all vehicles distances were reset!"));
 			});
 		});
 		
 		changeFlagsButton.addActionListener((event)->{
 			SwingUtilities.invokeLater(()->{
-				ChangeFlags changeFlagsWindow = new ChangeFlags();
-				changeFlagsWindow.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				changeFlagsWindow.setLocationRelativeTo(null);
-				changeFlagsWindow.setVisible(true);
+				App.showDialog(new ChangeFlags());
 			});
 		});
 
