@@ -50,7 +50,7 @@ public class AddVehicleForm extends JPanel {
 			new JComboBox<String>(ILandVehicle.possibleRoadType.toStringArray()));
 	private Pair<JLabel, JComboBox<String>> licence = new Pair<JLabel, JComboBox<String>>(new JLabel("licence"),
 			new JComboBox<String>(Commercial.possibleLicences.toStringArray()));
-	private Pair<JLabel, JComboBox<String>> energyRating = new Pair<JLabel, JComboBox<String>>(new JLabel("energyRating"),
+	private Pair<JLabel, JComboBox<String>> energyRating = new Pair<JLabel, JComboBox<String>>(new JLabel("energy rating"),
 			new JComboBox<String>(NonMotorized.possibleEnergyRating.toStringArray()));
 	
 	private Pair<JLabel, JComboBox<ImageText>> flag = new Pair<JLabel, JComboBox<ImageText>>(new JLabel("flag"),
@@ -126,28 +126,32 @@ public class AddVehicleForm extends JPanel {
 		clear();
 		switch (this.vehicleType) {
 			case "Jeep":
-				roadType.getValue().setSelectedItem(Jeep.defaultRoadType);
-				roadType.getValue().setEnabled(false);
-				licence.getValue().setSelectedItem(Jeep.defaultLicence);
-				licence.getValue().setEnabled(false);
 				seats.getValue().setText(Integer.toString(Jeep.defaultSeats));
 				seats.getValue().setEnabled(false);
 				wheels.getValue().setText(Integer.toString(Jeep.defaultWheels));
 				wheels.getValue().setEnabled(false);
+				roadType.getValue().setSelectedItem(Jeep.defaultRoadType);
+				roadType.getValue().setEnabled(false);
+				licence.getValue().setSelectedItem(Jeep.defaultLicence);
+				licence.getValue().setEnabled(false);
 				show(Arrays.asList(model,seats,speed,wheels,roadType,avgFuelConsumption,avgMotorLifespan,licence));
 				break;
 			case "Frigate":
-				flag.getValue().setSelectedItem(Frigate.defaultFlag);
-				flag.getValue().setEnabled(false);
 				avgFuelConsumption.getValue().setText(Double.toString(Frigate.defaultAvgFuelConsumption));
 				avgFuelConsumption.getValue().setEnabled(false);
 				avgMotorLifespan.getValue().setText(Double.toString(Frigate.defaultAvgMotorLifespan));
 				avgMotorLifespan.getValue().setEnabled(false);
+				flag.getValue().setSelectedItem(Frigate.defaultFlag);
+				flag.getValue().setEnabled(false);
 				show(Arrays.asList(model,seats,speed,withWindDiraction,avgFuelConsumption,avgMotorLifespan,flag));	
 				break;
 			case "SpyDrone":
 				model.getValue().setText(SpyDrone.defaultModel);
 				model.getValue().setEnabled(false);
+				seats.getValue().setText(Integer.toString(SpyDrone.defaultSeats));
+				seats.getValue().setEnabled(false);
+				speed.getValue().setText(Float.toString(SpyDrone.defaultSpeed));
+				speed.getValue().setEnabled(false);
 				vehicleUse.getValue().setSelectedItem(SpyDrone.defaultVehicleUse);
 				vehicleUse.getValue().setEnabled(false);
 				energyRating.getValue().setSelectedItem(SpyDrone.defaultEnergyRating);
@@ -157,8 +161,14 @@ public class AddVehicleForm extends JPanel {
 			case "PlayDrone":
 				model.getValue().setText(PlayDrone.defaultModel);
 				model.getValue().setEnabled(false);
+				seats.getValue().setText(Integer.toString(PlayDrone.defaultSeats));
+				seats.getValue().setEnabled(false);
+				speed.getValue().setText(Float.toString(PlayDrone.defaultSpeed));
+				speed.getValue().setEnabled(false);
 				vehicleUse.getValue().setSelectedItem(PlayDrone.defaultVehicleUse);
 				vehicleUse.getValue().setEnabled(false);
+				energySource.getValue().setText(PlayDrone.defaultEnergySource);
+				energySource.getValue().setEnabled(false);
 				energyRating.getValue().setSelectedItem(PlayDrone.defaultEnergyRating);
 				energyRating.getValue().setEnabled(false);
 				show(Arrays.asList(model,seats,speed,vehicleUse,energySource,energyRating));	
@@ -166,7 +176,7 @@ public class AddVehicleForm extends JPanel {
 			case "AmphibiousVehicle":
 				roadType.getValue().setSelectedItem(AmphibiousVehicle.defaultRoadType);
 				roadType.getValue().setEnabled(false);
-				show(Arrays.asList(model,seats,speed,wheels,roadType,avgFuelConsumption,avgMotorLifespan,licence,withWindDiraction,flag));
+				show(Arrays.asList(model,seats,speed,wheels,roadType,avgFuelConsumption,avgMotorLifespan,withWindDiraction,flag));
 				break;
 			case "Bike":
 				wheels.getValue().setText(Integer.toString(Bike.defaultWheels));
@@ -201,6 +211,30 @@ public class AddVehicleForm extends JPanel {
 		}
 		revalidate();
 	}
+	
+	public Vehicle createVehicle() throws NumberFormatException{
+		switch (this.vehicleType) {
+		case "Jeep":
+			return new Jeep(getString(model), getFloat(speed), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
+		case "Frigate":
+			return new Frigate(getString(model), getInt(seats), getFloat(speed), getBoolean(withWindDiraction));
+		case "SpyDrone":
+			return new SpyDrone(getString(energySource));
+		case "PlayDrone":
+			return new PlayDrone();
+		case "AmphibiousVehicle":
+			return new AmphibiousVehicle(getString(model), getInt(seats), getFloat(speed), getInt(wheels), getBoolean(withWindDiraction), getString(flag), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
+		case "Bike":
+			return new Bike(getString(model), getInt(seats), getFloat(speed), getString(roadType));
+		case "CruiseShip":
+			return new CruiseShip(getString(model), getInt(seats), getFloat(speed), getString(flag), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
+		case "HybridPlane":
+			return new HybridPlane(getString(model), getInt(seats), getFloat(speed), getInt(wheels), getBoolean(withWindDiraction), getString(flag), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
+		case "ElectricBike":
+			return new ElectricBike(getString(model), getInt(seats), getFloat(speed), getString(roadType), getDouble(avgMotorLifespan));
+	}
+		return null;
+}
 	
 	private Integer getInt(Pair<JLabel, ?> p) throws NumberFormatException {
 		Object val = p.getValue();
@@ -241,27 +275,4 @@ public class AddVehicleForm extends JPanel {
 		else return null;
 	}
 	
-	public Vehicle createVehicle() throws NumberFormatException{
-			switch (this.vehicleType) {
-			case "Jeep":
-				return new Jeep(getString(model), getFloat(speed), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
-			case "Frigate":
-				return new Frigate(getString(model), getInt(seats), getFloat(speed), getBoolean(withWindDiraction));
-			case "SpyDrone":
-				return new SpyDrone(getString(energySource));
-			case "PlayDrone":
-				return new PlayDrone();
-			case "AmphibiousVehicle":
-				return new AmphibiousVehicle(getString(model), getInt(seats), getFloat(speed), getInt(wheels), getBoolean(withWindDiraction), getString(flag), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
-			case "Bike":
-				return new Bike(getString(model), getInt(seats), getFloat(speed), getString(roadType));
-			case "CruiseShip":
-				return new CruiseShip(getString(model), getInt(seats), getFloat(speed), getString(flag), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
-			case "HybridPlane":
-				return new HybridPlane(getString(model), getInt(seats), getFloat(speed), getInt(wheels), getBoolean(withWindDiraction), getString(flag), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));
-			case "ElectricBike":
-				return new ElectricBike(getString(model), getInt(seats), getFloat(speed), getString(roadType), getDouble(avgMotorLifespan));
-		}
-			return null;
-	}
 }
