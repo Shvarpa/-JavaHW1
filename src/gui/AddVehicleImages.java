@@ -3,6 +3,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -23,7 +24,7 @@ public class AddVehicleImages extends JPanel {
 	private String imagesPath, filePath;
 	private JComboBox<ImageText> imagesCombo;
 	private JRadioButton imagesRadio,fileRadio;
-	private JPanel imagesPanel = new JPanel();
+	private JPanel imagesPanel = new JPanel(new GridLayout(1,1));
 	
 	public void show(String type) {
 		if (ComboBoxesCreator.vehicleTypes.contains(type)) {

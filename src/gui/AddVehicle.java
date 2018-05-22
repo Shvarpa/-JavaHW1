@@ -40,11 +40,11 @@ import interfaces.ILandVehicle;
 
 public class AddVehicle extends JFrame {
 	JComboBox<ImageText> typesChoice;
-	JPanel mainPanel, selectPanel, imagePanel, buttonPanel , statusPanel;
+	JPanel mainPanel, selectPanel, buttonPanel , statusPanel;
 	JScrollPane fieldPanel;
 	
 	private AddVehicleForm form;
-	private AddVehicleImages images;
+	private AddVehicleImages imagePanel;
 	private JLabel statusLabel;
 
 	// Constructor
@@ -56,12 +56,77 @@ public class AddVehicle extends JFrame {
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		add(mainPanel);
 
-		// Create the phase selection and display panels.
+		///////////////////////////////////////////////// selectPanel/////////////
+		// Create combo box with vehicles types choices.
 		selectPanel = new JPanel();
-		imagePanel = new JPanel();
+		typesChoice = ComboBoxesCreator.createVehiclesComboBox(new Dimension(60, 60));
+		typesChoice.setSelectedIndex(1);
+		// Add border around the select panel.
+		selectPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Select vehicles"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+		// Add vehicles types combo box to select panel and image label to selectPanel.
+		selectPanel.setLayout(new BorderLayout());
+		selectPanel.add(typesChoice, BorderLayout.CENTER);
+
+		// Listen to events from combo box.
+		typesChoice.addActionListener((event)->{
+			form.show(typesChoice.getSelectedItem().toString());
+			imagePanel.show(typesChoice.getSelectedItem().toString());
+			pack();
+		});
+
+		/////////////////////////////////////////////// fieldpanel/////////////
 		fieldPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		form = new AddVehicleForm(typesChoice.getSelectedItem().toString());
+		fieldPanel.setViewportView(form);
+		fieldPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Input Vehicle"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+		//////////////////////////////// imagepanel///////////////////////	
+		imagePanel = new AddVehicleImages(typesChoice.getSelectedItem().toString());
+		// Add border around the image panel.
+		imagePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Image"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		
+		// Add vehicles types combo box to select panel and image label to selectPanel.
+
+
+		//////////////////////////////// buttonpanel///////////////////////
 		buttonPanel = new JPanel();
+		// Add border around the button panel.
+		buttonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("action"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+		// Add vehicles to db
+		buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
+		JButton addButton = new JButton("Add");
+		addButton.addActionListener((event) -> {
+			Vehicle curr = null;
+			try {
+				curr = createVehicle(typesChoice.getSelectedItem().toString());
+			}
+			catch (NumberFormatException e) {
+				System.err.println(e.getMessage());
+				statusLabel.setText(e.getMessage());
+				return;
+			}
+			if (curr==null) return;
+			DBConnect.getConnection().addVehicle(curr);
+			dispose();
+		});
+		JButton backButton = new JButton("Back");
+		backButton.addActionListener((event) -> {
+			dispose();
+		});
+		buttonPanel.add(addButton);
+		buttonPanel.add(backButton);
+		
+		//////////////////////////////// status panel ///////////////////////
 		statusPanel = new JPanel();
+		statusLabel = new JLabel();
+		statusLabel.setForeground(Color.RED);
+		statusPanel.add(statusLabel);
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -104,83 +169,14 @@ public class AddVehicle extends JFrame {
 		gbc.weighty = 0;
 		gbc.gridheight = 1;
 		mainPanel.add(statusPanel, gbc);
-
-		///////////////////////////////////////////////// selectPanel/////////////
-		// Create combo box with vehicles types choices.
-		typesChoice = ComboBoxesCreator.createVehiclesComboBox(new Dimension(60, 60));
-		typesChoice.setSelectedIndex(1);
-		// Add border around the select panel.
-		selectPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Select vehicles"),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-		// Add vehicles types combo box to select panel and image label to selectPanel.
-		selectPanel.setLayout(new BorderLayout());
-		selectPanel.add(typesChoice, BorderLayout.CENTER);
-
-		// Listen to events from combo box.
-		typesChoice.addActionListener((event)->{
-			form.show(typesChoice.getSelectedItem().toString());
-			images.show(typesChoice.getSelectedItem().toString());
-			pack();
-		});
-
-		/////////////////////////////////////////////// fieldpanel/////////////
-		form = new AddVehicleForm(typesChoice.getSelectedItem().toString());
-		fieldPanel.setViewportView(form);
-		fieldPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Input Vehicle"),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-		//////////////////////////////// imagepanel///////////////////////	
-		images = new AddVehicleImages(typesChoice.getSelectedItem().toString());
-		imagePanel.add(images);
-		// Add border around the image panel.
-		imagePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Image"),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		
-		// Add vehicles types combo box to select panel and image label to selectPanel.
-
-
-		//////////////////////////////// buttonpanel///////////////////////
-		// Add border around the button panel.
-		buttonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("action"),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-		// Add vehicles to db
-		buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
-		JButton addButton = new JButton("Add");
-		addButton.addActionListener((event) -> {
-			Vehicle curr = null;
-			try {
-				curr = createVehicle(typesChoice.getSelectedItem().toString());
-			}
-			catch (NumberFormatException e) {
-				System.err.println(e.getMessage());
-				statusLabel.setText(e.getMessage());
-				return;
-			}
-			if (curr==null) return;
-			DBConnect.getConnection().addVehicle(curr);
-			dispose();
-		});
-		JButton backButton = new JButton("Back");
-		backButton.addActionListener((event) -> {
-			dispose();
-		});
-		buttonPanel.add(addButton);
-		buttonPanel.add(backButton);
-		
-		//////////////////////////////// status panel ///////////////////////
-		
-		statusLabel = new JLabel();
-		statusLabel.setForeground(Color.RED);
-		statusPanel.add(statusLabel);
 		pack();
 	}
 
 	private Vehicle createVehicle(String choice) throws NumberFormatException{
 		Vehicle result = form.createVehicle();
 		if (result != null)
-			result.setImagePath(images.getSelectedImage());
+			result.setImagePath(imagePanel.getSelectedImage());
 		return result;
 	}
 
