@@ -6,38 +6,20 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
+
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-import classes.AmphibiousVehicle;
-import classes.Bike;
-import classes.CruiseShip;
-import classes.Frigate;
-import classes.Input;
-import classes.Jeep;
-import classes.PlayDrone;
-import classes.SpyDrone;
+
+
 import classes.Vehicle;
-import gui.Images.ImageOpener;
-import interfaces.Commercial;
-import interfaces.ILandVehicle;
+
 
 public class AddVehicle extends JDialog {
 	JComboBox<ImageText> typesChoice;

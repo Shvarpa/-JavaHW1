@@ -2,20 +2,12 @@
 
 package gui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.concurrent.Semaphore;
-
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
 import classes.Database;
 import classes.Vehicle;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
+
 
 public class DBConnect extends JComponent {
 
