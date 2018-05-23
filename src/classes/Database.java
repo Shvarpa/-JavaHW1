@@ -3,35 +3,29 @@
 package classes;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import gui.Utilities;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
 
+
 public class Database {
-	
 	
 	private List<Vehicle> vehicleDatabase;
 	private List<ISeaVehicle> seaVehicleDatabase;
 	private List<IAirVehicle> airVehicleDatabase;
 	private List<ILandVehicle> landVehicleDatabase;
 	private ReadWriteLock lock = new ReentrantReadWriteLock(true);
-	
-	private void log(String data) {
-		new Thread(()->{
-			synchronized (System.out) {
-				System.out.println(data);
-			}
-		}).start();
-	}
-	
+		
 	private boolean isEmpty() {
 		lock.readLock().lock();
 		if (vehicleDatabase.isEmpty()) {
-			log("no vehicles in database, returning\n");
+			Utilities.log("no vehicles in database, returning\n");
 			lock.readLock().unlock();
 			return true;
 		}
@@ -61,7 +55,7 @@ public class Database {
 				this.airVehicleDatabase.add((IAirVehicle) currVehicle);
 			}
 			lock.writeLock().unlock();
-			log("the vehicle: " + currVehicle.toString() + " was added succesfully, returning");
+			Utilities.log("the vehicle: " + currVehicle.toString() + " was added succesfully, returning");
 			return true;
 		}
 		return false;
@@ -78,10 +72,10 @@ public class Database {
 			if (currVehicle instanceof IAirVehicle)
 				this.airVehicleDatabase.remove((IAirVehicle)currVehicle);
 			lock.writeLock().unlock();
-			log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
+			Utilities.log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
 		}
-		log("vehicle" + currVehicle.toString() + "doesnt exist, returning");
+		Utilities.log("vehicle" + currVehicle.toString() + "doesnt exist, returning");
 		return false;
 	}
 
@@ -90,7 +84,7 @@ public class Database {
 			lock.writeLock().lock();
 			vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
 			lock.writeLock().unlock();
-			log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
+			Utilities.log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
 			return true;
 		}
 		return false;
@@ -113,7 +107,7 @@ public class Database {
 
 	public boolean resetDistances() {
 		if (isEmpty()) {
-			log("no vehicles to reset distance, returning");
+			Utilities.log("no vehicles to reset distance, returning");
 			return false;
 		}
 		lock.writeLock().lock();
@@ -121,7 +115,7 @@ public class Database {
 			v.resetTotalDistance();
 		}
 		lock.writeLock().unlock();
-		log("all vehicle distances were reset succesfully, returning");
+		Utilities.log("all vehicle distances were reset succesfully, returning");
 		return true;
 	}
 
@@ -129,7 +123,7 @@ public class Database {
 		lock.readLock().lock();
 		if (seaVehicleDatabase.isEmpty()) {
 			lock.readLock().unlock();
-			log("no vehicles to change flags, returning");
+			Utilities.log("no vehicles to change flags, returning");
 			return false;
 		}
 		lock.readLock().unlock();
@@ -138,7 +132,7 @@ public class Database {
 			sV.setFlag(flag);
 		}
 		lock.writeLock().unlock();
-		log("all vehicle flags were changed to " + flag + " succesfully, returning\n");
+		Utilities.log("all vehicle flags were changed to " + flag + " succesfully, returning\n");
 		return true;
 	}
 

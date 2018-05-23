@@ -34,9 +34,6 @@ public class TestDrive extends JDialog {
 	JLabel statusLabel;
 	private DBConnect db = DBConnect.getConnection();
 
-	private void clearStatus() {
-		statusLabel.setText("");
-	}
 
 	static private HashMap<String, Semaphore> testDrivers;
 	static {
@@ -46,12 +43,19 @@ public class TestDrive extends JDialog {
 			testDrivers.put(s, new Semaphore(1));
 	}
 
+	private void updateStatusLabel(String text, Color c) {
+		if (c==null) c= Color.RED;
+		statusLabel.setText(text);
+		statusLabel.setForeground(c);
+		revalidate();
+	}
+	
 	public TestDrive(Vehicle curr) {
 		this.currVehicle = curr;
 		setTitle("Test Drive");
 		setBounds(100, 100, 350, 150);
-		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		setLayout(new BorderLayout());
+		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout());
 		
 		JPanel inputPanel = new JPanel();
@@ -68,13 +72,13 @@ public class TestDrive extends JDialog {
 		JPanel statusPanel = new JPanel();
 		contentPanel.add(statusPanel, BorderLayout.SOUTH);
 		statusPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		statusLabel = new JLabel(" ");
-		statusLabel.setForeground(Color.RED);
+		statusLabel = new JLabel();
+		updateStatusLabel(" ", null);
 		statusPanel.add(statusLabel);
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 		JButton okButton = new JButton("OK");
 		JButton cancelButton = new JButton("Cancel");
 		getRootPane().setDefaultButton(okButton);
@@ -89,7 +93,7 @@ public class TestDrive extends JDialog {
 				inputScanner.close();
 				return;
 			}
-			clearStatus();
+			updateStatusLabel(" ", null);
 			Double distance = inputScanner.nextDouble();
 			inputScanner.close();
 			if(distance<=0) {
@@ -97,6 +101,8 @@ public class TestDrive extends JDialog {
 				return;
 			}
 			SwingUtilities.invokeLater(()->{
+				updateStatusLabel("Started test drive, please wait", Color.BLACK);
+				okButton.setEnabled(false);
 				List<String> busyTestDrivers = new ArrayList<String>();
 				if (currVehicle instanceof ILandVehicle) {
 					busyTestDrivers.add(ILandVehicle.class.getSimpleName());
@@ -113,8 +119,9 @@ public class TestDrive extends JDialog {
 							for (String driver : busyTestDrivers) testDrivers.get(driver).acquire();	
 							Thread.sleep((long)(distance*100));
 						} catch (InterruptedException e) {
-							for (String driver : busyTestDrivers) testDrivers.get(driver).release();
+							Utilities.log("thread sleep interrupted");
 						}
+						finally {for (String driver : busyTestDrivers) testDrivers.get(driver).release();}
 					}, 
 					()->{
 						for (String driver : busyTestDrivers) testDrivers.get(driver).release();
@@ -129,6 +136,8 @@ public class TestDrive extends JDialog {
 							public void windowOpened(WindowEvent arg0) {} public void windowIconified(WindowEvent arg0) {} public void windowDeiconified(WindowEvent arg0) {}
 							public void windowDeactivated(WindowEvent arg0) {} public void windowClosing(WindowEvent arg0) {} public void windowActivated(WindowEvent arg0) {}
 						});
+						updateStatusLabel(" ", null);
+						okButton.setEnabled(true);
 						Utilities.showDialog(confirmation);
 					});
 			});

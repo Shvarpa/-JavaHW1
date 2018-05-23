@@ -124,8 +124,12 @@ public class Utilities {
 	public static void invokeAfter(long millis, Runnable code) {
 		new SwingWorker<Object, Object>() {
 			@Override
-			protected Object doInBackground() throws Exception {
-				Thread.sleep(millis);
+			protected Object doInBackground() {
+				try {
+					Thread.sleep(millis);
+				} catch (InterruptedException e) {
+					Utilities.log("thread sleep interrupted");
+				}
 				return null;
 			}
 
@@ -155,5 +159,13 @@ public class Utilities {
 		d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		d.setLocationRelativeTo(null);
 		d.setVisible(true);
+	}
+	
+	static public void log(String data) {
+		new Thread(()->{
+			synchronized (System.out) {
+				System.out.println(data);
+			}
+		}).start();
 	}
 }

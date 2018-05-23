@@ -86,6 +86,7 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		// super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		content.setLayout(layout);
 		
+		///deselecting a vehicleSelectButton
 		addMouseListener(new MouseListener() {		
 			@Override
 			public void mouseClicked(MouseEvent event) {
@@ -100,10 +101,10 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		// TODO: improve actions, meanwhile just resets the window components for each operation
 		db.addPropertyChangeListener("addVehicle",(event)->{refresh();});
 		db.addPropertyChangeListener("buyVehicle",(event)->{refresh();});
+		
 		db.addPropertyChangeListener("testDriveVehicle",(event)->{clearSelection();});
 		db.addPropertyChangeListener("resetDistances",(event)->{clearSelection();});
 		db.addPropertyChangeListener("changeFlags",(event)->{clearSelection();});
-		refresh();
 	}
 
 	public void addActionListener(ActionListener l) {

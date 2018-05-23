@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -75,7 +76,9 @@ public class MainFrame extends JFrame {
 			VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
 			if (vS == null)
 				return;
-			vS.setSelected(false);
+			int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy\n" + vS.getVehicle().toString(), "buying confirmation",
+					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+			if(result == JOptionPane.NO_OPTION) {return;}
 			db.buyVehicle(vS.getVehicle());
 			SwingUtilities.invokeLater(() -> {Utilities.showDialog(new ConfirmationDialog("The vehicle bought succesfully!"));});
 		});
