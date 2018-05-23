@@ -64,13 +64,28 @@ public class Database {
 	public boolean buyVehicle(Vehicle currVehicle) {
 		if (vehicleDatabase.contains(currVehicle)) {
 			lock.writeLock().lock();
-			this.vehicleDatabase.remove(currVehicle);
-			if (currVehicle instanceof ISeaVehicle)
-				this.seaVehicleDatabase.remove((ISeaVehicle)currVehicle);
-			if (currVehicle instanceof ILandVehicle)
-				this.landVehicleDatabase.remove((ILandVehicle)currVehicle);
-			if (currVehicle instanceof IAirVehicle)
-				this.airVehicleDatabase.remove((IAirVehicle)currVehicle);
+			Integer index = getIdentical(vehicleDatabase, currVehicle);
+			if(index != null)this.vehicleDatabase.remove((int)index); 
+			else this.vehicleDatabase.remove(currVehicle);
+			
+			if (currVehicle instanceof ISeaVehicle) {
+				index = getIdentical(seaVehicleDatabase, currVehicle);
+				if(index != null) this.seaVehicleDatabase.remove((int)index); 
+				else this.seaVehicleDatabase.remove((ISeaVehicle)currVehicle);
+
+			}
+			
+			if (currVehicle instanceof ILandVehicle) {
+				index = getIdentical(landVehicleDatabase, currVehicle);
+				if(index != null) this.landVehicleDatabase.remove((int)index); 
+				else this.landVehicleDatabase.remove((ILandVehicle)currVehicle);
+			}
+			
+			if (currVehicle instanceof IAirVehicle) {
+				index = getIdentical(airVehicleDatabase, currVehicle);
+				if(index != null) this.airVehicleDatabase.remove((int)index); 
+				else this.airVehicleDatabase.remove((IAirVehicle)currVehicle);
+			}
 			lock.writeLock().unlock();
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
@@ -82,28 +97,15 @@ public class Database {
 	public boolean testDriveVehicle(Vehicle currVehicle, double distance) {
 		if (vehicleDatabase.contains(currVehicle)) {
 			lock.writeLock().lock();
-			vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
+			Integer index = getIdentical(vehicleDatabase, currVehicle);
+			if(index!=null) vehicleDatabase.get((int)index).moveDistance(distance);
+			else vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
 			lock.writeLock().unlock();
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
 			return true;
 		}
 		return false;
 	}
-
-//	public boolean testDriveVehicle(Vehicle currVehicle) {
-//		if (vehicleDatabase.contains(currVehicle)) {
-//			double distance;
-//			try {
-//				distance = Input.inputDouble("enter test drive distance:");
-//			}
-//			catch (NumberFormatException e) {
-//				System.out.println("bad input " + e.getLocalizedMessage() + ", returning");
-//				return false;
-//			}
-//			return testDriveVehicle(currVehicle, distance);
-//		}
-//		return false;
-//	}
 
 	public boolean resetDistances() {
 		if (isEmpty()) {
@@ -151,4 +153,11 @@ public class Database {
 		return result;
 	}
 	
+	
+	private static Integer getIdentical(List vehicles,Vehicle v) {
+		for(int i=0;i<=vehicles.size();i++)
+			if(vehicles.get(i)==v)
+				return i;
+		return null;
+	}
 }
