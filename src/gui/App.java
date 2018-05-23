@@ -8,12 +8,6 @@ import javax.swing.SwingUtilities;
 
 public class App {
 	
-	static void showDialog(JDialog d) {
-		d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		d.setLocationRelativeTo(null);
-		d.setVisible(true);
-	}
-		
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

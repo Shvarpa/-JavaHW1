@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.SwingWorker;
 
 import interfaces.ISeaVehicle;
@@ -148,5 +149,11 @@ public class Utilities {
 				after.run();
 			}
 		}.execute();
+	}
+	
+	static void showDialog(JDialog d) {
+		d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		d.setLocationRelativeTo(null);
+		d.setVisible(true);
 	}
 }

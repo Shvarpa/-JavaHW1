@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
 
 		// actions
 		addVehicleButton.addActionListener((event) -> {
-			SwingUtilities.invokeLater(() -> {App.showDialog(new AddVehicle());});
+			SwingUtilities.invokeLater(() -> {Utilities.showDialog(new AddVehicle());});
 		});
 
 		buyVehicleButton.addActionListener((event) -> {
@@ -77,7 +77,7 @@ public class MainFrame extends JFrame {
 				return;
 			vS.setSelected(false);
 			db.buyVehicle(vS.getVehicle());
-			SwingUtilities.invokeLater(() -> {App.showDialog(new ConfirmationDialog("The vehicle bought succesfully!"));});
+			SwingUtilities.invokeLater(() -> {Utilities.showDialog(new ConfirmationDialog("The vehicle bought succesfully!"));});
 		});
 
 		testDriveButton.addActionListener(new ActionListener() {
@@ -87,20 +87,20 @@ public class MainFrame extends JFrame {
 				Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
 				if (currVehicle == null)
 					return;
-				SwingUtilities.invokeLater(() -> {App.showDialog(new TestDrive(currVehicle));});
+				SwingUtilities.invokeLater(() -> {Utilities.showDialog(new TestDrive(currVehicle));});
 			}
 		});
 
 		resetDistancesButton.addActionListener((event) -> {
 			db.resetDistances();
 			SwingUtilities.invokeLater(() -> {
-				App.showDialog(new ConfirmationDialog("all vehicles distances were reset!"));
+				Utilities.showDialog(new ConfirmationDialog("all vehicles distances were reset!"));
 			});
 		});
 		
 		changeFlagsButton.addActionListener((event)->{
 			SwingUtilities.invokeLater(()->{
-				App.showDialog(new ChangeFlags());
+				Utilities.showDialog(new ChangeFlags());
 			});
 		});
 
