@@ -154,10 +154,18 @@ public class Database {
 	}
 	
 	
-	private static Integer getIdentical(List vehicles,Vehicle v) {
+	private Integer getIdentical(List vehicles,Vehicle v) {
+		lock.readLock().lock();
 		for(int i=0;i<vehicles.size();i++)
-			if(vehicles.get(i)==v)
+			if(vehicles.get(i)==v) {
+				lock.readLock().unlock();
 				return i;
+			}
+		lock.readLock().unlock();
 		return null;
+	}
+	
+	public boolean containsIdentical(Vehicle v) {
+		return (getIdentical(vehicleDatabase, v)!=null);
 	}
 }

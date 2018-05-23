@@ -4,17 +4,26 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
+import com.sun.codemodel.internal.JOp;
+
 import classes.Vehicle;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 public class MainFrame extends JFrame {
 
@@ -26,7 +35,6 @@ public class MainFrame extends JFrame {
 	private JButton changeFlagsButton;
 	private DataPanel dataPanel = new DataPanel();
 	private JTextArea toStringTextArea;
-	private String defaultToStringLabel = "current vehicle: ";
 	TestDrive testDriveWindow;
 	private DBConnect db = DBConnect.getConnection();
 
@@ -70,17 +78,43 @@ public class MainFrame extends JFrame {
 		});
 
 		buyVehicleButton.addActionListener((event) -> {
-			Utilities.invokeAfter((long)Utilities.getRand(5000, 10000), ()->{
-				VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-				if (vS == null)
-					return;
-				int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vS.getVehicle().toString(), "buying confirmation",
-						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-				if(result == JOptionPane.NO_OPTION) {return;}
-				db.buyVehicle(vS.getVehicle());
-				JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
-			});
-			
+			VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
+			if (vS == null)
+				return;
+			Vehicle v = vS.getVehicle();
+			new SwingWorker<Boolean, Object>() {
+				@Override
+				protected Boolean doInBackground() throws Exception {
+						if(!db.duringTransactionAdd(v)) {
+							JOptionPane.showMessageDialog(null, DBConnect.duringTransactionMessege);
+							return false;
+						}
+						try {
+							Thread.sleep((long)Utilities.getRand(5000, 10000));
+							return true;
+						} catch (InterruptedException e) {
+							db.duringTransactionRemove(v);
+							return false;
+						}
+					}			
+					@Override
+				    protected void done() {
+						try {
+							if (!get()) {return;}
+						} catch (InterruptedException | ExecutionException e) {
+							return;
+						}
+						int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vS.getVehicle().toString(), "buying confirmation",
+								JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+						if(result == JOptionPane.NO_OPTION) {
+							db.duringTransactionRemove(v);
+							return;
+						}
+						db.buyVehicle(vS.getVehicle());
+						db.duringTransactionRemove(v);
+						JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+					}
+			}.execute();
 		});
 
 		testDriveButton.addActionListener(new ActionListener() {
@@ -139,10 +173,10 @@ public class MainFrame extends JFrame {
 		contentPanel.add(dataPanel, BorderLayout.CENTER);
 
 		JPanel toStringPanel = new JPanel();
-		toStringPanel.setLayout(new BorderLayout());
+		toStringPanel.setLayout(new GridBagLayout());
 
 		// labels
-		toStringTextArea = new JTextArea(defaultToStringLabel);
+		toStringTextArea = new JTextArea("");
 		toStringTextArea.setOpaque(false);
 		toStringTextArea.setEditable(false);
 		toStringTextArea.setFocusable(false);
@@ -151,7 +185,7 @@ public class MainFrame extends JFrame {
 		toStringTextArea.setWrapStyleWord(true);
 		toStringTextArea.setForeground(Color.GRAY);
 
-		toStringPanel.add(toStringTextArea, BorderLayout.CENTER);
+		toStringPanel.add(toStringTextArea,new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(1, 5, 2, 5), 0, 0));
 		contentPanel.add(toStringPanel, BorderLayout.SOUTH);
 
 		/// Initial refresh does'nt account for the button creation.
@@ -160,6 +194,6 @@ public class MainFrame extends JFrame {
 
 	private void updateToString() {
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-		toStringTextArea.setText((vS == null ? defaultToStringLabel : defaultToStringLabel + vS.getVehicle().toString()));
+		toStringTextArea.setText((vS == null ? "try hovering over the vehicle..." : "current vehicle: " + vS.getVehicle().toString()));
 	}
 }

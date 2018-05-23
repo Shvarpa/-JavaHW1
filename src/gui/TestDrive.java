@@ -4,6 +4,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -23,10 +25,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import classes.Vehicle;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import javafx.scene.media.MediaPlayer.Status;
 
 import java.awt.Color;
 
@@ -98,36 +103,58 @@ public class TestDrive extends JDialog {
 			SwingUtilities.invokeLater(()->{
 				updateStatusLabel("Started test drive, please wait", Color.BLACK);
 				okButton.setEnabled(false);
-				Utilities.invokeInBackground(
-					() -> {// background					
+				new SwingWorker<Status, Object>() {
+					@Override
+					protected Status doInBackground() throws Exception {
 						try {
-							boolean status = aquireTestRide(currVehicle);
-							if(!status) {
-								this.stop=true;
-								JOptionPane.showMessageDialog(null, "vehicle test drive already in progress");
-								return;
+							if(!db.containsIdentical(currVehicle)) {
+								return Status.STOP;
+							}
+							if(!aquireTestRide(currVehicle)) {
+								return Status.RETRY;
 							}
 							Thread.sleep((long)(distance*100));
-						} catch (InterruptedException e) {
+							return Status.CONTINUE;
+							} 
+						catch (InterruptedException e) {
 							Utilities.log("thread sleep interrupted");
 							releaseTestRide(currVehicle);
+							return Status.STOP;
 						}
-					}, 
-					()->{
-						if(stop) {dispose();stop=false;return;}
-						releaseTestRide(currVehicle);
-						db.testDriveVehicle(currVehicle, distance);
-						updateStatusLabel(" ", null);
-						JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
-						okButton.setEnabled(true);
-						dispose();
-					});
+					}
+					@Override
+					protected void done() {
+						try {
+							switch(get()) {
+							case STOP: default:
+								JOptionPane.showMessageDialog(null,"The vehicle was bought already, closing...");
+								dispose();
+								return;
+							case RETRY:
+								JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
+								updateStatusLabel(" ", null);
+								okButton.setEnabled(true);
+								return;
+							case CONTINUE:
+								releaseTestRide(currVehicle);
+								db.testDriveVehicle(currVehicle, distance);
+								updateStatusLabel(" ", null);
+								JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
+								okButton.setEnabled(true);
+								dispose();
+								return;
+							}
+						} catch (HeadlessException | InterruptedException | ExecutionException e) {
+							releaseTestRide(currVehicle);
+						}
+					}
+				}.execute();
 			});
 		});
 		cancelButton.addActionListener((event)->{dispose();});
 	}
-	private boolean stop = false;
 
+	private enum Status{STOP,CONTINUE,RETRY};
 	
 	///// locking vehicle test riding
 		static private HashMap<String, Semaphore> testDrivers;
@@ -145,17 +172,17 @@ public class TestDrive extends JDialog {
 			return reqTestRiders;
 		}
 		private boolean aquireTestRide(Vehicle vehicle) {
-			if (db.duringTestDriveContains(vehicle)) return false;
+			if (db.duringTransactionContains(vehicle)) return false;
 			try {
 			for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).acquire();
 			} catch (InterruptedException e) {
 				for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).release();
 				return false;
 			}
-			return db.duringTestDriveAdd(vehicle);
+			return db.duringTransactionAdd(vehicle);
 		}
 		private void releaseTestRide(Vehicle vehicle) {
-			db.duringTestDriveRemove(vehicle);
+			db.duringTransactionRemove(vehicle);
 			for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).release();
 		}
 		static {

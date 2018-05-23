@@ -51,7 +51,11 @@ public class DBConnect extends JComponent {
 	public boolean hasSeaVehicles() {
 		return db.hasSeaVehicles();
 	}
-
+	
+	public boolean containsIdentical(Vehicle v) {
+		return db.containsIdentical(v);
+	}
+	
 	public static DBConnect getConnection() {
 		if (self == null) {
 			synchronized (DBConnect.class) {
@@ -63,31 +67,32 @@ public class DBConnect extends JComponent {
 		return self;
 	}
 	
-	private List<Vehicle> duringTestDrive = new ArrayList<Vehicle>();
-	public Integer duringTestDriveIndex(Vehicle vehicle) {
-		synchronized (duringTestDrive) {
-			for(int i=0;i<duringTestDrive.size();i++)
-				if (duringTestDrive.get(i)==vehicle)
+	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
+	private List<Vehicle> duringTransaction = new ArrayList<Vehicle>();
+	private Integer duringTransactionIndex(Vehicle vehicle) {
+		synchronized (duringTransaction) {
+			for(int i=0;i<duringTransaction.size();i++)
+				if (duringTransaction.get(i)==vehicle)
 					return i;
 			return null;
 		}
 	}
-	public boolean duringTestDriveContains(Vehicle vehicle) {
-		return (duringTestDriveIndex(vehicle) != null);
+	public boolean duringTransactionContains(Vehicle vehicle) {
+		return (duringTransactionIndex(vehicle) != null);
 	}
-	public boolean duringTestDriveAdd(Vehicle vehicle) {
-		if(duringTestDriveContains(vehicle)) return false;
+	public boolean duringTransactionAdd(Vehicle vehicle) {
+		if(duringTransactionContains(vehicle)) return false;
 		else
-			synchronized (duringTestDrive) {
-				duringTestDrive.add(vehicle);
+			synchronized (duringTransaction) {
+				duringTransaction.add(vehicle);
 			}
 		return true;
 	}
-	public void duringTestDriveRemove(Vehicle vehicle) {
-		Integer index = duringTestDriveIndex(vehicle);
+	public void duringTransactionRemove(Vehicle vehicle) {
+		Integer index = duringTransactionIndex(vehicle);
 		if(index == null) return;
-		synchronized (duringTestDrive) {
-			duringTestDrive.remove((int)index);
+		synchronized (duringTransaction) {
+			duringTransaction.remove((int)index);
 		}
 	}
 }
