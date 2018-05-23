@@ -155,7 +155,7 @@ public class Database {
 	
 	
 	private static Integer getIdentical(List vehicles,Vehicle v) {
-		for(int i=0;i<=vehicles.size();i++)
+		for(int i=0;i<vehicles.size();i++)
 			if(vehicles.get(i)==v)
 				return i;
 		return null;

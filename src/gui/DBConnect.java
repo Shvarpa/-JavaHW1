@@ -3,6 +3,7 @@
 package gui;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import classes.Database;
@@ -60,5 +61,33 @@ public class DBConnect extends JComponent {
 			}
 		}
 		return self;
+	}
+	
+	private List<Vehicle> duringTestDrive = new ArrayList<Vehicle>();
+	public Integer duringTestDriveIndex(Vehicle vehicle) {
+		synchronized (duringTestDrive) {
+			for(int i=0;i<duringTestDrive.size();i++)
+				if (duringTestDrive.get(i)==vehicle)
+					return i;
+			return null;
+		}
+	}
+	public boolean duringTestDriveContains(Vehicle vehicle) {
+		return (duringTestDriveIndex(vehicle) != null);
+	}
+	public boolean duringTestDriveAdd(Vehicle vehicle) {
+		if(duringTestDriveContains(vehicle)) return false;
+		else
+			synchronized (duringTestDrive) {
+				duringTestDrive.add(vehicle);
+			}
+		return true;
+	}
+	public void duringTestDriveRemove(Vehicle vehicle) {
+		Integer index = duringTestDriveIndex(vehicle);
+		if(index == null) return;
+		synchronized (duringTestDrive) {
+			duringTestDrive.remove((int)index);
+		}
 	}
 }

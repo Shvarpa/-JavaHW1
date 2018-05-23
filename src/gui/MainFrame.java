@@ -70,14 +70,17 @@ public class MainFrame extends JFrame {
 		});
 
 		buyVehicleButton.addActionListener((event) -> {
-			VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-			if (vS == null)
-				return;
-			int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy\n" + vS.getVehicle().toString(), "buying confirmation",
-					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-			if(result == JOptionPane.NO_OPTION) {return;}
-			db.buyVehicle(vS.getVehicle());
-			SwingUtilities.invokeLater(() -> {JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");});
+			Utilities.invokeAfter((long)Utilities.getRand(5000, 10000), ()->{
+				VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
+				if (vS == null)
+					return;
+				int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vS.getVehicle().toString(), "buying confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+				if(result == JOptionPane.NO_OPTION) {return;}
+				db.buyVehicle(vS.getVehicle());
+				JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+			});
+			
 		});
 
 		testDriveButton.addActionListener(new ActionListener() {

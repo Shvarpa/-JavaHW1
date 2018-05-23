@@ -89,7 +89,7 @@ public abstract class Vehicle {
 					&& this.totalDistance == ((Vehicle) other).getTotalDistance()
 					&& this.seats == ((Vehicle) other).getSeats() && this.speed == ((Vehicle) other).getSpeed()
 					&& this.getTotalDistance() == ((Vehicle) other).getTotalDistance()
-					&& (this.imagePath!=null ? this.imagePath.equals(((Vehicle) other).imagePath) : ((Vehicle)other).getImagePath() != null);
+					&& (this.imagePath!=null ? this.imagePath.equals(((Vehicle) other).imagePath) : ((Vehicle)other).getImagePath() == null);
 		}
 		return false;
 	}

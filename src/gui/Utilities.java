@@ -5,6 +5,7 @@ package gui;
 import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -167,5 +168,9 @@ public class Utilities {
 				System.out.println(data);
 			}
 		}).start();
+	}
+	
+	public static double getRand(double min, double max) {
+		return 	(new Random().nextDouble()*(max-min))+min;
 	}
 }

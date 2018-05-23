@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,15 +37,6 @@ public class TestDrive extends JDialog {
 	private JTextField distanceField;
 	JLabel statusLabel;
 	private DBConnect db = DBConnect.getConnection();
-
-
-	static private HashMap<String, Semaphore> testDrivers;
-	static {
-		testDrivers = new HashMap<String, Semaphore>(3);
-		for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
-				IAirVehicle.class.getSimpleName()))
-			testDrivers.put(s, new Semaphore(1));
-	}
 
 	private void updateStatusLabel(String text, Color c) {
 		if (c==null) c= Color.RED;
@@ -104,31 +98,27 @@ public class TestDrive extends JDialog {
 			SwingUtilities.invokeLater(()->{
 				updateStatusLabel("Started test drive, please wait", Color.BLACK);
 				okButton.setEnabled(false);
-				List<String> busyTestDrivers = new ArrayList<String>();
-				if (currVehicle instanceof ILandVehicle) {
-					busyTestDrivers.add(ILandVehicle.class.getSimpleName());
-				}
-				if (currVehicle instanceof ISeaVehicle) {
-					busyTestDrivers.add(ISeaVehicle.class.getSimpleName());
-				}
-				if (currVehicle instanceof IAirVehicle) {
-					busyTestDrivers.add(IAirVehicle.class.getSimpleName());
-				}
 				Utilities.invokeInBackground(
 					() -> {// background					
-						try {	
-							for (String driver : busyTestDrivers) testDrivers.get(driver).acquire();	
+						try {
+							boolean status = aquireTestRide(currVehicle);
+							if(!status) {
+								this.stop=true;
+								JOptionPane.showMessageDialog(null, "vehicle test drive already in progress");
+								return;
+							}
 							Thread.sleep((long)(distance*100));
 						} catch (InterruptedException e) {
 							Utilities.log("thread sleep interrupted");
+							releaseTestRide(currVehicle);
 						}
-						finally {for (String driver : busyTestDrivers) testDrivers.get(driver).release();}
 					}, 
 					()->{
-						for (String driver : busyTestDrivers) testDrivers.get(driver).release();
+						if(stop) {dispose();stop=false;return;}
+						releaseTestRide(currVehicle);
 						db.testDriveVehicle(currVehicle, distance);
 						updateStatusLabel(" ", null);
-						JOptionPane.showMessageDialog(null, "the vehicle "+ currVehicle.toString() +" was taken for a test drive of " + distance + "km succesfully!");
+						JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
 						okButton.setEnabled(true);
 						dispose();
 					});
@@ -136,6 +126,45 @@ public class TestDrive extends JDialog {
 		});
 		cancelButton.addActionListener((event)->{dispose();});
 	}
+	private boolean stop = false;
+
+	
+	///// locking vehicle test riding
+		static private HashMap<String, Semaphore> testDrivers;
+		private static List<String> reqTestRiders(Vehicle v){
+			List<String> reqTestRiders = new ArrayList<String>();
+			if (v instanceof ILandVehicle) {
+				reqTestRiders.add(ILandVehicle.class.getSimpleName());
+			}
+			if (v instanceof ISeaVehicle) {
+				reqTestRiders.add(ISeaVehicle.class.getSimpleName());
+			}
+			if (v instanceof IAirVehicle) {
+				reqTestRiders.add(IAirVehicle.class.getSimpleName());
+			}
+			return reqTestRiders;
+		}
+		private boolean aquireTestRide(Vehicle vehicle) {
+			if (db.duringTestDriveContains(vehicle)) return false;
+			try {
+			for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).acquire();
+			} catch (InterruptedException e) {
+				for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).release();
+				return false;
+			}
+			return db.duringTestDriveAdd(vehicle);
+		}
+		private void releaseTestRide(Vehicle vehicle) {
+			db.duringTestDriveRemove(vehicle);
+			for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).release();
+		}
+		static {
+			testDrivers = new HashMap<String, Semaphore>(3);
+			for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
+					IAirVehicle.class.getSimpleName()))
+				testDrivers.put(s, new Semaphore(1));
+		}	
+		
 }
 
 
