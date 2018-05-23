@@ -5,6 +5,8 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
@@ -84,12 +86,23 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		// super.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		content.setLayout(layout);
 		
+		addMouseListener(new MouseListener() {		
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				if (event.getClickCount() == 1 && event.getButton() == MouseEvent.BUTTON1) {
+					clearSelection();
+				}
+			}
+			@Override // unimplemented
+			public void mouseEntered(MouseEvent arg0) {} public void mouseExited(MouseEvent arg0) {} public void mousePressed(MouseEvent arg0) {} public void mouseReleased(MouseEvent arg0) {}
+		});
+		
 		// TODO: improve actions, meanwhile just resets the window components for each operation
 		db.addPropertyChangeListener("addVehicle",(event)->{refresh();});
 		db.addPropertyChangeListener("buyVehicle",(event)->{refresh();});
-		db.addPropertyChangeListener("testDriveVehicle",(event)->{refresh();});
-		db.addPropertyChangeListener("resetDistances",(event)->{refresh();});
-		db.addPropertyChangeListener("changeFlags",(event)->{refresh();});
+		db.addPropertyChangeListener("testDriveVehicle",(event)->{clearSelection();});
+		db.addPropertyChangeListener("resetDistances",(event)->{clearSelection();});
+		db.addPropertyChangeListener("changeFlags",(event)->{clearSelection();});
 		refresh();
 	}
 
@@ -110,5 +123,9 @@ public class DataPanel extends JScrollPane implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		processIsSelected();
 	}
-
+	
+	public void clearSelection() {
+		group.clearSelection();
+		processIsSelected();
+	}
 }

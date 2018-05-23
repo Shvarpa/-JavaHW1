@@ -132,16 +132,6 @@ public class MainFrame extends JFrame {
 				changeFlagsButton.setEnabled(false);
 			}
 		});
-		dataPanel.addMouseListener(new MouseListener() {		
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				if (event.getClickCount() == 2 && event.getButton() == MouseEvent.BUTTON1) {
-					System.err.println("wow");
-				}
-			}
-			@Override // unimplemented
-			public void mouseEntered(MouseEvent arg0) {} public void mouseExited(MouseEvent arg0) {} public void mousePressed(MouseEvent arg0) {} public void mouseReleased(MouseEvent arg0) {}
-		});
 
 		contentPanel.add(dataPanel, BorderLayout.CENTER);
 
