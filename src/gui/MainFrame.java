@@ -6,9 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -80,7 +77,7 @@ public class MainFrame extends JFrame {
 					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 			if(result == JOptionPane.NO_OPTION) {return;}
 			db.buyVehicle(vS.getVehicle());
-			SwingUtilities.invokeLater(() -> {Utilities.showDialog(new ConfirmationDialog("The vehicle bought succesfully!"));});
+			SwingUtilities.invokeLater(() -> {JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");});
 		});
 
 		testDriveButton.addActionListener(new ActionListener() {
@@ -97,7 +94,7 @@ public class MainFrame extends JFrame {
 		resetDistancesButton.addActionListener((event) -> {
 			db.resetDistances();
 			SwingUtilities.invokeLater(() -> {
-				Utilities.showDialog(new ConfirmationDialog("all vehicles distances were reset!"));
+				JOptionPane.showMessageDialog(null,"all vehicles distances were reset!");
 			});
 		});
 		

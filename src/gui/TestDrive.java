@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import classes.Vehicle;
@@ -126,19 +127,10 @@ public class TestDrive extends JDialog {
 					()->{
 						for (String driver : busyTestDrivers) testDrivers.get(driver).release();
 						db.testDriveVehicle(currVehicle, distance);
-						ConfirmationDialog confirmation = new ConfirmationDialog("the vehicle "+ currVehicle.toString() +" was taken for a test drive of " + distance + "km succesfully!");
-						confirmation.addWindowListener(new WindowListener() {
-							@Override
-							public void windowClosed(WindowEvent arg0) {
-								dispose();
-							}
-							@Override //unimplemented
-							public void windowOpened(WindowEvent arg0) {} public void windowIconified(WindowEvent arg0) {} public void windowDeiconified(WindowEvent arg0) {}
-							public void windowDeactivated(WindowEvent arg0) {} public void windowClosing(WindowEvent arg0) {} public void windowActivated(WindowEvent arg0) {}
-						});
 						updateStatusLabel(" ", null);
+						JOptionPane.showMessageDialog(null, "the vehicle "+ currVehicle.toString() +" was taken for a test drive of " + distance + "km succesfully!");
 						okButton.setEnabled(true);
-						Utilities.showDialog(confirmation);
+						dispose();
 					});
 			});
 		});

@@ -11,6 +11,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -47,42 +48,7 @@ public class ChangeFlags extends JDialog {
 				return;
 			db.changeFlags(flag);
 			SwingUtilities.invokeLater(() -> {
-				ConfirmationDialog confirmation = new ConfirmationDialog(
-						"all sea vehicles flags changed to " + flag + " successfully!!");
-				confirmation.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				confirmation.addWindowListener(new WindowListener() {
-
-					@Override
-					public void windowOpened(WindowEvent arg0) {
-					}
-
-					@Override
-					public void windowIconified(WindowEvent arg0) {
-					}
-
-					@Override
-					public void windowDeiconified(WindowEvent arg0) {
-					}
-
-					@Override
-					public void windowDeactivated(WindowEvent arg0) {
-					}
-
-					@Override
-					public void windowClosing(WindowEvent arg0) {
-					}
-
-					@Override
-					public void windowClosed(WindowEvent arg0) {
-						dispose();
-					}
-
-					@Override
-					public void windowActivated(WindowEvent arg0) {
-					}
-				});
-				confirmation.setLocationRelativeTo(null);
-				confirmation.setVisible(true);
+				JOptionPane.showMessageDialog(null, "all flags changed to " + flag + "succesfully!");
 			});
 		});
 		cancelButton.addActionListener((event) -> {
