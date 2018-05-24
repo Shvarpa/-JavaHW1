@@ -17,6 +17,8 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
+
 import classes.Database;
 import classes.Vehicle;
 import interfaces.IAirVehicle;
@@ -38,11 +40,54 @@ public class DBConnect extends JComponent {
 		db.addVehicle(v);
 		firePropertyChange("addVehicle", null, v);
 	}
-
-	public void buyVehicle(Vehicle v) {
-		db.buyVehicle(v);
-		firePropertyChange("buyVehicle", v, null);
+	
+	
+	class buyVehicle extends SwingWorker<Boolean, Object>{
+		private Vehicle vehicle;
+		public buyVehicle(Vehicle vehicle) {
+			this.vehicle = vehicle;
+		}		
+		
+			public void buyVehicleMethod(Vehicle v) {
+			db.buyVehicle(v);
+			DBConnect.getConnection().firePropertyChange("buyVehicle", v, null);
+		}
+		
+		@Override
+		protected Boolean doInBackground() throws Exception {
+			if(!duringTransactionAdd(vehicle)) {
+				return false;
+			}
+			try {
+				Thread.sleep((long)Utilities.getRand(5000, 10000));
+				return true;
+			} catch (InterruptedException e) {
+				duringTransactionRemove(vehicle);
+				return false;
+			}
+		}
+		
+		@Override
+		protected void done() {
+			try {
+				if (!get()) {return;}
+			} catch (InterruptedException | ExecutionException e) {
+				return;
+			}
+			int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
+					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+			if(result == JOptionPane.NO_OPTION) {
+				duringTransactionRemove(vehicle);
+				return;
+			}
+			new WaitDialog((long) Utilities.getRand(3000, 8000),()->{
+				buyVehicleMethod(vehicle);
+				duringTransactionRemove(vehicle);
+				JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+			});		
+		}
 	}
+	
 	
 	///	testDriveVehicle class is a SwingWorker background thread that was created in order to perform the the testDriving task in the background, 
 	/// without stalling the window during the action, and give the ability to the user to receive the status of the action through the Status enum.

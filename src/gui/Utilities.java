@@ -173,4 +173,5 @@ public class Utilities {
 	public static double getRand(double min, double max) {
 		return 	(new Random().nextDouble()*(max-min))+min;
 	}
+
 }

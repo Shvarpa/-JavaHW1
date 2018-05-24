@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,9 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-
-import com.sun.codemodel.internal.JOp;
-
 import classes.Vehicle;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -81,39 +77,20 @@ public class MainFrame extends JFrame {
 			VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
 			if (vS == null)
 				return;
-			Vehicle v = vS.getVehicle();
-			new SwingWorker<Boolean, Object>() {
+			updateToString("preparing vehicle for purchase...");
+			db.new buyVehicle(vS.getVehicle()){
 				@Override
-				protected Boolean doInBackground() throws Exception {
-						if(!db.duringTransactionAdd(v)) {
-							JOptionPane.showMessageDialog(null, DBConnect.duringTransactionMessege);
-							return false;
+				protected void done() {
+					super.done();
+					try {
+						if(!get()) {
+							updateToString(DBConnect.duringTransactionMessege);
 						}
-						try {
-							Thread.sleep((long)Utilities.getRand(5000, 10000));
-							return true;
-						} catch (InterruptedException e) {
-							db.duringTransactionRemove(v);
-							return false;
-						}
-					}			
-					@Override
-				    protected void done() {
-						try {
-							if (!get()) {return;}
-						} catch (InterruptedException | ExecutionException e) {
-							return;
-						}
-						int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vS.getVehicle().toString(), "buying confirmation",
-								JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-						if(result == JOptionPane.NO_OPTION) {
-							db.duringTransactionRemove(v);
-							return;
-						}
-						db.buyVehicle(vS.getVehicle());
-						db.duringTransactionRemove(v);
-						JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+					} catch (InterruptedException | ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+				}
 			}.execute();
 		});
 
@@ -195,5 +172,9 @@ public class MainFrame extends JFrame {
 	private void updateToString() {
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
 		toStringTextArea.setText((vS == null ? "try hovering over the vehicle..." : "current vehicle: " + vS.getVehicle().toString()));
+	}
+	
+	private void updateToString(String text) {
+		toStringTextArea.setText(text);
 	}
 }
