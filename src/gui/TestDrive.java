@@ -103,95 +103,32 @@ public class TestDrive extends JDialog {
 			SwingUtilities.invokeLater(()->{
 				updateStatusLabel("Started test drive, please wait", Color.BLACK);
 				okButton.setEnabled(false);
-				new SwingWorker<Status, Object>() {
-					@Override
-					protected Status doInBackground() throws Exception {
-						try {
-							if(!db.containsIdentical(currVehicle)) {
-								return Status.STOP;
-							}
-							if(!aquireTestRide(currVehicle)) {
-								return Status.RETRY;
-							}
-							Thread.sleep((long)(distance*100));
-							return Status.CONTINUE;
-							} 
-						catch (InterruptedException e) {
-							Utilities.log("thread sleep interrupted");
-							releaseTestRide(currVehicle);
-							return Status.STOP;
-						}
-					}
+				db.new testDriveVehicle (currVehicle, distance) {
 					@Override
 					protected void done() {
-						try {
-							switch(get()) {
-							case STOP: default:
-								JOptionPane.showMessageDialog(null,"The vehicle was bought already, closing...");
-								dispose();
-								return;
-							case RETRY:
-								JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
-								updateStatusLabel(" ", null);
-								okButton.setEnabled(true);
-								return;
-							case CONTINUE:
-								releaseTestRide(currVehicle);
-								db.testDriveVehicle(currVehicle, distance);
-								updateStatusLabel(" ", null);
-								JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
-								okButton.setEnabled(true);
-								dispose();
-								return;
-							}
-						} catch (HeadlessException | InterruptedException | ExecutionException e) {
-							releaseTestRide(currVehicle);
+						super.done();
+						switch(getStatus()) {
+						case STOP: default:
+							JOptionPane.showMessageDialog(null,"The vehicle was bought already, closing...");
+							dispose();
+							return;
+						case RETRY:
+							JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
+							updateStatusLabel(" ", null);
+							okButton.setEnabled(true);
+							return;
+						case CONTINUE:
+							JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
+							okButton.setEnabled(true);
+							dispose();
+							return;
 						}
 					}
 				}.execute();
 			});
 		});
 		cancelButton.addActionListener((event)->{dispose();});
-	}
-
-	private enum Status{STOP,CONTINUE,RETRY};
-	
-	///// locking vehicle test riding
-		static private HashMap<String, Semaphore> testDrivers;
-		private static List<String> reqTestRiders(Vehicle v){
-			List<String> reqTestRiders = new ArrayList<String>();
-			if (v instanceof ILandVehicle) {
-				reqTestRiders.add(ILandVehicle.class.getSimpleName());
-			}
-			if (v instanceof ISeaVehicle) {
-				reqTestRiders.add(ISeaVehicle.class.getSimpleName());
-			}
-			if (v instanceof IAirVehicle) {
-				reqTestRiders.add(IAirVehicle.class.getSimpleName());
-			}
-			return reqTestRiders;
-		}
-		private boolean aquireTestRide(Vehicle vehicle) {
-			if (db.duringTransactionContains(vehicle)) return false;
-			try {
-			for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).acquire();
-			} catch (InterruptedException e) {
-				for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).release();
-				return false;
-			}
-			return db.duringTransactionAdd(vehicle);
-		}
-		private void releaseTestRide(Vehicle vehicle) {
-			db.duringTransactionRemove(vehicle);
-			for(String s:TestDrive.reqTestRiders(vehicle)) testDrivers.get(s).release();
-		}
-		static {
-			testDrivers = new HashMap<String, Semaphore>(3);
-			for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
-					IAirVehicle.class.getSimpleName()))
-				testDrivers.put(s, new Semaphore(1));
-		}	
-		
+	}		
 }
 
 

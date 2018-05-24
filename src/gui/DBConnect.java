@@ -3,11 +3,26 @@
 package gui;
 
 
+import java.awt.HeadlessException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+
 import classes.Database;
 import classes.Vehicle;
+import interfaces.IAirVehicle;
+import interfaces.ILandVehicle;
+import interfaces.ISeaVehicle;
+import javafx.scene.media.MediaPlayer.Status;
 
 
 public class DBConnect extends JComponent {
@@ -28,11 +43,67 @@ public class DBConnect extends JComponent {
 		db.buyVehicle(v);
 		firePropertyChange("buyVehicle", v, null);
 	}
-
-	public void testDriveVehicle(Vehicle v, double d) {
-			db.testDriveVehicle(v, d);
-			firePropertyChange("testDriveVehicle", v, v.getTotalDistance());
+	
+	///	testDriveVehicle class is a SwingWorker background thread that was created in order to perform the the testDriving task in the background, 
+	/// without stalling the window during the action, and give the ability to the user to receive the status of the action through the Status enum.
+	/// if you want to execute the thread you can: <DBConnect instance>.new testDriveVehicle(vehicle,distance).execute();
+	/// you can override the done() method to include your own post background method thread
+	
+	class testDriveVehicle extends SwingWorker<DBConnect.Status,Object>{
+		private Vehicle vehicle;
+		private double distance;
+		public testDriveVehicle(Vehicle vehicle, double distance) {
+			this.vehicle = vehicle; this.distance = distance;
+		}
+		private void testDriveVehicleMehod() {
+			db.testDriveVehicle(vehicle,distance);
+			DBConnect.getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
+		}
+		
+		public DBConnect.Status getStatus(){
+			try {
+				return get();
+			} catch (InterruptedException | ExecutionException e) {
+				return Status.STOP;
+			}
+		}
+		
+		@Override	
+		protected DBConnect.Status doInBackground() throws Exception {
+			try {
+				if(!db.containsIdentical(vehicle)) {
+					return Status.STOP;
+				}
+				if(!aquireTestRide(vehicle)) {
+					return Status.RETRY;
+				}
+				Thread.sleep((long)(distance*100));
+				return Status.CONTINUE;
+				} 
+			catch (InterruptedException e) {
+				Utilities.log("thread sleep interrupted");
+				releaseTestRide(vehicle);
+				return Status.STOP;
+			}
+		}
+		
+		@Override
+		protected void done() {
+			try {
+				switch(get()) {
+				case CONTINUE:
+					testDriveVehicleMehod();
+					releaseTestRide(vehicle);
+				default:
+					return;
+				}
+			} catch (HeadlessException | InterruptedException | ExecutionException e) {
+				releaseTestRide(vehicle);
+			}
+		}
+		
 	}
+	
 
 	public void resetDistances() {
 		db.resetDistances();
@@ -67,6 +138,8 @@ public class DBConnect extends JComponent {
 		return self;
 	}
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
 	private List<Vehicle> duringTransaction = new ArrayList<Vehicle>();
 	private Integer duringTransactionIndex(Vehicle vehicle) {
@@ -95,4 +168,43 @@ public class DBConnect extends JComponent {
 			duringTransaction.remove((int)index);
 		}
 	}
+	
+	enum Status{STOP,CONTINUE,RETRY};
+	
+	///// locking vehicle test riding
+		static private HashMap<String, Semaphore> testDrivers;
+		private static List<String> reqTestRiders(Vehicle v){
+			List<String> reqTestRiders = new ArrayList<String>();
+			if (v instanceof ILandVehicle) {
+				reqTestRiders.add(ILandVehicle.class.getSimpleName());
+			}
+			if (v instanceof ISeaVehicle) {
+				reqTestRiders.add(ISeaVehicle.class.getSimpleName());
+			}
+			if (v instanceof IAirVehicle) {
+				reqTestRiders.add(IAirVehicle.class.getSimpleName());
+			}
+			return reqTestRiders;
+		}
+		private boolean aquireTestRide(Vehicle vehicle) {
+			if (duringTransactionContains(vehicle)) return false;
+			try {
+			for(String s:reqTestRiders(vehicle)) testDrivers.get(s).acquire();
+			} catch (InterruptedException e) {
+				for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
+				return false;
+			}
+			return duringTransactionAdd(vehicle);
+		}
+		private void releaseTestRide(Vehicle vehicle) {
+			duringTransactionRemove(vehicle);
+			for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
+		}
+		static {
+			testDrivers = new HashMap<String, Semaphore>(3);
+			for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
+					IAirVehicle.class.getSimpleName()))
+				testDrivers.put(s, new Semaphore(1));
+		}	
+	
 }
