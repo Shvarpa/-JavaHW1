@@ -29,7 +29,7 @@ public class AddVehicle extends JDialog {
 	private AddVehicleForm form;
 	private AddVehicleImages imagePanel;
 	private JLabel statusLabel;
-
+	private Vehicle currVehicle;
 	// Constructor
 	public AddVehicle() {
 		setTitle("Add Vehcile");
@@ -85,9 +85,8 @@ public class AddVehicle extends JDialog {
 		buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
 		JButton addButton = new JButton("Add");
 		addButton.addActionListener((event) -> {
-			Vehicle curr = null;
 			try {
-				curr = createVehicle(typesChoice.getSelectedItem().toString());
+				currVehicle = createVehicle(typesChoice.getSelectedItem().toString());
 			}
 			catch (NumberFormatException e) {
 				System.err.println(e.getMessage());
@@ -95,9 +94,12 @@ public class AddVehicle extends JDialog {
 				pack();
 				return;
 			}
-			if (curr==null) return;
-			DBConnect.getConnection().addVehicle(curr);
-			dispose();
+			if (currVehicle==null) return;
+			Utilities.showDialog(new WaitDialog((long)Utilities.getRand(3000, 8000), ()->{
+				DBConnect.getConnection().addVehicle(currVehicle);
+				dispose();
+			}));
+
 		});
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener((event) -> {

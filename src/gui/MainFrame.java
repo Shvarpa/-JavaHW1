@@ -24,11 +24,7 @@ import java.awt.Insets;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPanel;
-	private JButton addVehicleButton;
-	private JButton buyVehicleButton;
-	private JButton testDriveButton;
-	private JButton resetDistancesButton;
-	private JButton changeFlagsButton;
+	private JButton addVehicleButton,buyVehicleButton,testDriveButton,resetDistancesButton,changeFlagsButton,currentDbButton;
 	private DataPanel dataPanel = new DataPanel();
 	private JTextArea toStringTextArea;
 	TestDrive testDriveWindow;
@@ -44,7 +40,7 @@ public class MainFrame extends JFrame {
 
 		JPanel rightPanel = new JPanel();
 		contentPanel.add(rightPanel, BorderLayout.EAST);
-		rightPanel.setLayout(new GridLayout(5, 1, 0, 0));
+		rightPanel.setLayout(new GridLayout(6, 1, 0, 0));
 
 		/// buttons
 		addVehicleButton = new JButton("Add Vehicle");
@@ -61,12 +57,15 @@ public class MainFrame extends JFrame {
 
 		changeFlagsButton = new JButton("Change Flags");
 		changeFlagsButton.setEnabled(false);
+		
+		currentDbButton = new JButton("Current Database view");
 
 		rightPanel.add(addVehicleButton);
 		rightPanel.add(buyVehicleButton);
 		rightPanel.add(testDriveButton);
 		rightPanel.add(resetDistancesButton);
 		rightPanel.add(changeFlagsButton);
+		rightPanel.add(currentDbButton);
 
 		// actions
 		addVehicleButton.addActionListener((event) -> {
@@ -117,7 +116,11 @@ public class MainFrame extends JFrame {
 				Utilities.showDialog(new ChangeFlags());
 			});
 		});
-
+		currentDbButton.addActionListener((event)->{
+			SwingUtilities.invokeLater(()->{
+				Utilities.showDialog(new CurrentDBView());
+			});
+		});
 		dataPanel.addPropertyChangeListener("isEmpty", (event) -> {
 			if (event.getNewValue().equals(true)) {
 				resetDistancesButton.setEnabled(false);
