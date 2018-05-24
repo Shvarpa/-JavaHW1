@@ -84,7 +84,7 @@ public class MainFrame extends JFrame {
 					super.done();
 					try {
 						if(!get()) {
-							updateToString(DBConnect.duringTransactionMessege);
+							JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
 						}
 					} catch (InterruptedException | ExecutionException e) {
 						// TODO Auto-generated catch block
@@ -106,8 +106,8 @@ public class MainFrame extends JFrame {
 		});
 
 		resetDistancesButton.addActionListener((event) -> {
-			db.resetDistances();
-			SwingUtilities.invokeLater(() -> {
+			new WaitDialog((long)Utilities.getRand(3000, 8000), ()-> {
+				db.resetDistances();
 				JOptionPane.showMessageDialog(null,"all vehicles distances were reset!");
 			});
 		});

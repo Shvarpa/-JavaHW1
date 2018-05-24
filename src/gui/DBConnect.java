@@ -155,9 +155,10 @@ public class DBConnect extends JComponent {
 		firePropertyChange("resetDistances", null, null);
 	}
 
-	public void changeFlags(String flag) {
-		db.changeFlags(flag);
+	public boolean changeFlags(String flag) {
+		boolean s = db.changeFlags(flag);
 		firePropertyChange("changeFlags", null, flag);
+		return s;
 	}
 
 	public List<Vehicle> getVehicles() {
