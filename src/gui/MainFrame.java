@@ -77,16 +77,17 @@ public class MainFrame extends JFrame {
 			if (vS == null)
 				return;
 			updateToString("preparing vehicle for purchase...");
-			db.new buyVehicle(vS.getVehicle()){
+			db.new buyVehicleThread(vS.getVehicle()){
 				@Override
 				protected void done() {
-					super.done();
 					try {
-						if(!get()) {
+						switch(get()) {
+						case RETRY:
 							JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
+						default:
+							return;
 						}
 					} catch (InterruptedException | ExecutionException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

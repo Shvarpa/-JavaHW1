@@ -122,15 +122,11 @@ public class Utilities {
 //		return createTypesComboBox("ElectricBike", "jpg", 3, d);
 //	}
 	
-	public static void invokeAfter(long millis, Runnable code) {
+	public static void invokeAfter(long millis, Runnable code) throws InterruptedException{
 		new SwingWorker<Object, Object>() {
 			@Override
-			protected Object doInBackground() {
-				try {
-					Thread.sleep(millis);
-				} catch (InterruptedException e) {
-					Utilities.log("thread sleep interrupted");
-				}
+			protected Object doInBackground() throws InterruptedException {
+				Thread.sleep(millis);
 				return null;
 			}
 
@@ -161,7 +157,7 @@ public class Utilities {
 		d.setLocationRelativeTo(null);
 		d.setVisible(true);
 	}
-	
+
 	static public void log(String data) {
 		new Thread(()->{
 			synchronized (System.out) {
@@ -173,5 +169,4 @@ public class Utilities {
 	public static double getRand(double min, double max) {
 		return 	(new Random().nextDouble()*(max-min))+min;
 	}
-
 }

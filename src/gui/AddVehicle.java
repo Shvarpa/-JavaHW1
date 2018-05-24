@@ -95,11 +95,8 @@ public class AddVehicle extends JDialog {
 				return;
 			}
 			if (currVehicle==null) return;
-			Utilities.showDialog(new WaitDialog((long)Utilities.getRand(3000, 8000), ()->{
-				DBConnect.getConnection().addVehicle(currVehicle);
-				dispose();
-			}));
-
+			DBConnect.getConnection().addVehicle(currVehicle);
+			dispose();
 		});
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener((event) -> {

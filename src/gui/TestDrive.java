@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import classes.Vehicle;
+import gui.DBConnect.testDriveVehicleThread;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
@@ -103,12 +104,11 @@ public class TestDrive extends JDialog {
 			SwingUtilities.invokeLater(()->{
 				updateStatusLabel("Started test drive, please wait", Color.BLACK);
 				okButton.setEnabled(false);
-				db.new testDriveVehicle (currVehicle, distance) {
+				db.new testDriveVehicleThread (currVehicle, distance) {
 					@Override
 					protected void done() {
-						super.done();
 						switch(getStatus()) {
-						case STOP: default:
+						case STOP:
 							JOptionPane.showMessageDialog(null,"The vehicle was bought already, closing...");
 							dispose();
 							return;
@@ -117,11 +117,13 @@ public class TestDrive extends JDialog {
 							updateStatusLabel(" ", null);
 							okButton.setEnabled(true);
 							return;
-						case CONTINUE:
+						case DONE:
 							JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
 							okButton.setEnabled(true);
 							dispose();
 							return;
+						case ABORT: default:
+							JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ currVehicle.toString() +"\nwas canceled");
 						}
 					}
 				}.execute();

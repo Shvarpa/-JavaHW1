@@ -3,31 +3,31 @@
 package gui;
 
 
-import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
 import classes.Database;
 import classes.Vehicle;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
-import javafx.scene.media.MediaPlayer.Status;
 
 
 public class DBConnect extends JComponent {
+	
+	long getWaitTime() {
+		return (long)Utilities.getRand(3000, 8000);
+	}
 
 	static volatile DBConnect self = null;
 	private Database db;
@@ -37,67 +37,69 @@ public class DBConnect extends JComponent {
 	}
 
 	public void addVehicle(Vehicle v) {
-		db.addVehicle(v);
-		firePropertyChange("addVehicle", null, v);
+		new AddVehicleThread(v).execute();
+	}
+	class AddVehicleThread extends DBThread{
+		private Vehicle vehicle;
+		public AddVehicleThread(Vehicle vehicle) {
+			this.vehicle = vehicle;
+		}
+		@Override
+		protected Status doInBackground() {
+			new WaitDialog(getWaitTime());
+			db.addVehicle(vehicle);
+			firePropertyChange("addVehicle", null, vehicle);
+			return Status.DONE;	
+		}	
 	}
 	
+	public void buyVehicle(Vehicle vehicle) {
+		new buyVehicleThread(vehicle).execute();
+	}
 	
-	class buyVehicle extends SwingWorker<Boolean, Object>{
+	class buyVehicleThread extends DBThread{
 		private Vehicle vehicle;
-		public buyVehicle(Vehicle vehicle) {
+		public buyVehicleThread(Vehicle vehicle) {
 			this.vehicle = vehicle;
 		}		
-		
 			public void buyVehicleMethod(Vehicle v) {
 			db.buyVehicle(v);
 			DBConnect.getConnection().firePropertyChange("buyVehicle", v, null);
 		}
-		
 		@Override
-		protected Boolean doInBackground() throws Exception {
+		protected DBConnect.Status doInBackground() {
 			if(!duringTransactionAdd(vehicle)) {
-				return false;
+				return Status.RETRY;
 			}
 			try {
 				Thread.sleep((long)Utilities.getRand(5000, 10000));
-				return true;
+				int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+				if(result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+					duringTransactionRemove(vehicle);
+					return Status.CANCEL;
+				}
+				new WaitDialog(getWaitTime(),()->{
+					buyVehicleMethod(vehicle);
+					duringTransactionRemove(vehicle);
+					JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+				});	
+				return Status.DONE;
 			} catch (InterruptedException e) {
 				duringTransactionRemove(vehicle);
-				return false;
+				return Status.RETRY;
 			}
-		}
-		
-		@Override
-		protected void done() {
-			try {
-				if (!get()) {return;}
-			} catch (InterruptedException | ExecutionException e) {
-				return;
-			}
-			int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
-					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-			if(result == JOptionPane.NO_OPTION) {
-				duringTransactionRemove(vehicle);
-				return;
-			}
-			new WaitDialog((long) Utilities.getRand(3000, 8000),()->{
-				buyVehicleMethod(vehicle);
-				duringTransactionRemove(vehicle);
-				JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
-			});		
 		}
 	}
 	
+	public void testDriveVehicle(Vehicle vehicle,double distance) {
+		new testDriveVehicleThread(vehicle,distance).execute();
+	}
 	
-	///	testDriveVehicle class is a SwingWorker background thread that was created in order to perform the the testDriving task in the background, 
-	/// without stalling the window during the action, and give the ability to the user to receive the status of the action through the Status enum.
-	/// if you want to execute the thread you can: <DBConnect instance>.new testDriveVehicle(vehicle,distance).execute();
-	/// you can override the done() method to include your own post background method thread
-	
-	class testDriveVehicle extends SwingWorker<DBConnect.Status,Object>{
+	class testDriveVehicleThread extends DBThread{
 		private Vehicle vehicle;
 		private double distance;
-		public testDriveVehicle(Vehicle vehicle, double distance) {
+		public testDriveVehicleThread(Vehicle vehicle, double distance) {
 			this.vehicle = vehicle; this.distance = distance;
 		}
 		private void testDriveVehicleMehod() {
@@ -105,16 +107,8 @@ public class DBConnect extends JComponent {
 			DBConnect.getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
 		}
 		
-		public DBConnect.Status getStatus(){
-			try {
-				return get();
-			} catch (InterruptedException | ExecutionException e) {
-				return Status.STOP;
-			}
-		}
-		
 		@Override	
-		protected DBConnect.Status doInBackground() throws Exception {
+		protected DBConnect.Status doInBackground() {
 			try {
 				if(!db.containsIdentical(vehicle)) {
 					return Status.STOP;
@@ -123,7 +117,9 @@ public class DBConnect extends JComponent {
 					return Status.RETRY;
 				}
 				Thread.sleep((long)(distance*100));
-				return Status.CONTINUE;
+				testDriveVehicleMehod();
+				releaseTestRide(vehicle);
+				return Status.DONE;
 				} 
 			catch (InterruptedException e) {
 				Utilities.log("thread sleep interrupted");
@@ -131,36 +127,48 @@ public class DBConnect extends JComponent {
 				return Status.STOP;
 			}
 		}
-		
-		@Override
-		protected void done() {
-			try {
-				switch(get()) {
-				case CONTINUE:
-					testDriveVehicleMehod();
-					releaseTestRide(vehicle);
-				default:
-					return;
-				}
-			} catch (HeadlessException | InterruptedException | ExecutionException e) {
-				releaseTestRide(vehicle);
-			}
-		}
-		
 	}
 	
 
 	public void resetDistances() {
-		db.resetDistances();
-		firePropertyChange("resetDistances", null, null);
+		new ResetDistancesThread().execute();
+	}
+	
+	class ResetDistancesThread extends DBThread{
+		@Override
+		protected Status doInBackground() {
+			new WaitDialog(getWaitTime());
+			if(db.isEmpty()) {
+				return Status.FAILED;
+			}
+			db.resetDistances();
+			firePropertyChange("resetDistances", null, null);
+			return Status.DONE;	
+		}	
 	}
 
-	public boolean changeFlags(String flag) {
-		boolean s = db.changeFlags(flag);
-		firePropertyChange("changeFlags", null, flag);
-		return s;
+	public void changeFlags(String flag) {
+		new ChangeFlagsThread(flag).execute();
+	}	
+	
+	class ChangeFlagsThread	extends DBThread{
+		private String flag;
+		ChangeFlagsThread(String flag){
+			this.flag=flag;
+		}
+		@Override
+		protected Status doInBackground() {
+			new WaitDialog(getWaitTime());
+			if(!db.hasSeaVehicles()) {
+				return Status.FAILED;
+			}
+			db.changeFlags(flag);
+			firePropertyChange("changeFlags", null, flag);
+			return Status.DONE;	
+		}
+		
 	}
-
+	
 	public List<Vehicle> getVehicles() {
 		return db.getVehicles();
 	}
@@ -171,6 +179,10 @@ public class DBConnect extends JComponent {
 	
 	public boolean containsIdentical(Vehicle v) {
 		return db.containsIdentical(v);
+	}
+	
+	public boolean isEmpty() {
+		return db.isEmpty();
 	}
 	
 	public static DBConnect getConnection() {
@@ -215,42 +227,51 @@ public class DBConnect extends JComponent {
 		}
 	}
 	
-	enum Status{STOP,CONTINUE,RETRY};
+	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
 	
 	///// locking vehicle test riding
-		static private HashMap<String, Semaphore> testDrivers;
-		private static List<String> reqTestRiders(Vehicle v){
-			List<String> reqTestRiders = new ArrayList<String>();
-			if (v instanceof ILandVehicle) {
-				reqTestRiders.add(ILandVehicle.class.getSimpleName());
-			}
-			if (v instanceof ISeaVehicle) {
-				reqTestRiders.add(ISeaVehicle.class.getSimpleName());
-			}
-			if (v instanceof IAirVehicle) {
-				reqTestRiders.add(IAirVehicle.class.getSimpleName());
-			}
-			return reqTestRiders;
+	static private HashMap<String, Semaphore> testDrivers;
+	private static List<String> reqTestRiders(Vehicle v){
+		List<String> reqTestRiders = new ArrayList<String>();
+		if (v instanceof ILandVehicle) {
+			reqTestRiders.add(ILandVehicle.class.getSimpleName());
 		}
-		private boolean aquireTestRide(Vehicle vehicle) {
-			if (duringTransactionContains(vehicle)) return false;
-			try {
-			for(String s:reqTestRiders(vehicle)) testDrivers.get(s).acquire();
-			} catch (InterruptedException e) {
-				for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
-				return false;
-			}
-			return duringTransactionAdd(vehicle);
+		if (v instanceof ISeaVehicle) {
+			reqTestRiders.add(ISeaVehicle.class.getSimpleName());
 		}
-		private void releaseTestRide(Vehicle vehicle) {
-			duringTransactionRemove(vehicle);
+		if (v instanceof IAirVehicle) {
+			reqTestRiders.add(IAirVehicle.class.getSimpleName());
+		}
+		return reqTestRiders;
+	}
+	private boolean aquireTestRide(Vehicle vehicle) {
+		if (duringTransactionContains(vehicle)) return false;
+		try {
+		for(String s:reqTestRiders(vehicle)) testDrivers.get(s).acquire();
+		} catch (InterruptedException e) {
 			for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
+			return false;
 		}
-		static {
-			testDrivers = new HashMap<String, Semaphore>(3);
-			for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
-					IAirVehicle.class.getSimpleName()))
-				testDrivers.put(s, new Semaphore(1));
-		}	
+		return duringTransactionAdd(vehicle);
+	}
+	private void releaseTestRide(Vehicle vehicle) {
+		duringTransactionRemove(vehicle);
+		for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
+	}
+	static {
+		testDrivers = new HashMap<String, Semaphore>(3);
+		for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
+				IAirVehicle.class.getSimpleName()))
+			testDrivers.put(s, new Semaphore(1));
+	}	
 	
+	abstract class DBThread extends SwingWorker<DBConnect.Status,Object>{
+		public Status getStatus() {
+			try {
+				return get();
+			} catch (InterruptedException | ExecutionException e) {
+				return Status.ABORT;
+			}
+		}
+	}
 }

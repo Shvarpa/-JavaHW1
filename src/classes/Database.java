@@ -22,7 +22,7 @@ public class Database {
 	private List<ILandVehicle> landVehicleDatabase;
 	private ReadWriteLock lock = new ReentrantReadWriteLock(true);
 		
-	private boolean isEmpty() {
+	public boolean isEmpty() {
 		lock.readLock().lock();
 		if (vehicleDatabase.isEmpty()) {
 			Utilities.log("no vehicles in database, returning\n");
