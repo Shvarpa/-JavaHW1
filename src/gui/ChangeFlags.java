@@ -5,19 +5,15 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class ChangeFlags extends JDialog {
-
+	private static final long serialVersionUID = 1L;
 	private DBConnect db = DBConnect.getConnection();
 	private final JPanel contentPanel = new JPanel();
 	private static Dimension preferdFlagsSize = new Dimension(120, 80);

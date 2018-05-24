@@ -22,6 +22,7 @@ import classes.Vehicle;
 
 
 public class AddVehicle extends JDialog {
+	private static final long serialVersionUID = 1L;
 	JComboBox<ImageText> typesChoice;
 	JPanel mainPanel, selectPanel, buttonPanel , statusPanel;
 	JScrollPane fieldPanel;

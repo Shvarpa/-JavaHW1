@@ -9,7 +9,7 @@ import classes.Vehicle;
 import gui.Images.ImageOpener;
 
 public class VehicleSelectButton extends JRadioButton {
-
+	private static final long serialVersionUID = 1L;
 	private Vehicle vehicle;
 
 	public VehicleSelectButton(Vehicle v) {

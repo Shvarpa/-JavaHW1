@@ -32,6 +32,7 @@ import interfaces.NonMotorized;
 import javafx.util.Pair;
 
 public class AddVehicleForm extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private Pair<JLabel, JTextField> model = new Pair<JLabel, JTextField>(new JLabel("model"), new JTextField());
 	private Pair<JLabel, JTextField> seats = new Pair<JLabel, JTextField>(new JLabel("seats"), new JTextField());
 	private Pair<JLabel, JTextField> speed = new Pair<JLabel, JTextField>(new JLabel("speed"), new JTextField());

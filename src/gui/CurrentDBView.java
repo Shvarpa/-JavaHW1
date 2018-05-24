@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import classes.Vehicle;
 
 public class CurrentDBView extends JDialog{
+	private static final long serialVersionUID = 1L;
 	private DBConnect db = DBConnect.getConnection();
 	private List<VehicleSelectButton> vehicleSelectButtons = new ArrayList<VehicleSelectButton>();
 	static Dimension preferedImageSize = new Dimension(50, 50);

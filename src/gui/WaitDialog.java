@@ -3,14 +3,12 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.SwingWorker;
 
 public class WaitDialog extends JDialog{
-		
+	private static final long serialVersionUID = 1L;
+
 	public WaitDialog(long waitMillis, Runnable after){
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);

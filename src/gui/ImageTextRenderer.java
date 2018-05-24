@@ -8,7 +8,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 public class ImageTextRenderer extends JLabel implements ListCellRenderer<ImageText> {
-	
+	private static final long serialVersionUID = 1L;
 	private boolean textVisable=true;
 	
 	public ImageTextRenderer() {

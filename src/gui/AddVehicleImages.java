@@ -20,7 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import gui.Images.ImageOpener;
 
 public class AddVehicleImages extends JPanel {
-
+	private static final long serialVersionUID = 1L;
 	private String imagesPath, filePath;
 	private JComboBox<ImageText> imagesCombo;
 	private JRadioButton imagesRadio,fileRadio;

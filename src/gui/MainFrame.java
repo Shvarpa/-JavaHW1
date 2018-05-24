@@ -15,14 +15,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import classes.Vehicle;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
 public class MainFrame extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel;
 	private JButton addVehicleButton,buyVehicleButton,testDriveButton,resetDistancesButton,changeFlagsButton,currentDbButton;
 	private DataPanel dataPanel = new DataPanel();

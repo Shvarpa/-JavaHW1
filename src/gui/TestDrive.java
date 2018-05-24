@@ -4,20 +4,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.HeadlessException;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -25,19 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
 import classes.Vehicle;
-import gui.DBConnect.testDriveVehicleThread;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
-import javafx.scene.media.MediaPlayer.Status;
 
 import java.awt.Color;
 
 public class TestDrive extends JDialog {
-
+	private static final long serialVersionUID = 1L;
 	private Vehicle currVehicle;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField distanceField;

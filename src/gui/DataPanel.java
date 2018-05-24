@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import classes.Vehicle;
 
 public class DataPanel extends JScrollPane implements ActionListener {
-
+	private static final long serialVersionUID = 1L;
 	private WrapLayout layout = new WrapLayout(WrapLayout.LEFT, 15, 10);
 	private DBConnect db = DBConnect.getConnection();
 	private List<VehicleSelectButton> vehicleSelectButtons = new ArrayList<VehicleSelectButton>();

@@ -24,7 +24,8 @@ import interfaces.ISeaVehicle;
 
 
 public class DBConnect extends JComponent {
-	
+	private static final long serialVersionUID = 1L;
+
 	long getWaitTime() {
 		return (long)Utilities.getRand(3000, 8000);
 	}
