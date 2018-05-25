@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -21,13 +23,15 @@ import classes.Vehicle;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import javafx.util.Pair;
 
 
 public class DBConnect extends JComponent {
 	private static final long serialVersionUID = 1L;
 
 	long getWaitTime() {
-		return (long)Utilities.getRand(3000, 8000);
+//		return (long)Utilities.getRand(3000, 8000);
+		return 10;
 	}
 
 	static volatile DBConnect self = null;
@@ -40,16 +44,19 @@ public class DBConnect extends JComponent {
 	public void addVehicle(Vehicle v) {
 		new AddVehicleThread(v).execute();
 	}
+	private Lock addVehicleLock = new ReentrantLock(true); 
 	class AddVehicleThread extends DBThread{
 		private Vehicle vehicle;
 		public AddVehicleThread(Vehicle vehicle) {
 			this.vehicle = vehicle;
 		}
 		@Override
-		protected Status doInBackground() {
+		final protected Status doInBackground() {
+			addVehicleLock.lock();
 			new WaitDialog(getWaitTime());
 			db.addVehicle(vehicle);
-			firePropertyChange("addVehicle", null, vehicle);
+			getConnection().firePropertyChange("addVehicle", null, vehicle);
+			addVehicleLock.unlock();
 			return Status.DONE;	
 		}	
 	}
@@ -62,34 +69,33 @@ public class DBConnect extends JComponent {
 		private Vehicle vehicle;
 		public buyVehicleThread(Vehicle vehicle) {
 			this.vehicle = vehicle;
-		}		
+			}		
 			public void buyVehicleMethod(Vehicle v) {
 			db.buyVehicle(v);
-			DBConnect.getConnection().firePropertyChange("buyVehicle", v, null);
-		}
-		@Override
-		protected DBConnect.Status doInBackground() {
-			if(!duringTransactionAdd(vehicle)) {
-				return Status.RETRY;
+			getConnection().firePropertyChange("buyVehicle", v, null);
 			}
-			try {
-				Thread.sleep((long)Utilities.getRand(5000, 10000));
-				int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
-						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-				if(result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
-					duringTransactionRemove(vehicle);
-					return Status.CANCEL;
+			@Override
+			final protected DBConnect.Status doInBackground() {
+				if(!transactionLock.aquireBuyVehicle(vehicle)) {
+					return Status.RETRY;
 				}
-				new WaitDialog(getWaitTime(),()->{
+				try {
+					Thread.sleep((long)Utilities.getRand(5000, 10000));
+					int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
+							JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+					if(result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+						transactionLock.releaseBuyVehicle(vehicle);
+						return Status.CANCEL;
+					}
+					new WaitDialog(getWaitTime());
 					buyVehicleMethod(vehicle);
-					duringTransactionRemove(vehicle);
+					transactionLock.releaseBuyVehicle(vehicle);
 					JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
-				});	
-				return Status.DONE;
-			} catch (InterruptedException e) {
-				duringTransactionRemove(vehicle);
-				return Status.RETRY;
-			}
+					return Status.DONE;
+				} catch (InterruptedException e) {
+					transactionLock.releaseBuyVehicle(vehicle);
+					return Status.ABORT;
+				}
 		}
 	}
 	
@@ -105,26 +111,26 @@ public class DBConnect extends JComponent {
 		}
 		private void testDriveVehicleMehod() {
 			db.testDriveVehicle(vehicle,distance);
-			DBConnect.getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
+			getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
 		}
 		
 		@Override	
-		protected DBConnect.Status doInBackground() {
+		final protected DBConnect.Status doInBackground() {
 			try {
 				if(!db.containsIdentical(vehicle)) {
 					return Status.STOP;
 				}
-				if(!aquireTestRide(vehicle)) {
+				if(!transactionLock.aquireTestDrive(vehicle)) {
 					return Status.RETRY;
 				}
 				Thread.sleep((long)(distance*100));
 				testDriveVehicleMehod();
-				releaseTestRide(vehicle);
+				transactionLock.releaseTestDrive(vehicle);
 				return Status.DONE;
 				} 
 			catch (InterruptedException e) {
 				Utilities.log("thread sleep interrupted");
-				releaseTestRide(vehicle);
+				transactionLock.releaseTestDrive(vehicle);
 				return Status.STOP;
 			}
 		}
@@ -137,13 +143,13 @@ public class DBConnect extends JComponent {
 	
 	class ResetDistancesThread extends DBThread{
 		@Override
-		protected Status doInBackground() {
+		final protected Status doInBackground() {
 			new WaitDialog(getWaitTime());
 			if(db.isEmpty()) {
 				return Status.FAILED;
 			}
 			db.resetDistances();
-			firePropertyChange("resetDistances", null, null);
+			getConnection().firePropertyChange("resetDistances", null, null);
 			return Status.DONE;	
 		}	
 	}
@@ -158,13 +164,13 @@ public class DBConnect extends JComponent {
 			this.flag=flag;
 		}
 		@Override
-		protected Status doInBackground() {
+		final protected Status doInBackground() {
 			new WaitDialog(getWaitTime());
 			if(!db.hasSeaVehicles()) {
 				return Status.FAILED;
 			}
 			db.changeFlags(flag);
-			firePropertyChange("changeFlags", null, flag);
+			getConnection().firePropertyChange("changeFlags", null, flag);
 			return Status.DONE;	
 		}
 		
@@ -198,73 +204,12 @@ public class DBConnect extends JComponent {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
-	private List<Vehicle> duringTransaction = new ArrayList<Vehicle>();
-	private Integer duringTransactionIndex(Vehicle vehicle) {
-		synchronized (duringTransaction) {
-			for(int i=0;i<duringTransaction.size();i++)
-				if (duringTransaction.get(i)==vehicle)
-					return i;
-			return null;
-		}
-	}
-	public boolean duringTransactionContains(Vehicle vehicle) {
-		return (duringTransactionIndex(vehicle) != null);
-	}
-	public boolean duringTransactionAdd(Vehicle vehicle) {
-		if(duringTransactionContains(vehicle)) return false;
-		else
-			synchronized (duringTransaction) {
-				duringTransaction.add(vehicle);
-			}
-		return true;
-	}
-	public void duringTransactionRemove(Vehicle vehicle) {
-		Integer index = duringTransactionIndex(vehicle);
-		if(index == null) return;
-		synchronized (duringTransaction) {
-			duringTransaction.remove((int)index);
-		}
-	}
-	
+		
 	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
-	
+	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
+	private TransactionLock transactionLock = new TransactionLock();
 	///// locking vehicle test riding
-	static private HashMap<String, Semaphore> testDrivers;
-	private static List<String> reqTestRiders(Vehicle v){
-		List<String> reqTestRiders = new ArrayList<String>();
-		if (v instanceof ILandVehicle) {
-			reqTestRiders.add(ILandVehicle.class.getSimpleName());
-		}
-		if (v instanceof ISeaVehicle) {
-			reqTestRiders.add(ISeaVehicle.class.getSimpleName());
-		}
-		if (v instanceof IAirVehicle) {
-			reqTestRiders.add(IAirVehicle.class.getSimpleName());
-		}
-		return reqTestRiders;
-	}
-	private boolean aquireTestRide(Vehicle vehicle) {
-		if (duringTransactionContains(vehicle)) return false;
-		try {
-		for(String s:reqTestRiders(vehicle)) testDrivers.get(s).acquire();
-		} catch (InterruptedException e) {
-			for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
-			return false;
-		}
-		return duringTransactionAdd(vehicle);
-	}
-	private void releaseTestRide(Vehicle vehicle) {
-		duringTransactionRemove(vehicle);
-		for(String s:reqTestRiders(vehicle)) testDrivers.get(s).release();
-	}
-	static {
-		testDrivers = new HashMap<String, Semaphore>(3);
-		for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
-				IAirVehicle.class.getSimpleName()))
-			testDrivers.put(s, new Semaphore(1));
-	}	
+
 	
 	abstract class DBThread extends SwingWorker<DBConnect.Status,Object>{
 		public Status getStatus() {
@@ -275,4 +220,5 @@ public class DBConnect extends JComponent {
 			}
 		}
 	}
+	
 }
