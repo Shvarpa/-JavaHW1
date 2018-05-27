@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import classes.Vehicle;
 
@@ -21,7 +24,7 @@ public class CurrentDBView extends JDialog{
 	
 	public void refresh() {
 		for (VehicleSelectButton vS : vehicleSelectButtons) {
-			remove(vS);
+			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
 		for (Vehicle v : db.getVehicles()) {
@@ -30,15 +33,20 @@ public class CurrentDBView extends JDialog{
 			vehicleSelectButtons.add(vS);
 		}
 		for (VehicleSelectButton vS : vehicleSelectButtons) {
-			add(vS);
+			content.add(vS);
 		}
-		repaint();
-		revalidate();
-//		pack();
+		content.repaint();
+		content.revalidate();
+		pack();
 	}
+	
+	private JPanel content;
 	public CurrentDBView() {
+		setLayout(new BorderLayout());
+		content = new JPanel(new WrapLayout(WrapLayout.LEFT, 15, 10));
+		JScrollPane scroll = new JScrollPane(content, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		add(scroll,BorderLayout.CENTER);
 		setTitle("Database");
-		setLayout(new WrapLayout(WrapLayout.LEFT, 15, 10));
 		addWindowFocusListener(new WindowFocusListener() {
 			
 			@Override
