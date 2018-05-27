@@ -105,10 +105,8 @@ public class MainFrame extends JFrame {
 		});
 
 		resetDistancesButton.addActionListener((event) -> {
-			new WaitDialog((long)Utilities.getRand(3000, 8000), ()-> {
-				db.resetDistances();
-				JOptionPane.showMessageDialog(null,"all vehicles distances were reset!");
-			});
+			db.resetDistances();
+			JOptionPane.showMessageDialog(null,"all vehicles distances were reset!");
 		});
 		
 		changeFlagsButton.addActionListener((event)->{

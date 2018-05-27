@@ -64,7 +64,7 @@ public class DBConnect extends JComponent {
 			}
 			@Override
 			final protected DBConnect.Status doInBackground() {
-				if(!transactionLock.aquire(vehicle,Operation.BUY_VEHICLE)) {
+				if(!transactionLock.aquireBuyVehicle(vehicle)) {
 					return Status.RETRY;
 				}
 				try {
@@ -72,16 +72,16 @@ public class DBConnect extends JComponent {
 					int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
 							JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 					if(result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
-						transactionLock.release(vehicle,Operation.BUY_VEHICLE);
+						transactionLock.releaseBuyVehicle(vehicle);
 						return Status.CANCEL;
 					}
 					new WaitDialog(getWaitTime());
 					buyVehicleMethod(vehicle);
-					transactionLock.release(vehicle,Operation.BUY_VEHICLE);
+					transactionLock.releaseBuyVehicle(vehicle);
 					JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
 					return Status.DONE;
 				} catch (InterruptedException e) {
-					transactionLock.release(vehicle,Operation.BUY_VEHICLE);
+					transactionLock.releaseBuyVehicle(vehicle);
 					return Status.ABORT;
 				}
 		}
@@ -129,15 +129,19 @@ public class DBConnect extends JComponent {
 		new ResetDistancesThread().execute();
 	}
 	
+	private Lock resetDistancesLock = new ReentrantLock(true); 
 	class ResetDistancesThread extends DBThread{
 		@Override
 		final protected Status doInBackground() {
+			resetDistancesLock.lock();
 			new WaitDialog(getWaitTime());
 			if(db.isEmpty()) {
+				resetDistancesLock.unlock();
 				return Status.FAILED;
 			}
 			db.resetDistances();
 			getConnection().firePropertyChange("resetDistances", null, null);
+			resetDistancesLock.unlock();
 			return Status.DONE;	
 		}	
 	}
@@ -146,6 +150,7 @@ public class DBConnect extends JComponent {
 		new ChangeFlagsThread(flag).execute();
 	}	
 	
+	private Lock changeFlagsLock = new ReentrantLock(true); 
 	class ChangeFlagsThread	extends DBThread{
 		private String flag;
 		ChangeFlagsThread(String flag){
@@ -153,12 +158,15 @@ public class DBConnect extends JComponent {
 		}
 		@Override
 		final protected Status doInBackground() {
+			changeFlagsLock.lock();
 			new WaitDialog(getWaitTime());
 			if(!db.hasSeaVehicles()) {
+				changeFlagsLock.unlock();
 				return Status.FAILED;
 			}
 			db.changeFlags(flag);
 			getConnection().firePropertyChange("changeFlags", null, flag);
+			changeFlagsLock.unlock();
 			return Status.DONE;	
 		}
 		
