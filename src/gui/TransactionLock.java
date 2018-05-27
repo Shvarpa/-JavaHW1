@@ -73,7 +73,6 @@ public class TransactionLock extends ArrayList<Triplet>{
 			}
 			Utilities.log("aquireing " + index);
 			waiting.add(vehicle);
-			Utilities.log(waiting.toString());
 			ReentrantLock l = get(index).getLock();
 			waiting.remove(waiting.indexOf(vehicle));
 			l.lock();
@@ -89,7 +88,6 @@ public class TransactionLock extends ArrayList<Triplet>{
 		return true;
 	}
 	private void release(Vehicle vehicle,boolean type) {
-		Utilities.log(waiting.toString() +"////" + vehicle.toString() + "/////" + Boolean.toString(waiting.contains(vehicle)));
 		int index = indexOf((Object)vehicle);
 		if(index == -1) {
 			return;
@@ -98,6 +96,7 @@ public class TransactionLock extends ArrayList<Triplet>{
 				get(index).getLock().unlock();
 			Utilities.log("releasing " + index);
 		}
+		Utilities.log("removing " + index);
 		remove((int)index);
 			
 	}
