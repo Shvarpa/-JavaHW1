@@ -2,28 +2,16 @@
 
 package gui;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
-
 import classes.Database;
 import classes.Vehicle;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
-import javafx.util.Pair;
+
 
 
 public class DBConnect extends JComponent {
@@ -76,7 +64,7 @@ public class DBConnect extends JComponent {
 			}
 			@Override
 			final protected DBConnect.Status doInBackground() {
-				if(!transactionLock.aquireBuyVehicle(vehicle)) {
+				if(!transactionLock.aquire(vehicle,Operation.BUY_VEHICLE)) {
 					return Status.RETRY;
 				}
 				try {
@@ -84,16 +72,16 @@ public class DBConnect extends JComponent {
 					int result = JOptionPane.showOptionDialog(null, "are you sure you want to buy this vehicle?\n" + vehicle.toString(), "buying confirmation",
 							JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 					if(result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
-						transactionLock.releaseBuyVehicle(vehicle);
+						transactionLock.release(vehicle,Operation.BUY_VEHICLE);
 						return Status.CANCEL;
 					}
 					new WaitDialog(getWaitTime());
 					buyVehicleMethod(vehicle);
-					transactionLock.releaseBuyVehicle(vehicle);
+					transactionLock.release(vehicle,Operation.BUY_VEHICLE);
 					JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
 					return Status.DONE;
 				} catch (InterruptedException e) {
-					transactionLock.releaseBuyVehicle(vehicle);
+					transactionLock.release(vehicle,Operation.BUY_VEHICLE);
 					return Status.ABORT;
 				}
 		}
@@ -117,11 +105,11 @@ public class DBConnect extends JComponent {
 		@Override	
 		final protected DBConnect.Status doInBackground() {
 			try {
-				if(!db.containsIdentical(vehicle)) {
-					return Status.STOP;
-				}
 				if(!transactionLock.aquireTestDrive(vehicle)) {
 					return Status.RETRY;
+				}
+				if(!db.containsIdentical(vehicle)) {
+					return Status.STOP;
 				}
 				Thread.sleep((long)(distance*100));
 				testDriveVehicleMehod();
