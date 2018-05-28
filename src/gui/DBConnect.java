@@ -16,10 +16,27 @@ import classes.Vehicle;
 
 public class DBConnect extends JComponent {
 	private static final long serialVersionUID = 1L;
-
+	///a singleton connection to a database adapting the database to swing capable of firing swing propertyChange events
+	///each operation is a SwingWorker background thread returning the operations ending status with the capability of overriding the SwingWorker's done method,
+	///or just used as a normal method call invoking the background thread.  
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////// Utilities
+	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
+	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
+	private TransactionLock transactionLock = new TransactionLock();
+	
+	abstract class DBThread extends SwingWorker<DBConnect.Status,Object>{
+		public Status getStatus() {
+			try {
+				return get();
+			} catch (InterruptedException | ExecutionException e) {
+				return Status.ABORT;
+			}
+		}
+	}
+	
 	long getWaitTime() {
-//		return (long)Utilities.getRand(3000, 8000);
-		return 10;
+		return (long)Utilities.getRand(3000, 8000);
 	}
 
 	static volatile DBConnect self = null;
@@ -28,7 +45,8 @@ public class DBConnect extends JComponent {
 	private DBConnect() {
 		db = new Database();
 	}
-
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void addVehicle(Vehicle v) {
 		new AddVehicleThread(v).execute();
 	}
@@ -48,7 +66,7 @@ public class DBConnect extends JComponent {
 			return Status.DONE;	
 		}	
 	}
-	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void buyVehicle(Vehicle vehicle) {
 		new buyVehicleThread(vehicle).execute();
 	}
@@ -86,7 +104,7 @@ public class DBConnect extends JComponent {
 				}
 		}
 	}
-	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void testDriveVehicle(Vehicle vehicle,double distance) {
 		new testDriveVehicleThread(vehicle,distance).execute();
 	}
@@ -123,8 +141,7 @@ public class DBConnect extends JComponent {
 			}
 		}
 	}
-	
-
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void resetDistances() {
 		new ResetDistancesThread().execute();
 	}
@@ -145,7 +162,7 @@ public class DBConnect extends JComponent {
 			return Status.DONE;	
 		}	
 	}
-
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void changeFlags(String flag) {
 		new ChangeFlagsThread(flag).execute();
 	}	
@@ -171,7 +188,8 @@ public class DBConnect extends JComponent {
 		}
 		
 	}
-	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	public List<Vehicle> getVehicles() {
 		return db.getVehicles();
 	}
@@ -201,20 +219,5 @@ public class DBConnect extends JComponent {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
-	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
-	private TransactionLock transactionLock = new TransactionLock();
-	///// locking vehicle test riding
-
-	
-	abstract class DBThread extends SwingWorker<DBConnect.Status,Object>{
-		public Status getStatus() {
-			try {
-				return get();
-			} catch (InterruptedException | ExecutionException e) {
-				return Status.ABORT;
-			}
-		}
-	}
 	
 }

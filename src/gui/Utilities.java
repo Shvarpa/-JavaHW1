@@ -15,6 +15,7 @@ import javax.swing.SwingWorker;
 import interfaces.ISeaVehicle;
 
 public class Utilities {
+	///various static functions used in the application
 	
 	public static List<String> vehicleTypes = Arrays.asList("Jeep", "Frigate", "SpyDrone", "PlayDrone", "AmphibiousVehicle", "Bike", "CruiseShip",
 			"HybridPlane", "ElectricBike");

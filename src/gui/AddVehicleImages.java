@@ -21,6 +21,7 @@ import gui.Images.ImageOpener;
 
 public class AddVehicleImages extends JPanel {
 	private static final long serialVersionUID = 1L;
+	///the addVehicleImages lets the user select an image corresponding to the vehicle's type or select a photo located on elsewhere on the pc.
 	private String imagesPath, filePath;
 	private JComboBox<ImageText> imagesCombo;
 	private JRadioButton imagesRadio,fileRadio;

@@ -30,6 +30,8 @@ public class MainFrame extends JFrame {
 	private DBConnect db = DBConnect.getConnection();
 
 	public MainFrame() {
+		///the main menu of the application, form which you can view the vehicle database real time (the DataPanel component)
+		///and select an operation to do from the button menu.
 		setTitle("Car Agency");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(600, 350));
@@ -106,7 +108,6 @@ public class MainFrame extends JFrame {
 
 		resetDistancesButton.addActionListener((event) -> {
 			db.resetDistances();
-			JOptionPane.showMessageDialog(null,"all vehicles distances were reset!");
 		});
 		
 		changeFlagsButton.addActionListener((event)->{

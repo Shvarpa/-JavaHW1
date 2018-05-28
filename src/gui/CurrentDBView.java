@@ -51,19 +51,14 @@ public class CurrentDBView extends JDialog{
 			
 			@Override
 			public void windowLostFocus(WindowEvent arg0) {
-				foucusLoses++;
 			}
 			
 			@Override
 			public void windowGainedFocus(WindowEvent arg0) {
-				if (foucusLoses>=2) {
-					refresh();
-					foucusLoses=0;
-				}
+				refresh();
 			}
 		});
 		refresh();
 		pack();
 	}
-	private int foucusLoses = 0;
 }

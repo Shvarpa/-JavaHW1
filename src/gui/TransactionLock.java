@@ -20,6 +20,9 @@ enum Operation {
 }
 
 public class TransactionLock {
+	///the transaction lock is a lock designed to work with the BUT_VEHICLE & TEST_DRIVE with designated acquire and release for each operation.
+	///the lock logs vehicles attempting to do a transaction and stops them from doing the same transaction twice.
+	///if the same vehicle is attempting to do a different transaction/operation on the database the lock will be locked in a queue until the the operation's turn in the queue
 
 	class OperationLock {
 		private Operation type;
@@ -56,13 +59,10 @@ public class TransactionLock {
 	
 	private boolean aquire(Vehicle vehicle, Operation type) {
 		if (transactionQueue.containsKey(vehicle) && transactionQueue.get(vehicle).size()>=1) {
-			Utilities.log(" in queue " + transactionQueue.get(vehicle).toString());//////////////////////////////////////////////////
 			for (OperationLock op : transactionQueue.get(vehicle)) {
-				Utilities.log(op.toString() + " ? " + type);////////////////////////////////////////////////////////////////
 				if (op.getOperation().equals(type))
 					return false;
 			}
-			Utilities.log("aquireing " + type);/////////////
 			OperationLock last = transactionQueue.get(vehicle).getLast();
 			OperationLock curr = new OperationLock(type);
 			lock.lock();
@@ -70,7 +70,6 @@ public class TransactionLock {
 			lock.unlock();
 			curr.lock();
 			last.lock();
-			Utilities.log("aquired " + last);//////////////
 
 		} else {
 			OperationLock oL = new OperationLock(type);
@@ -79,7 +78,6 @@ public class TransactionLock {
 			queue.add(oL);
 			transactionQueue.put(vehicle, queue);
 			lock.unlock();
-			Utilities.log("adding " + type);////////
 			oL.lock();
 		}
 		return true;
@@ -87,10 +85,8 @@ public class TransactionLock {
 	}
 
 	private void release(Vehicle vehicle) {
-		Utilities.log("waiting list: " + transactionQueue.get(vehicle));//////////////////////
 		lock.lock();
 		OperationLock l = transactionQueue.get(vehicle).removeFirst();
-		Utilities.log("releasing: " + l.getOperation());//////////////////////
 		if (transactionQueue.get(vehicle).isEmpty())
 			transactionQueue.remove(vehicle);
 		lock.unlock();

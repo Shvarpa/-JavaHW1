@@ -1,3 +1,5 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.BorderLayout;
@@ -31,8 +33,10 @@ public class AddVehicle extends JDialog {
 	private AddVehicleImages imagePanel;
 	private JLabel statusLabel;
 	private Vehicle currVehicle;
-	// Constructor
 	public AddVehicle() {
+		///the addVehicle dialog lets you input a vehicle into the database.
+		///the addVehicle is constructed out of a vehicle type selection(comboBox), the vehicle form input, and vehicle image input
+		///and there is a status bar showing the cause of the input malfunction. 
 		setTitle("Add Vehcile");
 		// Create the main panel to contain the four sub panels.
 		mainPanel = new JPanel();

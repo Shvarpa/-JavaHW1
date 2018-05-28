@@ -10,6 +10,7 @@ import gui.Images.ImageOpener;
 
 public class VehicleSelectButton extends JRadioButton {
 	private static final long serialVersionUID = 1L;
+	///a radio button containing a vehicle and it's image
 	private Vehicle vehicle;
 
 	public VehicleSelectButton(Vehicle v) {

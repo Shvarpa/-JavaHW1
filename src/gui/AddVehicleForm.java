@@ -1,3 +1,5 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.Dimension;
@@ -33,6 +35,9 @@ import javafx.util.Pair;
 
 public class AddVehicleForm extends JPanel {
 	private static final long serialVersionUID = 1L;
+	///the addVehicleForm contains all the possible vehicle inputs and their GUI representation, and selects to show the required fields according to a vehicle type specified at the vehicle type comboBox.
+	///the form attempts to create the require vehicle type with the vehicle inputs given, and if unsuccessful throws a numberFormateException detailing the input failure.
+	
 	private Pair<JLabel, JTextField> model = new Pair<JLabel, JTextField>(new JLabel("model"), new JTextField());
 	private Pair<JLabel, JTextField> seats = new Pair<JLabel, JTextField>(new JLabel("seats"), new JTextField());
 	private Pair<JLabel, JTextField> speed = new Pair<JLabel, JTextField>(new JLabel("speed"), new JTextField());

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class ChangeFlags extends JDialog {
+public class ChangeFlags extends JDialog {	
 	private static final long serialVersionUID = 1L;
 	private DBConnect db = DBConnect.getConnection();
 	private final JPanel contentPanel = new JPanel();

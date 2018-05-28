@@ -1,13 +1,19 @@
+//Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
+
 package gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Locale;
+
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 public class WaitDialog extends JDialog{
 	private static final long serialVersionUID = 1L;
+	
+	/// a dialog that will dispose itself after the given time
 	
 	public WaitDialog(long waitMillis) {
 		setAlwaysOnTop(true);
