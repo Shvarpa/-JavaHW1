@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import classes.Vehicle;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
@@ -120,7 +118,10 @@ public class TransactionLock {
 	public void releaseBuyVehicle(Vehicle v) {
 		release(v);
 	}
-
+	
+	public boolean isEmpty() {
+		return transactionQueue.isEmpty();
+	}
 	/////////////////////////////////////////////////////////////
 
 	static private HashMap<String, Semaphore> testDrivers;

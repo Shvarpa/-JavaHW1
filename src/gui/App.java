@@ -15,7 +15,6 @@ public class App {
 			public void run() {
 				JFrame app = new MainFrame();
 				app.setSize(500, 300);
-				app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				app.setLocationRelativeTo(null);;
 				app.setVisible(true);				
 			}

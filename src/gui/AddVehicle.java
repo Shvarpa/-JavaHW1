@@ -89,6 +89,7 @@ public class AddVehicle extends JDialog {
 		// Add vehicles to db
 		buttonPanel.setLayout(new GridLayout(1, 3, 5, 5));
 		JButton addButton = new JButton("Add");
+		getRootPane().setDefaultButton(addButton);
 		addButton.addActionListener((event) -> {
 			try {
 				currVehicle = createVehicle(typesChoice.getSelectedItem().toString());

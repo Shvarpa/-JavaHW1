@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.concurrent.ExecutionException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -166,7 +168,26 @@ public class MainFrame extends JFrame {
 
 		toStringPanel.add(toStringTextArea,new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(1, 5, 2, 5), 0, 0));
 		contentPanel.add(toStringPanel, BorderLayout.SOUTH);
-
+		
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				if(db.hasDuringTransaction()) {
+					JOptionPane.showMessageDialog(null, "there are vehicles during buy/test transaction, cant exit", "Close App",JOptionPane.ERROR_MESSAGE);
+				}
+				else
+		           System.exit(0);
+			}
+			public void windowOpened(WindowEvent arg0) {}
+			public void windowIconified(WindowEvent arg0) {}
+			public void windowDeiconified(WindowEvent arg0) {}
+			public void windowDeactivated(WindowEvent arg0) {}
+			public void windowClosed(WindowEvent arg0) {}
+			public void windowActivated(WindowEvent arg0) {}
+		});
+		
 		/// Initial refresh does'nt account for the button creation.
 		dataPanel.refresh();
 	}
