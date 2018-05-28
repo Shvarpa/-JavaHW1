@@ -126,6 +126,7 @@ public class DBConnect extends JComponent {
 					return Status.RETRY;
 				}
 				if(!db.containsIdentical(vehicle)) {
+					transactionLock.releaseTestDrive(vehicle);
 					return Status.STOP;
 				}
 				Thread.sleep((long)(distance*100));

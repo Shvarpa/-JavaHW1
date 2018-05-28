@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import classes.Vehicle;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
@@ -55,29 +57,33 @@ public class TransactionLock {
 	}
 
 	private IdentityHashMap<Vehicle, LinkedBlockingDeque<OperationLock>> transactionQueue = new IdentityHashMap<Vehicle, LinkedBlockingDeque<OperationLock>>();
-	private ReentrantLock lock = new ReentrantLock(true);
+	private ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 	
 	private boolean aquire(Vehicle vehicle, Operation type) {
+		lock.readLock().lock();
 		if (transactionQueue.containsKey(vehicle) && transactionQueue.get(vehicle).size()>=1) {
 			for (OperationLock op : transactionQueue.get(vehicle)) {
-				if (op.getOperation().equals(type))
+				if (op.getOperation().equals(type)) {
+					lock.readLock().unlock();
 					return false;
+				}
 			}
 			OperationLock last = transactionQueue.get(vehicle).getLast();
 			OperationLock curr = new OperationLock(type);
-			lock.lock();
+			lock.readLock().unlock();
+			lock.writeLock().lock();
 			transactionQueue.get(vehicle).add(curr);
-			lock.unlock();
+			lock.writeLock().unlock();
 			curr.lock();
 			last.lock();
-
 		} else {
 			OperationLock oL = new OperationLock(type);
 			LinkedBlockingDeque<OperationLock> queue = new LinkedBlockingDeque<OperationLock>();
-			lock.lock();
+			lock.readLock().unlock();
+			lock.writeLock().lock();
 			queue.add(oL);
 			transactionQueue.put(vehicle, queue);
-			lock.unlock();
+			lock.writeLock().unlock();
 			oL.lock();
 		}
 		return true;
@@ -85,11 +91,11 @@ public class TransactionLock {
 	}
 
 	private void release(Vehicle vehicle) {
-		lock.lock();
+		lock.writeLock().lock();
 		OperationLock l = transactionQueue.get(vehicle).removeFirst();
 		if (transactionQueue.get(vehicle).isEmpty())
 			transactionQueue.remove(vehicle);
-		lock.unlock();
+		lock.writeLock().unlock();
 		l.unlock();
 	}
 
