@@ -5,9 +5,6 @@ package gui;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import classes.Jeep;
-import classes.PlayDrone;
-
 public class App {
 	///creates and shows the application
 	public static void main(String[] args) {
