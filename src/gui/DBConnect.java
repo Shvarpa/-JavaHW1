@@ -22,7 +22,6 @@ public class DBConnect extends JComponent {
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////// Utilities
 	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
-	public static String duringTransactionMessege = "vehicle during transaction, please retry later...";
 	private TransactionLock transactionLock = new TransactionLock();
 	
 	abstract class DBThread extends SwingWorker<DBConnect.Status,Object>{

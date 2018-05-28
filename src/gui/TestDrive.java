@@ -93,7 +93,7 @@ public class TestDrive extends JDialog {
 							dispose();
 							return;
 						case RETRY:
-							JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
+							JOptionPane.showMessageDialog(null,"the vehicle:\n" + currVehicle.toString() + "\nis during/awaiting a test drive, please retry later");
 							updateStatusLabel(" ", null);
 							okButton.setEnabled(true);
 							return;

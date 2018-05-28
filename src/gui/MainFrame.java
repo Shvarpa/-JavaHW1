@@ -84,7 +84,7 @@ public class MainFrame extends JFrame {
 					try {
 						switch(get()) {
 						case RETRY:
-							JOptionPane.showMessageDialog(null,DBConnect.duringTransactionMessege);
+							JOptionPane.showMessageDialog(null, "the vehicle:\n" + vS.getVehicle() + "\nis during/awaiting the buying process, please try again later");
 						default:
 							return;
 						}
