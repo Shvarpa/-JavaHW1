@@ -4,6 +4,8 @@ package gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -112,7 +114,9 @@ public class TransactionLock {
 	}
 
 	public void releaseTestDrive(Vehicle v) {
-		for (String s : reqTestRiders(v))
+		List<String> x = reqTestRiders(v);
+		Collections.reverse(x);
+		for (String s : x)
 			testDrivers.get(s).release();
 		release(v);
 	}
