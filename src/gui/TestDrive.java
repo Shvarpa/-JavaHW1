@@ -88,22 +88,13 @@ public class TestDrive extends JDialog {
 					@Override
 					protected void done() {
 						switch(getStatus()) {
-						case STOP:
-							JOptionPane.showMessageDialog(null,"The vehicle was bought already, closing...");
+						case STOP:default:
 							dispose();
 							return;
 						case RETRY:
-							JOptionPane.showMessageDialog(null,"the vehicle:\n" + currVehicle.toString() + "\nis during/awaiting a test drive, please retry later");
 							updateStatusLabel(" ", null);
 							okButton.setEnabled(true);
 							return;
-						case DONE:
-							JOptionPane.showMessageDialog(null, "the vehicle \n"+ currVehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
-							okButton.setEnabled(true);
-							dispose();
-							return;
-						case ABORT: default:
-							JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ currVehicle.toString() +"\nwas canceled");
 						}
 					}
 				}.execute();

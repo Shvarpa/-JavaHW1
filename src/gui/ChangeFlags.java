@@ -47,14 +47,8 @@ public class ChangeFlags extends JDialog {
 				dispose();
 				return;
 			}
-//			new WaitDialog((long) Utilities.getRand(3000, 8000), ()->{
-//				if(db.changeFlags(flag))
-//					JOptionPane.showMessageDialog(null, "all flags changed to " + flag + " succesfully!");
-//				else
-//					JOptionPane.showMessageDialog(null, "all sea vehicles were bought in the middle of the operation, cant change flags");
-//				dispose();
-//				});
-			});
+			db.changeFlags(flag);
+		});
 		cancelButton.addActionListener((event) -> {
 			dispose();
 		});

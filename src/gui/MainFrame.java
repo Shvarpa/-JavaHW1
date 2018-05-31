@@ -80,36 +80,22 @@ public class MainFrame extends JFrame {
 			if (vS == null)
 				return;
 			updateToString("preparing vehicle for purchase...");
-			db.new buyVehicleThread(vS.getVehicle()){
-				@Override
-				protected void done() {
-					try {
-						switch(get()) {
-						case RETRY:
-							JOptionPane.showMessageDialog(null, "the vehicle:\n" + vS.getVehicle() + "\nis during/awaiting the buying process, please try again later");
-						default:
-							return;
-						}
-					} catch (InterruptedException | ExecutionException e) {
-						e.printStackTrace();
-					}
-				}
-			}.execute();
+			db.buyVehicle(vS.getVehicle());
 		});
 
-		testDriveButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
-				if (currVehicle == null)
-					return;
-				SwingUtilities.invokeLater(() -> {Utilities.showDialog(new TestDrive(currVehicle));});
-			}
+		testDriveButton.addActionListener((event)->{
+			Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
+			if (currVehicle == null)
+				return;
+			SwingUtilities.invokeLater(() -> {
+				Utilities.showDialog(new TestDrive(currVehicle));
+			});
 		});
 
 		resetDistancesButton.addActionListener((event) -> {
-			db.resetDistances();
+			SwingUtilities.invokeLater(()->{
+				db.resetDistances();
+			});
 		});
 		
 		changeFlagsButton.addActionListener((event)->{
