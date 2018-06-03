@@ -107,6 +107,7 @@ public class DBConnect extends JComponent {
 						buyVehicleMethod();
 					});
 					JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+					transactionLock.releaseBuyVehicle(vehicle);
 					return Status.DONE;
 				} catch (InterruptedException e) {
 					transactionLock.releaseBuyVehicle(vehicle);
@@ -140,7 +141,7 @@ public class DBConnect extends JComponent {
 				}
 				if(!db.containsIdentical(vehicle)) {
 					transactionLock.releaseTestDrive(vehicle);
-					JOptionPane.showMessageDialog(null,"The vehicle was bought already, closing...");
+					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"was bought already, closing...");
 					return Status.STOP;
 				}
 				Thread.sleep((long)(distance*100));
