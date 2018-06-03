@@ -126,6 +126,9 @@ public class DataPanel extends JScrollPane implements ActionListener {
 	}
 	
 	public void clearSelection() {
+		for (VehicleSelectButton vS : vehicleSelectButtons) {
+			vS.setToolTipText(vS.getVehicle().toString());
+		}
 		group.clearSelection();
 		processIsSelected();
 	}
