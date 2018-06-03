@@ -11,9 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 public class DBWaitDialog extends JDialog{
-	private static final long serialVersionUID = 1L;
-	private static ReentrantLock lock = new ReentrantLock(true);
-	
+	private static final long serialVersionUID = 1L;	
 	/// a dialog that will dispose itself after the given time
 	public DBWaitDialog(long waitMillis) throws InterruptedException {
 		showSelf(waitMillis, ()->{});
@@ -25,7 +23,6 @@ public class DBWaitDialog extends JDialog{
 	}
 	
 	private void showSelf(long waitMillis, Runnable code) throws InterruptedException{
-		lock.lock();
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setTitle("Update");
@@ -36,11 +33,9 @@ public class DBWaitDialog extends JDialog{
 		try {
 			Thread.sleep(waitMillis);
 			dispose();
-			lock.unlock();
 			code.run();
 		} catch (InterruptedException e) {
 			dispose();
-			lock.unlock();
 			throw e;
 		}
 	}
