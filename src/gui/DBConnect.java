@@ -141,7 +141,7 @@ public class DBConnect extends JComponent {
 				}
 				if(!db.containsIdentical(vehicle)) {
 					transactionLock.releaseTestDrive(vehicle);
-					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"was bought already, closing...");
+					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
 					return Status.STOP;
 				}
 				Thread.sleep((long)(distance*100));
