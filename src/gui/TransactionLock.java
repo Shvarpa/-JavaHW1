@@ -2,18 +2,10 @@
 
 package gui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
 import interfaces.IVehicle;
 
 enum Operation {
@@ -131,26 +123,26 @@ public class TransactionLock {
 	}
 	/////////////////////////////////////////////////////////////
 
-	static private HashMap<String, Semaphore> testDrivers;
-
-	private static List<String> reqTestRiders(IVehicle v) {
-		List<String> reqTestRiders = new ArrayList<String>();
-		if (v instanceof ILandVehicle) {
-			reqTestRiders.add(ILandVehicle.class.getSimpleName());
-		}
-		if (v instanceof ISeaVehicle) {
-			reqTestRiders.add(ISeaVehicle.class.getSimpleName());
-		}
-		if (v instanceof IAirVehicle) {
-			reqTestRiders.add(IAirVehicle.class.getSimpleName());
-		}
-		return reqTestRiders;
-	}
-
-	static {
-		testDrivers = new HashMap<String, Semaphore>(3);
-		for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
-				IAirVehicle.class.getSimpleName()))
-			testDrivers.put(s, new Semaphore(1));
-	}
+//	static private HashMap<String, Semaphore> testDrivers;
+//
+//	private static List<String> reqTestRiders(IVehicle v) {
+//		List<String> reqTestRiders = new ArrayList<String>();
+//		if (v instanceof ILandVehicle) {
+//			reqTestRiders.add(ILandVehicle.class.getSimpleName());
+//		}
+//		if (v instanceof ISeaVehicle) {
+//			reqTestRiders.add(ISeaVehicle.class.getSimpleName());
+//		}
+//		if (v instanceof IAirVehicle) {
+//			reqTestRiders.add(IAirVehicle.class.getSimpleName());
+//		}
+//		return reqTestRiders;
+//	}
+//
+//	static {
+//		testDrivers = new HashMap<String, Semaphore>(3);
+//		for (String s : Arrays.asList(ILandVehicle.class.getSimpleName(), ISeaVehicle.class.getSimpleName(),
+//				IAirVehicle.class.getSimpleName()))
+//			testDrivers.put(s, new Semaphore(1));
+//	}
 }

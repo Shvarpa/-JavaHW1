@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import classes.Vehicle;
 import interfaces.IVehicle;
 
 public class DataPanel extends JScrollPane implements ActionListener {

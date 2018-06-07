@@ -1,19 +1,14 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import classes.Vehicle;
 import interfaces.IVehicle;
 
 public class CurrentDBView extends JDialog{
@@ -27,7 +22,7 @@ public class CurrentDBView extends JDialog{
 			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
-		Collection<IVehicle> data = DBConnect.getConnection().getVehicles();
+		Collection<IVehicle> data = db.getVehicles();
 		synchronized (data) {
 			for (IVehicle v:data) {
 				VehicleSelectButton vS = v.draw();

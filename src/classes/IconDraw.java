@@ -1,8 +1,5 @@
 package classes;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
 import gui.VehicleSelectButton;
 import interfaces.IVehicle;
 
