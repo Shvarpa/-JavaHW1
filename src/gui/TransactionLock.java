@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import classes.StatusReporter;
+import classes.StatusReporter.VehicleStatus;
 import interfaces.IVehicle;
 
 enum Operation {
@@ -99,6 +102,7 @@ public class TransactionLock {
 //			for (String s : reqTestRiders(vehicle))
 //				testDrivers.get(s).release();
 //		}
+		vehicle = new StatusReporter(vehicle,VehicleStatus.TEST_DRIVE);
 		return true;
 	}
 
@@ -107,14 +111,17 @@ public class TransactionLock {
 //		Collections.reverse(x);
 //		for (String s : x)
 //			testDrivers.get(s).release();
+		vehicle = new StatusReporter(vehicle,VehicleStatus.STANDBY);
 		release(vehicle);
 	}
 
 	public boolean aquireBuyVehicle(IVehicle vehicle) {
+		vehicle = new StatusReporter(vehicle,VehicleStatus.BUY);
 		return aquire(vehicle, Operation.BUY_VEHICLE);
 	}
 
 	public void releaseBuyVehicle(IVehicle vehicle) {
+		vehicle = new StatusReporter(vehicle,VehicleStatus.STANDBY);
 		release(vehicle);
 	}
 	

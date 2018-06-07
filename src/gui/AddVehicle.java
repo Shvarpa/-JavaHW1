@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import classes.ColoredBorder;
 import classes.IconDraw;
+import classes.StatusReporter;
+import classes.StatusReporter.VehicleStatus;
 import interfaces.IVehicle;
 
 
@@ -139,6 +141,7 @@ public class AddVehicle extends JDialog {
 			result = new IconDraw(result,(imagePanel.getSelectedImage()));
 			Color color = imagePanel.getSelectedColor();
 			result = new ColoredBorder(result, color);
+			result = new StatusReporter(result, VehicleStatus.STANDBY);
 		}
 		return result;
 	}
