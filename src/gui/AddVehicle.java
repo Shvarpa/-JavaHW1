@@ -8,19 +8,18 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-
-
+import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-
-
-import classes.Vehicle;
+import classes.ColoredBorder;
+import classes.IconDraw;
+import interfaces.IVehicle;
 
 
 public class AddVehicle extends JDialog {
@@ -32,7 +31,7 @@ public class AddVehicle extends JDialog {
 	private AddVehicleForm form;
 	private AddVehicleImages imagePanel;
 	private JLabel statusLabel;
-	private Vehicle currVehicle;
+	private IVehicle currVehicle;
 	public AddVehicle() {
 		///the addVehicle dialog lets you input a vehicle into the database.
 		///the addVehicle is constructed out of a vehicle type selection(comboBox), the vehicle form input, and vehicle image input
@@ -117,55 +116,30 @@ public class AddVehicle extends JDialog {
 		statusLabel.setForeground(Color.RED);
 		statusPanel.add(statusLabel);
 		
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-		gbc.weighty = 0;
-		gbc.gridheight = 1;
-		mainPanel.add(selectPanel, gbc);
-		
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		gbc.gridheight = 1;
-		mainPanel.add(fieldPanel, gbc);
-		
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.weightx = 1;
-		gbc.weighty = 0;
-		gbc.gridheight = 1;
-		mainPanel.add(imagePanel, gbc);
-		
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.weightx = 1;
-		gbc.weighty = 0;
-		gbc.gridheight = 1;
-		mainPanel.add(buttonPanel, gbc);
-		
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.weightx = 1;
-		gbc.weighty = 0;
-		gbc.gridheight = 1;
-		mainPanel.add(statusPanel, gbc);
+		_add(selectPanel);
+		_addColapsable(fieldPanel);
+		_add(imagePanel);
+		_add(buttonPanel);
+		_add(statusPanel);
 		
 		pack();
 	}
+	
+	private Dimension nextPlace = new Dimension(0, 0);
+	private void _add(JComponent a) {
+		mainPanel.add(a, new GridBagConstraints(0, nextPlace.height++, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+	}
+	private void _addColapsable(JComponent a) {
+		mainPanel.add(a, new GridBagConstraints(0, nextPlace.height++, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+	}
 
-	private Vehicle createVehicle(String choice) throws NumberFormatException{
-		Vehicle result = form.createVehicle();
-		if (result != null)
-			result.setImagePath(imagePanel.getSelectedImage());
+	private IVehicle createVehicle(String choice) throws NumberFormatException{
+		IVehicle result = form.createVehicle();
+		if (result != null) {
+			result = new IconDraw(result,(imagePanel.getSelectedImage()));
+			Color color = imagePanel.getSelectedColor();
+			result = new ColoredBorder(result, color);
+		}
 		return result;
 	}
 

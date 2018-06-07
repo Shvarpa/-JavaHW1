@@ -28,7 +28,11 @@ public class ImageOpener {
 			return null;
 		}
 	}
-
+	
+	public static ImageIcon scaleImg(String path, Dimension d) {
+		return scaleImg(createImageIcon(path), d.width, d.height);
+	}
+	
 	public static ImageIcon scaleImg(ImageIcon icon, Dimension d) {
 		return scaleImg(icon, d.width, d.height);
 	}

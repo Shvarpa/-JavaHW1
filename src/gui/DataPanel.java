@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import classes.Vehicle;
+import interfaces.IVehicle;
 
 public class DataPanel extends JScrollPane implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +36,8 @@ public class DataPanel extends JScrollPane implements ActionListener {
 			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
-		for (Vehicle v : db.getVehicles()) {
-			VehicleSelectButton vS = new VehicleSelectButton(v, DataPanel.preferedImageSize);
+		for (IVehicle v : db.getVehicles()) {
+			VehicleSelectButton vS = v.draw();
 			vS.addActionListener(this);
 			vehicleSelectButtons.add(vS);
 		}

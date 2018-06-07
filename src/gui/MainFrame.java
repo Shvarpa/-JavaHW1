@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import classes.Vehicle;
+import interfaces.IVehicle;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -84,7 +86,7 @@ public class MainFrame extends JFrame {
 		});
 
 		testDriveButton.addActionListener((event)->{
-			Vehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
+			IVehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
 			if (currVehicle == null)
 				return;
 			SwingUtilities.invokeLater(() -> {

@@ -9,16 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import classes.Vehicle;
+import interfaces.IVehicle;
 
 import java.awt.Color;
 
 public class TestDrive extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private Vehicle currVehicle;
+	private IVehicle currVehicle;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField distanceField;
 	JLabel statusLabel;
@@ -31,7 +30,7 @@ public class TestDrive extends JDialog {
 		revalidate();
 	}
 	
-	public TestDrive(Vehicle curr) {
+	public TestDrive(IVehicle curr) {
 		this.currVehicle = curr;
 		setTitle("Test Drive");
 		setBounds(100, 100, 350, 150);

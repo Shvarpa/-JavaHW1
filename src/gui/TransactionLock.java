@@ -4,20 +4,17 @@ package gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import classes.Vehicle;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import interfaces.IVehicle;
 
 enum Operation {
 	BUY_VEHICLE, TEST_DRIVE
@@ -58,23 +55,23 @@ public class TransactionLock {
 		}
 	}
 
-	private IdentityHashMap<Vehicle, LinkedBlockingDeque<OperationLock>> transactionQueue = new IdentityHashMap<Vehicle, LinkedBlockingDeque<OperationLock>>();
+	private HashMap<String, LinkedBlockingDeque<OperationLock>> transactionQueue = new HashMap<String, LinkedBlockingDeque<OperationLock>>();
 	private ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 	
-	private boolean aquire(Vehicle vehicle, Operation type) {
+	private boolean aquire(IVehicle vehicle, Operation type) {
 		lock.readLock().lock();
-		if (transactionQueue.containsKey(vehicle) && transactionQueue.get(vehicle).size()>=1) {
-			for (OperationLock op : transactionQueue.get(vehicle)) {
+		if (transactionQueue.containsKey(vehicle.getUniqueID()) && transactionQueue.get(vehicle.getUniqueID()).size()>=1) {
+			for (OperationLock op : transactionQueue.get(vehicle.getUniqueID())) {
 				if (op.getOperation().equals(type)) {
 					lock.readLock().unlock();
 					return false;
 				}
 			}
-			OperationLock last = transactionQueue.get(vehicle).getLast();
+			OperationLock last = transactionQueue.get(vehicle.getUniqueID()).getLast();
 			OperationLock curr = new OperationLock(type);
 			lock.readLock().unlock();
 			lock.writeLock().lock();
-			transactionQueue.get(vehicle).add(curr);
+			transactionQueue.get(vehicle.getUniqueID()).add(curr);
 			lock.writeLock().unlock();
 			curr.lock();
 			last.lock();
@@ -84,7 +81,7 @@ public class TransactionLock {
 			lock.readLock().unlock();
 			lock.writeLock().lock();
 			queue.add(oL);
-			transactionQueue.put(vehicle, queue);
+			transactionQueue.put(vehicle.getUniqueID(), queue);
 			lock.writeLock().unlock();
 			oL.lock();
 		}
@@ -92,41 +89,41 @@ public class TransactionLock {
 
 	}
 
-	private void release(Vehicle vehicle) {
+	private void release(IVehicle vehicle) {
 		lock.writeLock().lock();
-		OperationLock l = transactionQueue.get(vehicle).removeFirst();
-		if (transactionQueue.get(vehicle).isEmpty())
-			transactionQueue.remove(vehicle);
+		OperationLock l = transactionQueue.get(vehicle.getUniqueID()).removeFirst();
+		if (transactionQueue.get(vehicle.getUniqueID()).isEmpty())
+			transactionQueue.remove(vehicle.getUniqueID());
 		lock.writeLock().unlock();
 		l.unlock();
 	}
 
-	public boolean aquireTestDrive(Vehicle v) {
-		if(!aquire(v, Operation.TEST_DRIVE)) return false;
+	public boolean aquireTestDrive(IVehicle vehicle) {
+		if(!aquire(vehicle, Operation.TEST_DRIVE)) return false;
 		try {
-			for (String s : reqTestRiders(v))
+			for (String s : reqTestRiders(vehicle))
 				testDrivers.get(s).acquire();
 		} catch (InterruptedException e) {
-			for (String s : reqTestRiders(v))
+			for (String s : reqTestRiders(vehicle))
 				testDrivers.get(s).release();
 		}
 		return true;
 	}
 
-	public void releaseTestDrive(Vehicle v) {
-		List<String> x = reqTestRiders(v);
+	public void releaseTestDrive(IVehicle vehicle) {
+		List<String> x = reqTestRiders(vehicle);
 		Collections.reverse(x);
 		for (String s : x)
 			testDrivers.get(s).release();
-		release(v);
+		release(vehicle);
 	}
 
-	public boolean aquireBuyVehicle(Vehicle v) {
-		return aquire(v, Operation.BUY_VEHICLE);
+	public boolean aquireBuyVehicle(IVehicle vehicle) {
+		return aquire(vehicle, Operation.BUY_VEHICLE);
 	}
 
-	public void releaseBuyVehicle(Vehicle v) {
-		release(v);
+	public void releaseBuyVehicle(IVehicle vehicle) {
+		release(vehicle);
 	}
 	
 	public boolean isEmpty() {
@@ -136,7 +133,7 @@ public class TransactionLock {
 
 	static private HashMap<String, Semaphore> testDrivers;
 
-	private static List<String> reqTestRiders(Vehicle v) {
+	private static List<String> reqTestRiders(IVehicle v) {
 		List<String> reqTestRiders = new ArrayList<String>();
 		if (v instanceof ILandVehicle) {
 			reqTestRiders.add(ILandVehicle.class.getSimpleName());

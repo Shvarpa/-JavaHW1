@@ -3,8 +3,10 @@
 package classes;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -12,16 +14,18 @@ import gui.Utilities;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import interfaces.IVehicle;
 
 
 public class Database {
 	
-	private List<Vehicle> vehicleDatabase;
-	private List<ISeaVehicle> seaVehicleDatabase;
-	private List<IAirVehicle> airVehicleDatabase;
-	private List<ILandVehicle> landVehicleDatabase;
+	private HashMap<String,IVehicle> vehicleDatabase;
+	private HashMap<String,ISeaVehicle> seaVehicleDatabase;
+	private HashMap<String,IAirVehicle> airVehicleDatabase;
+	private HashMap<String,ILandVehicle> landVehicleDatabase;
 	private ReadWriteLock lock = new ReentrantReadWriteLock(true);
-		
+
+	
 	public boolean isEmpty() {
 		lock.readLock().lock();
 		if (vehicleDatabase.isEmpty()) {
@@ -41,18 +45,18 @@ public class Database {
 	}
 	
 	
-	public boolean addVehicle(Vehicle currVehicle) {
+	public boolean addVehicle(IVehicle currVehicle) {
 		if (currVehicle != null) {
 			lock.writeLock().lock();
-			this.vehicleDatabase.add(currVehicle);
+			this.vehicleDatabase.put(currVehicle.getUniqueID(),currVehicle);
 			if (currVehicle instanceof ISeaVehicle) {
-				this.seaVehicleDatabase.add((ISeaVehicle) currVehicle);
+				this.seaVehicleDatabase.put(currVehicle.getUniqueID(),(ISeaVehicle) currVehicle);
 			} 
 			if (currVehicle instanceof ILandVehicle) {
-				this.landVehicleDatabase.add((ILandVehicle) currVehicle);
+				this.landVehicleDatabase.put(currVehicle.getUniqueID(),(ILandVehicle) currVehicle);
 			}
 			if (currVehicle instanceof IAirVehicle) {
-				this.airVehicleDatabase.add((IAirVehicle) currVehicle);
+				this.airVehicleDatabase.put(currVehicle.getUniqueID(),(IAirVehicle) currVehicle);
 			}
 			lock.writeLock().unlock();
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was added succesfully, returning");
@@ -61,49 +65,28 @@ public class Database {
 		return false;
 	}
 
-	public boolean buyVehicle(Vehicle currVehicle) {
-		if (vehicleDatabase.contains(currVehicle)) {
+	public boolean buyVehicle(IVehicle currVehicle) {
+		if (vehicleDatabase.containsKey(currVehicle.getUniqueID())) {
 			lock.writeLock().lock();
-			Integer index = getIdentical(vehicleDatabase, currVehicle);
-			if(index != null)this.vehicleDatabase.remove((int)index); 
-			else this.vehicleDatabase.remove(currVehicle);
-			
-			if (currVehicle instanceof ISeaVehicle) {
-				index = getIdentical(seaVehicleDatabase, currVehicle);
-				if(index != null) this.seaVehicleDatabase.remove((int)index); 
-				else this.seaVehicleDatabase.remove((ISeaVehicle)currVehicle);
-
-			}
-			
-			if (currVehicle instanceof ILandVehicle) {
-				index = getIdentical(landVehicleDatabase, currVehicle);
-				if(index != null) this.landVehicleDatabase.remove((int)index); 
-				else this.landVehicleDatabase.remove((ILandVehicle)currVehicle);
-			}
-			
-			if (currVehicle instanceof IAirVehicle) {
-				index = getIdentical(airVehicleDatabase, currVehicle);
-				if(index != null) this.airVehicleDatabase.remove((int)index); 
-				else this.airVehicleDatabase.remove((IAirVehicle)currVehicle);
-			}
+			for (HashMap<String,?> hM:Arrays.asList(vehicleDatabase,seaVehicleDatabase,airVehicleDatabase,landVehicleDatabase))
+				hM.remove(currVehicle.getUniqueID());
 			lock.writeLock().unlock();
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
 		}
-		Utilities.log("vehicle" + currVehicle.toString() + "doesnt exist, returning");
+		Utilities.log("the vehicle doesnt exist, returning");
 		return false;
 	}
 
-	public boolean testDriveVehicle(Vehicle currVehicle, double distance) {
-		if (vehicleDatabase.contains(currVehicle)) {
+	public boolean testDriveVehicle(IVehicle currVehicle, double distance) {
+		if (vehicleDatabase.containsKey(currVehicle.getUniqueID())) {
 			lock.writeLock().lock();
-			Integer index = getIdentical(vehicleDatabase, currVehicle);
-			if(index!=null) vehicleDatabase.get((int)index).moveDistance(distance);
-			else vehicleDatabase.get(vehicleDatabase.indexOf(currVehicle)).moveDistance(distance);
+			vehicleDatabase.get(currVehicle.getUniqueID()).moveDistance(distance);
 			lock.writeLock().unlock();
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
 			return true;
 		}
+		Utilities.log("the vehicle doesnt exist, returning");
 		return false;
 	}
 
@@ -113,7 +96,7 @@ public class Database {
 			return false;
 		}
 		lock.writeLock().lock();
-		for (Vehicle v : vehicleDatabase) {
+		for (IVehicle v : vehicleDatabase.values()) {
 			v.resetTotalDistance();
 		}
 		lock.writeLock().unlock();
@@ -130,7 +113,7 @@ public class Database {
 		}
 		lock.readLock().unlock();
 		lock.writeLock().lock();
-		for (ISeaVehicle sV : seaVehicleDatabase) {
+		for (ISeaVehicle sV : seaVehicleDatabase.values()) {
 			sV.setFlag(flag);
 		}
 		lock.writeLock().unlock();
@@ -140,32 +123,21 @@ public class Database {
 
 
 	public Database() {
-		vehicleDatabase = new ArrayList<>();
-		seaVehicleDatabase = new ArrayList<>();
-		airVehicleDatabase = new ArrayList<>();
-		landVehicleDatabase = new ArrayList<>();
+		vehicleDatabase = new HashMap<String, IVehicle>();
+		seaVehicleDatabase = new HashMap<String, ISeaVehicle>();
+		airVehicleDatabase = new HashMap<String, IAirVehicle>();
+		landVehicleDatabase = new HashMap<String, ILandVehicle>();
 	}
-
-	public List<Vehicle> getVehicles() {
+	
+	public IVehicle findVehicle(String vehicleID) {
+		return vehicleDatabase.get(vehicleID);
+	}
+	
+	public List<IVehicle> getVehicles() {
 		lock.readLock().lock();
-		List<Vehicle> result = vehicleDatabase;
+		HashMap<String,IVehicle> result = vehicleDatabase;
 		lock.readLock().unlock();
-		return result;
+		return (List<IVehicle>) result.values();
 	}
 	
-	
-	private Integer getIdentical(List vehicles,Vehicle v) {
-		lock.readLock().lock();
-		for(int i=0;i<vehicles.size();i++)
-			if(vehicles.get(i)==v) {
-				lock.readLock().unlock();
-				return i;
-			}
-		lock.readLock().unlock();
-		return null;
-	}
-	
-	public boolean containsIdentical(Vehicle v) {
-		return (getIdentical(vehicleDatabase, v)!=null);
-	}
 }

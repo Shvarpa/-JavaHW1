@@ -30,6 +30,7 @@ import classes.Vehicle;
 import interfaces.Commercial;
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
+import interfaces.IVehicle;
 import interfaces.NonMotorized;
 import javafx.util.Pair;
 
@@ -218,7 +219,7 @@ public class AddVehicleForm extends JPanel {
 		revalidate();
 	}
 	
-	public Vehicle createVehicle() throws NumberFormatException{
+	public IVehicle createVehicle() throws NumberFormatException{
 		switch (this.vehicleType) {
 		case "Jeep":
 			return new Jeep(getString(model), getFloat(speed), getDouble(avgFuelConsumption), getDouble(avgMotorLifespan));

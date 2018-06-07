@@ -5,8 +5,6 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 

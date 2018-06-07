@@ -1,8 +1,8 @@
 //Pavel Shvarchov - 319270583, Mordy Dabah - 203507017
-//
 
 package gui;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import classes.Database;
 import classes.Vehicle;
+import interfaces.IVehicle;
 
 
 
@@ -47,17 +48,17 @@ public class DBConnect extends JComponent {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void addVehicle(Vehicle v) {
+	public void addVehicle(IVehicle v) {
 		new AddVehicleThread(v).execute();
 	}
 	private Lock addVehicleLock = new ReentrantLock(true); 
 	class AddVehicleThread extends DBThread{
-		private Vehicle vehicle;
+		private IVehicle vehicle;
 		private void addVehicleMethod() {
 			db.addVehicle(vehicle);
 			getConnection().firePropertyChange("addVehicle", null, vehicle);
 		}
-		public AddVehicleThread(Vehicle vehicle) {
+		public AddVehicleThread(IVehicle vehicle) {
 			this.vehicle = vehicle;
 		}
 		@Override
@@ -77,13 +78,15 @@ public class DBConnect extends JComponent {
 		}	
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void buyVehicle(Vehicle vehicle) {
+	public void buyVehicle(IVehicle vehicle) {
 		new buyVehicleThread(vehicle).execute();
 	}
 	
 	class buyVehicleThread extends DBThread{
-		private Vehicle vehicle;
-		public buyVehicleThread(Vehicle vehicle) {
+		private String vehicleID;
+		private IVehicle vehicle;
+
+		public buyVehicleThread(IVehicle vehicle) {
 			this.vehicle = vehicle;
 			}		
 			public void buyVehicleMethod() {
@@ -118,15 +121,16 @@ public class DBConnect extends JComponent {
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void testDriveVehicle(Vehicle vehicle,double distance) {
+	public void testDriveVehicle(IVehicle vehicle,double distance) {
 		new testDriveVehicleThread(vehicle,distance).execute();
 	}
 	
 	class testDriveVehicleThread extends DBThread{
-		private Vehicle vehicle;
+		private IVehicle vehicle;
 		private double distance;
-		public testDriveVehicleThread(Vehicle vehicle, double distance) {
-			this.vehicle = vehicle; this.distance = distance;
+		public testDriveVehicleThread(IVehicle vehicle, double distance) {
+			this.vehicle = vehicle;
+			this.distance = distance;
 		}
 		private void testDriveVehicleMehod() {
 			db.testDriveVehicle(vehicle,distance);
@@ -140,7 +144,7 @@ public class DBConnect extends JComponent {
 					JOptionPane.showMessageDialog(null,"the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
 					return Status.RETRY;
 				}
-				if(!db.containsIdentical(vehicle)) {
+				if(db.findVehicle(vehicle.getUniqueID())==null) {
 					transactionLock.releaseTestDrive(vehicle);
 					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
 					return Status.STOP;
@@ -238,18 +242,14 @@ public class DBConnect extends JComponent {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public List<Vehicle> getVehicles() {
+	public List<IVehicle> getVehicles() {
 		return db.getVehicles();
 	}
 
 	public boolean hasSeaVehicles() {
 		return db.hasSeaVehicles();
 	}
-	
-	public boolean containsIdentical(Vehicle v) {
-		return db.containsIdentical(v);
-	}
-	
+		
 	public boolean isEmpty() {
 		return db.isEmpty();
 	}
@@ -269,6 +269,9 @@ public class DBConnect extends JComponent {
 		return !transactionLock.isEmpty();
 	}
 	
+	public IVehicle findVehicle(String vehicleID) {
+		return db.findVehicle(vehicleID);
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 	

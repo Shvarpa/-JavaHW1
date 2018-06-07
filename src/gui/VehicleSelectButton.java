@@ -7,47 +7,51 @@ import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
 import classes.Vehicle;
 import gui.Images.ImageOpener;
+import interfaces.IVehicle;
 
 public class VehicleSelectButton extends JRadioButton {
 	private static final long serialVersionUID = 1L;
 	///a radio button containing a vehicle and it's image
-	private Vehicle vehicle;
-
+	private IVehicle vehicle;
+	
+	static Dimension preferedImageSize = new Dimension(50, 50);
+	public static void setPreferedImageSize(Dimension size) {
+		VehicleSelectButton.preferedImageSize = size;
+	}
+	
 	public VehicleSelectButton(Vehicle v) {
 		setVehicle(v);
-		ImageIcon img = ImageOpener.createImageIcon(this.vehicle.getImagePath());
-		setImage(img);
 	}
 	
-	public VehicleSelectButton(Vehicle v,Dimension d) {
-		setVehicle(v);
-		ImageIcon img = ImageOpener.scaleImg(ImageOpener.createImageIcon(this.vehicle.getImagePath()), d);
-		setImage(img);
-	}
-	
-	public VehicleSelectButton(Vehicle v,int width,int height) {
-		setVehicle(v);
-		ImageIcon img = ImageOpener.scaleImg(ImageOpener.createImageIcon(this.vehicle.getImagePath()), width,height);
-		setImage(img);
-	}
-	
-	private void setVehicle(Vehicle v) {
+	public void setVehicle(IVehicle v) {
 		vehicle=v;
 		setToolTipText(vehicle.toString());
 	}
 	
+	public boolean setImage(String path) {
+		ImageIcon img = ImageOpener.scaleImg(path, preferedImageSize);
+		return setImage(img);
+	}
 	
-	private void setImage(ImageIcon img) {
+	public boolean setImage(String path, Dimension d) {
+		ImageIcon img = ImageOpener.scaleImg(path, d);
+		return setImage(img);
+	}
+		
+	public boolean setImage(ImageIcon img) {
 		if(img!=null) {
 			setIcon(img);
 			setBorderPainted(true);
+			setFocusPainted(true);
+			return true;
 		}
 		else {
 			setText(vehicle.getModel());
+			return false;
 		}
 	}
 	
-	public Vehicle getVehicle() {
+	public IVehicle getVehicle() {
 		return vehicle;
 	}
 }

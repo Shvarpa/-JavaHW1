@@ -2,22 +2,27 @@
 
 package classes;
 
-public abstract class Vehicle {
+import java.util.UUID;
 
-	private String imagePath = null;
+import gui.VehicleSelectButton;
+import interfaces.IVehicle;
 
-	public void setImagePath(String path) {
-		this.imagePath = path;
+public abstract class Vehicle implements IVehicle{
+		
+	@Override
+	public VehicleSelectButton draw() {
+		return new VehicleSelectButton(this);
 	}
-
-	public String getImagePath() {
-		return imagePath;
-	}
-
+			
 	private double totalDistance;
 	private String model;
 	private int seats;
 	private float speed;
+	private String id = generateUniqueId();
+	
+	private String generateUniqueId() {
+		return UUID.randomUUID().toString();
+	}
 
 	protected Vehicle(String model, int seats, float speed) {
 		setModel(model);
@@ -25,7 +30,8 @@ public abstract class Vehicle {
 		setSeats(seats);
 		setSpeed(speed);
 	}
-
+	
+	@Override
 	public String getModel() {
 		return this.model;
 	}
@@ -33,7 +39,8 @@ public abstract class Vehicle {
 	private void setModel(String model) {
 		this.model = model;
 	}
-
+	
+	@Override
 	public double getTotalDistance() {
 		return this.totalDistance;
 	}
@@ -41,7 +48,8 @@ public abstract class Vehicle {
 	private void setTotalDistance(double totalDistance) {
 		this.totalDistance = totalDistance;
 	}
-
+	
+	@Override
 	public int getSeats() {
 		return this.seats;
 	}
@@ -53,7 +61,8 @@ public abstract class Vehicle {
 		}
 		this.seats = seats;
 	}
-
+	
+	@Override
 	public float getSpeed() {
 		return this.speed;
 	}
@@ -65,32 +74,38 @@ public abstract class Vehicle {
 		}
 		this.speed = speed;
 	}
-
-	void resetTotalDistance() {
+	@Override
+	public void resetTotalDistance() {
 		this.setTotalDistance(0);
 	}
-
-	protected boolean moveDistance(double distance) {
+	
+	@Override
+	public boolean moveDistance(double distance) {
 		if (distance > 0) {
 			totalDistance += distance;
 			return true;
 		} else
 			return false;
 	}
-
+	
+	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + ":Model: " + this.model + ", traveled:" + this.totalDistance
 				+ " Km, Max Speed of " + this.speed + " Mph, can carry max of " + this.seats + " people.";
 	}
 
 	public boolean equals(Object other) {
-		if (other instanceof Vehicle) {
+		if (other instanceof IVehicle) {
 			return this.model.equals(((Vehicle) other).getModel())
 					&& this.totalDistance == ((Vehicle) other).getTotalDistance()
 					&& this.seats == ((Vehicle) other).getSeats() && this.speed == ((Vehicle) other).getSpeed()
-					&& this.getTotalDistance() == ((Vehicle) other).getTotalDistance()
-					&& (this.imagePath!=null ? this.imagePath.equals(((Vehicle) other).imagePath) : ((Vehicle)other).getImagePath() == null);
+					&& this.getTotalDistance() == ((Vehicle) other).getTotalDistance();
 		}
 		return false;
+	}
+	
+	@Override
+	public String getUniqueID() {
+		return id;
 	}
 }
