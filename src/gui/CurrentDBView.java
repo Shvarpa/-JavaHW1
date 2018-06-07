@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class CurrentDBView extends JDialog{
 			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
-		List<IVehicle> data = DBConnect.getConnection().getVehicles();
+		Collection<IVehicle> data = DBConnect.getConnection().getVehicles();
 		synchronized (data) {
 			for (IVehicle v:data) {
 				VehicleSelectButton vS = v.draw();

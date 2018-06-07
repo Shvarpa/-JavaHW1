@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
@@ -36,14 +37,17 @@ public class DataPanel extends JScrollPane implements ActionListener {
 			content.remove(vS);
 		}
 		vehicleSelectButtons.clear();
-		for (IVehicle v : db.getVehicles()) {
-			VehicleSelectButton vS = v.draw();
-			vS.addActionListener(this);
-			vehicleSelectButtons.add(vS);
-		}
-		for (VehicleSelectButton vS : vehicleSelectButtons) {
-			group.add(vS);
-			content.add(vS);
+		Collection<IVehicle> data = db.getVehicles();
+		synchronized (data) {
+			for (IVehicle v : data) {
+				VehicleSelectButton vS = v.draw();
+				vS.addActionListener(this);
+				vehicleSelectButtons.add(vS);
+			}
+			for (VehicleSelectButton vS : vehicleSelectButtons) {
+				group.add(vS);
+				content.add(vS);
+			}
 		}
 		processIsEmpty();
 		processIsSelected();

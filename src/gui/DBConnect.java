@@ -2,6 +2,7 @@
 
 package gui;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -242,7 +243,7 @@ public class DBConnect extends JComponent {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public List<IVehicle> getVehicles() {
+	public Collection<IVehicle> getVehicles() {
 		return db.getVehicles();
 	}
 

@@ -4,6 +4,7 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -74,7 +75,7 @@ public class Database {
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
 		}
-		Utilities.log("the vehicle doesnt exist, returning");
+		Utilities.log("the vehicle " + currVehicle.toString() + " doesnt exist, returning");
 		return false;
 	}
 
@@ -86,7 +87,7 @@ public class Database {
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
 			return true;
 		}
-		Utilities.log("the vehicle doesnt exist, returning");
+		Utilities.log("the vehicle " + currVehicle.toString() + " doesnt exist, returning");
 		return false;
 	}
 
@@ -133,11 +134,11 @@ public class Database {
 		return vehicleDatabase.get(vehicleID);
 	}
 	
-	public List<IVehicle> getVehicles() {
+	public Collection<IVehicle> getVehicles() {
 		lock.readLock().lock();
 		HashMap<String,IVehicle> result = vehicleDatabase;
 		lock.readLock().unlock();
-		return (List<IVehicle>) result.values();
+		return result.values();
 	}
 	
 }

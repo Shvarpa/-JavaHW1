@@ -89,7 +89,7 @@ public class AddVehicleImages extends JPanel {
 		openColorSelectButton.addActionListener((event)->{
 			selectedColor = JColorChooser.showDialog(null, "Select vehicle color", Color.BLACK);
 			if(selectedColor !=null) {
-				openColorSelectButton.setForeground(selectedColor);;
+				openColorSelectButton.setForeground(selectedColor);
 			}
 			else
 				openColorSelectButton.setForeground(Color.BLACK);
