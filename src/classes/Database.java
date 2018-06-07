@@ -24,6 +24,7 @@ public class Database {
 	private HashMap<String,ISeaVehicle> seaVehicleDatabase;
 	private HashMap<String,IAirVehicle> airVehicleDatabase;
 	private HashMap<String,ILandVehicle> landVehicleDatabase;
+	private double totalDistances = 0; 
 	private ReadWriteLock lock = new ReentrantReadWriteLock(true);
 
 	
@@ -67,7 +68,10 @@ public class Database {
 	}
 
 	public boolean buyVehicle(IVehicle currVehicle) {
-		if (vehicleDatabase.containsKey(currVehicle.getUniqueID())) {
+		lock.readLock().lock();
+		boolean contains = vehicleDatabase.containsKey(currVehicle.getUniqueID());
+		lock.readLock().unlock();
+		if (contains) {
 			lock.writeLock().lock();
 			for (HashMap<String,?> hM:Arrays.asList(vehicleDatabase,seaVehicleDatabase,airVehicleDatabase,landVehicleDatabase))
 				hM.remove(currVehicle.getUniqueID());
@@ -80,9 +84,11 @@ public class Database {
 	}
 
 	public boolean testDriveVehicle(IVehicle currVehicle, double distance) {
-		if (vehicleDatabase.containsKey(currVehicle.getUniqueID())) {
+		boolean contains = vehicleDatabase.containsKey(currVehicle.getUniqueID());
+		if (contains) {
 			lock.writeLock().lock();
 			vehicleDatabase.get(currVehicle.getUniqueID()).moveDistance(distance);
+			this.totalDistances+=distance;
 			lock.writeLock().unlock();
 			Utilities.log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
 			return true;
@@ -92,6 +98,9 @@ public class Database {
 	}
 
 	public boolean resetDistances() {
+		lock.writeLock().lock();
+		totalDistances = 0;
+		lock.writeLock().unlock();
 		if (isEmpty()) {
 			Utilities.log("no vehicles to reset distance, returning");
 			return false;
@@ -106,13 +115,10 @@ public class Database {
 	}
 
 	public boolean changeFlags(String flag) {
-		lock.readLock().lock();
 		if (seaVehicleDatabase.isEmpty()) {
-			lock.readLock().unlock();
 			Utilities.log("no vehicles to change flags, returning");
 			return false;
 		}
-		lock.readLock().unlock();
 		lock.writeLock().lock();
 		for (ISeaVehicle sV : seaVehicleDatabase.values()) {
 			sV.setFlag(flag);
@@ -141,4 +147,7 @@ public class Database {
 		return result.values();
 	}
 	
+	public double getTotalDistances() {
+		return this.totalDistances;
+	}
 }

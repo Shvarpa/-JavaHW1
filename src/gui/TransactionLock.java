@@ -100,21 +100,21 @@ public class TransactionLock {
 
 	public boolean aquireTestDrive(IVehicle vehicle) {
 		if(!aquire(vehicle, Operation.TEST_DRIVE)) return false;
-		try {
-			for (String s : reqTestRiders(vehicle))
-				testDrivers.get(s).acquire();
-		} catch (InterruptedException e) {
-			for (String s : reqTestRiders(vehicle))
-				testDrivers.get(s).release();
-		}
+//		try {
+//			for (String s : reqTestRiders(vehicle))
+//				testDrivers.get(s).acquire();
+//		} catch (InterruptedException e) {
+//			for (String s : reqTestRiders(vehicle))
+//				testDrivers.get(s).release();
+//		}
 		return true;
 	}
 
 	public void releaseTestDrive(IVehicle vehicle) {
-		List<String> x = reqTestRiders(vehicle);
-		Collections.reverse(x);
-		for (String s : x)
-			testDrivers.get(s).release();
+//		List<String> x = reqTestRiders(vehicle);
+//		Collections.reverse(x);
+//		for (String s : x)
+//			testDrivers.get(s).release();
 		release(vehicle);
 	}
 

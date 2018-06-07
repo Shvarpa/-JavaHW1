@@ -3,7 +3,9 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -11,12 +13,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.concurrent.ExecutionException;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+
 import classes.Vehicle;
 import interfaces.IVehicle;
 
@@ -26,7 +33,9 @@ import java.awt.Insets;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPanel;
+	private JPanel contentPanel, centerPanel, totalDistancesPanel;
+	String baseTotalDistances = "Total distance driven:";
+	JLabel totalDistancesLabel;
 	private JButton addVehicleButton,buyVehicleButton,testDriveButton,resetDistancesButton,changeFlagsButton,currentDbButton;
 	private DataPanel dataPanel = new DataPanel();
 	private JTextArea toStringTextArea;
@@ -138,12 +147,28 @@ public class MainFrame extends JFrame {
 				changeFlagsButton.setEnabled(false);
 			}
 		});
-
-		contentPanel.add(dataPanel, BorderLayout.CENTER);
+		centerPanel = new JPanel();
+		totalDistancesLabel = new JLabel(baseTotalDistances);
+		db.addPropertyChangeListener("testDriveVehicle",(event)->{
+			updateTotalDistances(db.getTotalDistances());
+		});
+		db.addPropertyChangeListener("resetDistances",(event)->{
+			updateTotalDistances(db.getTotalDistances());
+		});
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(dataPanel,BorderLayout.CENTER);
+		
+		totalDistancesPanel = new JPanel(new GridBagLayout());
+		totalDistancesPanel.setVisible(false);
+		totalDistancesPanel.setBorder(BorderFactory.createEtchedBorder());
+		totalDistancesPanel.add(totalDistancesLabel,new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(1, 5, 2, 5), 0, 0));
+		
+		centerPanel.add(totalDistancesPanel,BorderLayout.SOUTH);
+		contentPanel.add(centerPanel, BorderLayout.CENTER);
 
 		JPanel toStringPanel = new JPanel();
 		toStringPanel.setLayout(new GridBagLayout());
-
+		toStringPanel.setBorder(BorderFactory.createEtchedBorder());
 		// labels
 		toStringTextArea = new JTextArea("");
 		toStringTextArea.setOpaque(false);
@@ -187,5 +212,10 @@ public class MainFrame extends JFrame {
 	
 	private void updateToString(String text) {
 		toStringTextArea.setText(text);
+	}
+	
+	private void updateTotalDistances(double distance) {
+		totalDistancesPanel.setVisible(true);
+		totalDistancesLabel.setText(baseTotalDistances + Double.toString(distance));
 	}
 }

@@ -83,7 +83,7 @@ public class TestDrive extends JDialog {
 			SwingUtilities.invokeLater(()->{
 				updateStatusLabel("Preparing test drive, please wait", Color.BLACK);
 				okButton.setEnabled(false);
-				db.new testDriveVehicleThread (currVehicle, distance) {
+				db.new TestDriveVehicleThread (currVehicle, distance) {
 					@Override
 					protected void done() {
 						switch(getStatus()) {

@@ -3,16 +3,15 @@
 package gui;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import classes.Database;
-import classes.Vehicle;
 import interfaces.IVehicle;
 
 
@@ -84,7 +83,6 @@ public class DBConnect extends JComponent {
 	}
 	
 	class buyVehicleThread extends DBThread{
-		private String vehicleID;
 		private IVehicle vehicle;
 
 		public buyVehicleThread(IVehicle vehicle) {
@@ -123,13 +121,15 @@ public class DBConnect extends JComponent {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void testDriveVehicle(IVehicle vehicle,double distance) {
-		new testDriveVehicleThread(vehicle,distance).execute();
+		new TestDriveVehicleThread(vehicle,distance).execute();
 	}
 	
-	class testDriveVehicleThread extends DBThread{
+	private static final ExecutorService testDrivePool = Executors.newFixedThreadPool(7);
+	class TestDriveVehicleThread{
+		private TestDriveVehicleThread self =this;
 		private IVehicle vehicle;
 		private double distance;
-		public testDriveVehicleThread(IVehicle vehicle, double distance) {
+		public TestDriveVehicleThread(IVehicle vehicle, double distance) {
 			this.vehicle = vehicle;
 			this.distance = distance;
 		}
@@ -138,29 +138,45 @@ public class DBConnect extends JComponent {
 			getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
 		}
 		
-		@Override	
-		final protected DBConnect.Status doInBackground() {
-			try {
-				if(!transactionLock.aquireTestDrive(vehicle)) {
-					JOptionPane.showMessageDialog(null,"the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
-					return Status.RETRY;
-				}
-				if(db.findVehicle(vehicle.getUniqueID())==null) {
+		protected void done() {
+		}
+		public DBConnect.Status getStatus(){
+			return thread.getStatus();
+		}
+		private DBThread thread = new DBThread() {
+			@Override	
+			final protected DBConnect.Status doInBackground() {
+				try {
+					if(!transactionLock.aquireTestDrive(vehicle)) {
+						JOptionPane.showMessageDialog(null,"the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
+						return Status.RETRY;
+					}
+					if(db.findVehicle(vehicle.getUniqueID())==null) {
+						transactionLock.releaseTestDrive(vehicle);
+						JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
+						return Status.STOP;
+					}
+					Thread.sleep((long)(distance*100));
+					testDriveVehicleMehod();
 					transactionLock.releaseTestDrive(vehicle);
-					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
-					return Status.STOP;
+					JOptionPane.showMessageDialog(null, "the vehicle \n"+ vehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
+					return Status.DONE;
+					} 
+				catch (InterruptedException e) {
+					transactionLock.releaseTestDrive(vehicle);
+					JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ vehicle.toString() +"\nwas canceled");
+					return Status.ABORT;
 				}
-				Thread.sleep((long)(distance*100));
-				testDriveVehicleMehod();
-				transactionLock.releaseTestDrive(vehicle);
-				JOptionPane.showMessageDialog(null, "the vehicle \n"+ vehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
-				return Status.DONE;
-				} 
-			catch (InterruptedException e) {
-				transactionLock.releaseTestDrive(vehicle);
-				JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ vehicle.toString() +"\nwas canceled");
-				return Status.ABORT;
 			}
+			@Override
+			protected void done() {
+				self.done();
+			}
+			
+		};
+		
+		public void execute() {
+			testDrivePool.submit(thread);
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,7 +258,9 @@ public class DBConnect extends JComponent {
 		
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	public double getTotalDistances() {
+		return db.getTotalDistances();
+	}
 	public Collection<IVehicle> getVehicles() {
 		return db.getVehicles();
 	}
