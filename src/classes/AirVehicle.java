@@ -32,4 +32,9 @@ public abstract class AirVehicle extends Vehicle implements IAirVehicle{
     public boolean equals(Object other) {
     	return super.equals(other) && IAirVehicle.equals(this, other);
     }
+    
+    public AirVehicle(AirVehicle toCopy) {
+    	super(toCopy);
+    	setVehicleUse(toCopy.getVehicleUse());
+    }
 }

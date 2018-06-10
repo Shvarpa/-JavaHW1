@@ -48,5 +48,10 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
 	public boolean equals(Object other) {
 		return super.equals(other) && Commercial.equals(this, other) && Motorized.equals(this, other);
 	}
-
+	
+	public Jeep(Jeep toCopy) {
+		super(toCopy);
+		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
+		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
+	}
 }

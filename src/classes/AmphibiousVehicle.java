@@ -55,4 +55,12 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 		return super.toString()+ " " +ILandVehicle.toString(this)+ " " + ISeaVehicle.toString(this) + " " + Motorized.toString(this);
 	}
 	
+	public AmphibiousVehicle(AmphibiousVehicle toCopy) {
+		super(toCopy);
+		setWheels(toCopy.getWheels());
+		setWithWindDiraction(toCopy.getWithWindDiraction());
+		setFlag(toCopy.getFlag());
+		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
+		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
+	}
 }

@@ -30,4 +30,7 @@ public class Bike extends LandVehicle implements NonMotorized {
     public String toString() {
         return super.toString() + " " + NonMotorized.toString(this);
     }
+    public Bike(Bike toCopy) {
+    	super(toCopy);
+    }
 }

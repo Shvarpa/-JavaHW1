@@ -47,4 +47,10 @@ public abstract class LandVehicle extends Vehicle implements ILandVehicle{
     public boolean equals(Object other) {
     	return super.equals(other) && ILandVehicle.equals(this, other);
     }
+    
+    public LandVehicle (LandVehicle toCopy) {
+    	super(toCopy);
+    	setRoadType(toCopy.getRoadType());
+    	setWheels(toCopy.getWheels());
+    }
 }

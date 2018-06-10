@@ -28,6 +28,9 @@ public class Frigate extends SeaVehicle implements Motorized {
     public boolean equals(Object other) {
         return super.equals(other) && Motorized.equals(this, other);
     }
-
+    
+    public Frigate(Frigate toCopy) {
+    	super(toCopy);
+    }
 }
 

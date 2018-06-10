@@ -44,4 +44,10 @@ public abstract class Drone extends AirVehicle implements NonMotorized {
     public boolean equals(Object other) {
         return super.equals(other) && NonMotorized.equals(this, other);
     }
+    
+    public Drone(Drone toCopy) {
+    	super(toCopy);
+    	setEnergyRating(toCopy.getEnergyRating());
+    	setEnergySource(toCopy.getEnergySource());
+    }
 }

@@ -108,4 +108,11 @@ public abstract class Vehicle implements IVehicle{
 	public String getUniqueID() {
 		return id;
 	}
+	
+	public Vehicle (Vehicle toCopy) {
+		setModel(toCopy.getModel());
+		setSeats(toCopy.getSeats());
+		setSpeed(toCopy.getSpeed());
+		setTotalDistance(toCopy.getTotalDistance());
+	}
 }

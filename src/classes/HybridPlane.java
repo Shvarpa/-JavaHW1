@@ -96,4 +96,13 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 		return super.equals(other) && ILandVehicle.equals(this, other) && ISeaVehicle.equals(this, other)
 				&& IAirVehicle.equals(this, other) && Motorized.equals(this, other);
 	}
+	
+	public HybridPlane(HybridPlane toCopy) {
+		super(toCopy);
+		setWheels(toCopy.getWheels());
+		setWithWindDiraction(toCopy.getWithWindDiraction());
+		setFlag(toCopy.getFlag());
+		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
+		SetAvgMotorLifespan(toCopy.getAvgMotorLifespan());
+	}
 }

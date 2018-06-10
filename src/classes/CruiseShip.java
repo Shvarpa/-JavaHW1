@@ -34,4 +34,10 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	public String toString() {
 		return super.toString() + " " + Motorized.toString(this) + " " + Commercial.toString(this);
 	}
+	
+	public CruiseShip(CruiseShip toCopy) {
+		super(toCopy);
+		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
+		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
+	}
 }

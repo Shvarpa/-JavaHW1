@@ -35,4 +35,9 @@ public class ElectricBike extends LandVehicle implements Motorized {
 	public boolean equals(Object other) {
 		return super.equals(other) && Motorized.equals(this, other);
 	}
+	
+	public ElectricBike(ElectricBike toCopy) {
+		super(toCopy);
+		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
+	}
 }

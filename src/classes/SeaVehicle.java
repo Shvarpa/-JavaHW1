@@ -28,4 +28,10 @@ public abstract class SeaVehicle extends Vehicle implements ISeaVehicle {
 	public boolean equals(Object other) {
 		return super.equals(other) && ISeaVehicle.equals(this, other);
 	}
+	
+	public SeaVehicle(SeaVehicle toCopy) {
+		super(toCopy);
+		setWithWindDiraction(toCopy.getWithWindDiraction());
+		setFlag(toCopy.getFlag());
+	}
 }
