@@ -32,5 +32,9 @@ public class Frigate extends SeaVehicle implements Motorized {
     public Frigate(Frigate toCopy) {
     	super(toCopy);
     }
+    @Override
+    public Frigate clone() {
+    	return new Frigate(this);
+    }
 }
 

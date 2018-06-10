@@ -2,6 +2,7 @@
 
 package classes;
 
+import interfaces.IVehicle;
 import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {
@@ -32,5 +33,9 @@ public class Bike extends LandVehicle implements NonMotorized {
     }
     public Bike(Bike toCopy) {
     	super(toCopy);
+    }
+    @Override
+    public Bike clone() {
+    	return new Bike(this);
     }
 }

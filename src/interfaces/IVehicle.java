@@ -12,4 +12,5 @@ public interface IVehicle {
 	public boolean moveDistance(double distance);
 	public String toString();
 	public String getUniqueID();
+	public IVehicle clone();
 }

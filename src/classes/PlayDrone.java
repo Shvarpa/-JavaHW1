@@ -15,5 +15,12 @@ public class PlayDrone extends Drone {
 		super(PlayDrone.defaultModel, PlayDrone.defaultSeats, PlayDrone.defaultSpeed, PlayDrone.defaultVehicleUse,
 				PlayDrone.defaultEnergySource, PlayDrone.defaultEnergyRating);
 	}
-
+	
+	public PlayDrone(PlayDrone toCopy) {
+		super(toCopy);
+	}
+	@Override
+	public PlayDrone clone() {
+		return new PlayDrone(this);
+	}
 }

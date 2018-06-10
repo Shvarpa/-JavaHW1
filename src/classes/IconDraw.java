@@ -1,5 +1,7 @@
 package classes;
 
+import java.awt.Color;
+
 import gui.VehicleSelectButton;
 import interfaces.IVehicle;
 
@@ -8,11 +10,24 @@ public class IconDraw implements IVehicle {
 	private IVehicle vehicle;
 	private String picturePath;
 	
-	public IconDraw(IVehicle v,String path) {
-		this.vehicle = v;
-		this.picturePath = path;
+	public IconDraw(IVehicle v,String p) {
+		setVehicle(v);
+		setPicturePath(p);
 	}
 	
+	private void setVehicle(IVehicle v) {
+		this.vehicle = v;
+	}
+	public IVehicle getVehicle() {
+		return vehicle;
+	}
+	private void setPicturePath(String p) {
+		this.picturePath = p;
+	}
+	public String getPicturePath() {
+		return picturePath;
+	}
+
 	
 	@Override
 	public VehicleSelectButton draw() {
@@ -59,5 +74,15 @@ public class IconDraw implements IVehicle {
 	@Override
 	public String getUniqueID() {
 		return vehicle.getUniqueID();
+	}
+	
+	public IconDraw(IconDraw toCopy) {
+		setVehicle(toCopy.getVehicle().clone());
+		setPicturePath(toCopy.getPicturePath());
+	}
+	
+	@Override
+	public IconDraw clone() {
+		return new IconDraw(this);
 	}
 }

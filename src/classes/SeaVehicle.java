@@ -34,4 +34,7 @@ public abstract class SeaVehicle extends Vehicle implements ISeaVehicle {
 		setWithWindDiraction(toCopy.getWithWindDiraction());
 		setFlag(toCopy.getFlag());
 	}
+	
+	@Override
+	abstract public SeaVehicle clone();
 }

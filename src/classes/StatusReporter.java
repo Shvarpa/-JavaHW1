@@ -29,24 +29,36 @@ public class StatusReporter implements IVehicle {
 	public StatusReporter(IVehicle vehicle, VehicleStatus status) {
 		if (vehicle instanceof StatusReporter) {
 			StatusReporter other = (StatusReporter)vehicle;
-			other.status = status;
+			other.setStatus(status);
 			clone(other);
 			updateDrawings();
 		}
 		else {
-			this.vehicle = vehicle;
-			this.status = status;
+			setVehicle(vehicle);
+			setStatus(status);
 			this.drawings = new ArrayList<VehicleSelectButton>();
 			this.eventHandler = new PropertyChangeSupport(this);
 		}
 	}
 	
+	private void setVehicle(IVehicle v) {
+		this.vehicle = v;
+	}
+	public IVehicle getVehicle() {
+		return vehicle;
+	}
+	private void setStatus(VehicleStatus s) {
+		this.status = s;
+	}
+	public VehicleStatus getStatus() {
+		return status;
+	}
 	
 	///intended shallow clone of other StatusReporter
 	private void clone(StatusReporter other) {
 		this.drawings = other.drawings;
-		this.vehicle = other.vehicle;
-		this.status = other.status;
+		setVehicle(other.vehicle);
+		setStatus(other.status);
 		this.eventHandler = other.eventHandler;
 	}
 	
@@ -108,5 +120,15 @@ public class StatusReporter implements IVehicle {
 	@Override
 	public String getUniqueID() {
 		return vehicle.getUniqueID();
+	}
+	
+	public StatusReporter(StatusReporter toCopy) {
+		setVehicle(toCopy.getVehicle().clone());
+		setStatus(toCopy.getStatus());
+	}
+	
+	@Override
+	public StatusReporter clone() {
+		return new StatusReporter(this);
 	}
 }

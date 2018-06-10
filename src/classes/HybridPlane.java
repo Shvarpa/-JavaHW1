@@ -105,4 +105,8 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
 		SetAvgMotorLifespan(toCopy.getAvgMotorLifespan());
 	}
+	@Override
+	public HybridPlane clone() {
+		return new HybridPlane(this);
+	}
 }

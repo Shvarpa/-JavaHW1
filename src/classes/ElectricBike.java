@@ -40,4 +40,8 @@ public class ElectricBike extends LandVehicle implements Motorized {
 		super(toCopy);
 		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
 	}
+	@Override
+	public ElectricBike clone() {
+		return new ElectricBike(this);
+	}
 }

@@ -53,4 +53,6 @@ public abstract class LandVehicle extends Vehicle implements ILandVehicle{
     	setRoadType(toCopy.getRoadType());
     	setWheels(toCopy.getWheels());
     }
+    @Override
+    abstract public LandVehicle clone();
 }

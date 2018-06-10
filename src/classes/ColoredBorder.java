@@ -13,10 +13,22 @@ public class ColoredBorder implements IVehicle {
 	private Color color;
 
 	public ColoredBorder(IVehicle v,Color c) {
+		setVehicle(v);
+		setColor(c);
+	}
+	
+	private void setVehicle(IVehicle v) {
 		this.vehicle = v;
+	}
+	public IVehicle getVehicle() {
+		return vehicle;
+	}
+	private void setColor(Color c) {
 		this.color = c;
 	}
-
+	public Color getColor() {
+		return color;
+	}
 
 	@Override
 	public VehicleSelectButton draw() {
@@ -72,5 +84,14 @@ public class ColoredBorder implements IVehicle {
 	public String getUniqueID() {
 		return vehicle.getUniqueID();
 	}
-
+	
+	public ColoredBorder(ColoredBorder toCopy) {
+		setVehicle(toCopy.getVehicle().clone());
+		setColor(toCopy.getColor());
+	}
+	
+	@Override
+	public ColoredBorder clone() {
+		return new ColoredBorder(this);
+	}
 }

@@ -54,4 +54,8 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
 		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
 		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
 	}
+	@Override
+	public Jeep clone() {
+		return new Jeep(this);
+	}
 }

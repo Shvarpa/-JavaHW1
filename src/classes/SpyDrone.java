@@ -13,5 +13,14 @@ public class SpyDrone extends Drone {
     public SpyDrone(String energySource) {
         super(SpyDrone.defaultModel, SpyDrone.defaultSeats, SpyDrone.defaultSpeed, SpyDrone.defaultVehicleUse, energySource, SpyDrone.defaultEnergyRating);
     }
-
+    
+    public SpyDrone(SpyDrone toCopy) {
+    	super(toCopy);
+    }
+    
+    @Override
+    public SpyDrone clone() {
+    	return new SpyDrone(this);
+    }
+    
 }

@@ -3,6 +3,7 @@
 package classes;
 
 import interfaces.IAirVehicle;
+import interfaces.IVehicle;
 
 public abstract class AirVehicle extends Vehicle implements IAirVehicle{
     private String vehicleUse;
@@ -37,4 +38,6 @@ public abstract class AirVehicle extends Vehicle implements IAirVehicle{
     	super(toCopy);
     	setVehicleUse(toCopy.getVehicleUse());
     }
+    @Override
+    public abstract AirVehicle clone();
 }

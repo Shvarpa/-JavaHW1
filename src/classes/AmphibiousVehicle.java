@@ -4,6 +4,7 @@ package classes;
 
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import interfaces.IVehicle;
 import interfaces.Motorized;
 
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{
@@ -62,5 +63,9 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 		setFlag(toCopy.getFlag());
 		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
 		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
+	}
+	@Override
+	public AmphibiousVehicle clone() {
+		return new AmphibiousVehicle(this);
 	}
 }

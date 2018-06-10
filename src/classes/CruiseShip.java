@@ -40,4 +40,8 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 		setAvgFuelConsumption(toCopy.getAvgFuelConsumption());
 		setAvgMotorLifespan(toCopy.getAvgMotorLifespan());
 	}
+	@Override
+	public CruiseShip clone() {
+		return new CruiseShip(this);
+	}
 }

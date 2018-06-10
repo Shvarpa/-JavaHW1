@@ -115,4 +115,6 @@ public abstract class Vehicle implements IVehicle{
 		setSpeed(toCopy.getSpeed());
 		setTotalDistance(toCopy.getTotalDistance());
 	}
+	
+	abstract public Vehicle clone();
 }
