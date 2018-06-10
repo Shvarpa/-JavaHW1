@@ -105,7 +105,7 @@ public class StatusReporter implements IVehicle {
 	
 	@Override
 	public String toString() {
-		return vehicle.toString() + status;
+		return vehicle.toString() + " " +  status + ".";
 	}
 	
 	@Override
