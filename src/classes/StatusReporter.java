@@ -56,9 +56,6 @@ public class StatusReporter implements IVehicle {
 	
 	private void updateDrawing(VehicleSelectButton drawing) {
 		drawing.setVehicle(this);
-		drawing.setToolTipText(this.toString());
-		drawing.revalidate();
-		drawing.repaint();
 	}
 	
 	@Override

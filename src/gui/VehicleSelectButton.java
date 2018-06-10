@@ -26,6 +26,7 @@ public class VehicleSelectButton extends JRadioButton {
 	public void setVehicle(IVehicle v) {
 		vehicle=v;
 		setToolTipText(vehicle.toString());
+		firePropertyChange("revalidate", null, null);
 	}
 	
 	public boolean setImage(String path) {

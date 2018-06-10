@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -195,10 +197,21 @@ public class MainFrame extends JFrame {
 		/// Initial refresh does'nt account for the button creation.
 		dataPanel.refresh();
 	}
-
+	
+	private VehicleSelectButton currentVehicle = null;
+	private PropertyChangeListener listener = (event) -> {updateToString();};
+	private String defaultUpdateString = "try hovering over the vehicle...";
 	private void updateToString() {
+		if(currentVehicle!=null)
+			currentVehicle.removePropertyChangeListener("revalidate",listener);
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
-		toStringTextArea.setText((vS == null ? "try hovering over the vehicle..." : "current vehicle: " + vS.getVehicle().toString()));
+		if(vS!=null) {
+			vS.addPropertyChangeListener("revalidate",listener);
+			toStringTextArea.setText(vS.getVehicle()!=null ? "current vehicle: " + vS.getVehicle().toString() : defaultUpdateString);
+		}
+		else {
+			toStringTextArea.setText(defaultUpdateString);
+		}
 	}
 	
 	private void updateToString(String text) {
