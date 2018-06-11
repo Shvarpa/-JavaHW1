@@ -83,7 +83,7 @@ public class MainFrame extends JFrame {
 
 		// actions
 		addVehicleButton.addActionListener((event) -> {
-			SwingUtilities.invokeLater(() -> {Utilities.showDialog(new AddVehicle());});
+			Utilities.showDialog(new AddVehicle());
 		});
 
 		buyVehicleButton.addActionListener((event) -> {
@@ -98,27 +98,29 @@ public class MainFrame extends JFrame {
 			IVehicle currVehicle = dataPanel.getVehicleSelectButton().getVehicle();
 			if (currVehicle == null)
 				return;
-			SwingUtilities.invokeLater(() -> {
-				Utilities.showDialog(new TestDrive(currVehicle));
-			});
+			Utilities.showDialog(new TestDrive(currVehicle));
 		});
 
 		resetDistancesButton.addActionListener((event) -> {
-			SwingUtilities.invokeLater(()->{
-				db.resetDistances();
-			});
+			db.resetDistances();
 		});
 		
 		changeFlagsButton.addActionListener((event)->{
-			SwingUtilities.invokeLater(()->{
-				Utilities.showDialog(new ChangeFlags());
-			});
+			Utilities.showDialog(new ChangeFlags());
 		});
 		currentDbButton.addActionListener((event)->{
-			SwingUtilities.invokeLater(()->{
-				Utilities.showDialog(new CurrentDBView());
-			});
+			Utilities.showDialog(new CurrentDBView());
 		});
+		restoreMementoButton.addActionListener((event)->{
+			if(db.restoreMemento())
+				updateToString("last save restored!");
+		});
+		saveMementoButton.addActionListener((event)->{
+			db.saveMemento();
+			updateToString("database saved!");
+		});
+		
+		
 			
 		dataPanel.addPropertyChangeListener("isEmpty", (event) -> {
 			if (event.getNewValue().equals(true)) {

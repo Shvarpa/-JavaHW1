@@ -123,6 +123,8 @@ public class StatusReporter implements IVehicle {
 	}
 	
 	public StatusReporter(StatusReporter toCopy) {
+		this.drawings = new ArrayList<VehicleSelectButton>();
+		this.eventHandler = new PropertyChangeSupport(this);
 		setVehicle(toCopy.getVehicle().clone());
 		setStatus(toCopy.getStatus());
 	}

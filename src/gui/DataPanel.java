@@ -109,6 +109,8 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		db.addPropertyChangeListener("testDriveVehicle",(event)->{clearSelection();});
 		db.addPropertyChangeListener("resetDistances",(event)->{clearSelection();});
 		db.addPropertyChangeListener("changeFlags",(event)->{clearSelection();});
+		
+		db.addPropertyChangeListener("restoreMemento", (event)->{refresh();});
 	}
 
 	public void addActionListener(ActionListener l) {

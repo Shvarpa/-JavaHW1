@@ -57,6 +57,9 @@ public class DBConnect extends JComponent {
 		}
 		return true;
 	}
+	public boolean hasMementos() {
+		return !mementos.isEmpty();
+	}
 	private DBConnect() {
 		db = new Database();
 	}
