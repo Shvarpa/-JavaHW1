@@ -12,8 +12,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import classes.Database;
+import classes.FixedStack;
 import interfaces.IVehicle;
-
+import interfaces.Stack;
 
 
 public class DBConnect extends JComponent {
@@ -42,7 +43,20 @@ public class DBConnect extends JComponent {
 
 	static volatile DBConnect self = null;
 	private Database db;
-
+	private Stack<Database> mementos = new FixedStack<Database>(3);
+	public void saveMemento() {
+		mementos.push(db.clone());
+	}
+	public boolean restoreMemento() {
+		Database restoriee = mementos.pop();
+		if (restoriee == null) 
+			return false;
+		synchronized (this) {
+			this.db = restoriee;
+			firePropertyChange("restoreMemento", null, null);
+		}
+		return true;
+	}
 	private DBConnect() {
 		db = new Database();
 	}

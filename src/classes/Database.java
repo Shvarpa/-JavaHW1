@@ -5,6 +5,7 @@ package classes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -146,5 +147,21 @@ public class Database {
 	
 	public double getTotalDistances() {
 		return this.totalDistances;
+	}
+	
+	public Database(Database toClone) {
+		synchronized (toClone) {
+			this.vehicleDatabase = new HashMap<String, IVehicle>(toClone.vehicleDatabase.size());
+			this.seaVehicleDatabase = new HashMap<String, ISeaVehicle>(toClone.seaVehicleDatabase.size());
+			this.airVehicleDatabase = new HashMap<String, IAirVehicle>(toClone.airVehicleDatabase.size());
+			this.landVehicleDatabase = new HashMap<String, ILandVehicle>(toClone.landVehicleDatabase.size());
+			for(IVehicle v:toClone.vehicleDatabase.values()) {
+				addVehicle(v.clone());
+			}
+		}
+	}
+	
+	public Database clone() {
+		return new Database(this);
 	}
 }

@@ -26,10 +26,10 @@ import java.awt.Insets;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPanel, centerPanel, totalDistancesPanel;
+	private JPanel contentPanel, centerPanel, totalDistancesPanel, mementoPanel;
 	String baseTotalDistances = "Total distance driven:";
 	JLabel totalDistancesLabel;
-	private JButton addVehicleButton,buyVehicleButton,testDriveButton,resetDistancesButton,changeFlagsButton,currentDbButton;
+	private JButton addVehicleButton,buyVehicleButton,testDriveButton,resetDistancesButton,changeFlagsButton,currentDbButton, restoreMementoButton, saveMementoButton;
 	private DataPanel dataPanel = new DataPanel();
 	private JTextArea toStringTextArea;
 	TestDrive testDriveWindow;
@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 
 		JPanel rightPanel = new JPanel();
 		contentPanel.add(rightPanel, BorderLayout.EAST);
-		rightPanel.setLayout(new GridLayout(6, 1, 0, 0));
+		rightPanel.setLayout(new GridLayout(7, 1, 0, 0));
 
 		/// buttons
 		addVehicleButton = new JButton("Add Vehicle");
@@ -66,13 +66,20 @@ public class MainFrame extends JFrame {
 		changeFlagsButton.setEnabled(false);
 		
 		currentDbButton = new JButton("Current Database view");
-
+		
+		mementoPanel = new JPanel(new GridLayout(1,2,0,0));
+		restoreMementoButton = new JButton("restore");
+		saveMementoButton = new JButton("save");
+		mementoPanel.add(restoreMementoButton);
+		mementoPanel.add(saveMementoButton);
+		
 		rightPanel.add(addVehicleButton);
 		rightPanel.add(buyVehicleButton);
 		rightPanel.add(testDriveButton);
 		rightPanel.add(resetDistancesButton);
 		rightPanel.add(changeFlagsButton);
 		rightPanel.add(currentDbButton);
+		rightPanel.add(mementoPanel);
 
 		// actions
 		addVehicleButton.addActionListener((event) -> {
@@ -112,6 +119,7 @@ public class MainFrame extends JFrame {
 				Utilities.showDialog(new CurrentDBView());
 			});
 		});
+			
 		dataPanel.addPropertyChangeListener("isEmpty", (event) -> {
 			if (event.getNewValue().equals(true)) {
 				resetDistancesButton.setEnabled(false);
