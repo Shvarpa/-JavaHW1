@@ -1,7 +1,5 @@
 package classes;
 
-import java.awt.Color;
-
 import gui.VehicleSelectButton;
 import interfaces.IVehicle;
 

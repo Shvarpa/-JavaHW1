@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import interfaces.IVehicle;
 
 import java.awt.BorderLayout;
@@ -34,8 +35,21 @@ public class MainFrame extends JFrame {
 	private JTextArea toStringTextArea;
 	TestDrive testDriveWindow;
 	private DBConnect db = DBConnect.getConnection();
-
-	public MainFrame() {
+	
+	////making mainframe a singleton as per the assignment
+	static volatile private MainFrame self = null;
+	static public MainFrame getInstance() {
+		if (self == null) {
+			synchronized (DBConnect.class) {
+				if (self == null) {
+					self = new MainFrame();
+				}
+			}
+		}
+		return self;
+	}
+	
+	private MainFrame() {
 		///the main menu of the application, form which you can view the vehicle database real time (the DataPanel component)
 		///and select an operation to do from the button menu.
 		setTitle("Car Agency");
@@ -152,12 +166,14 @@ public class MainFrame extends JFrame {
 		});
 		centerPanel = new JPanel();
 		totalDistancesLabel = new JLabel(baseTotalDistances);
-		db.addPropertyChangeListener("testDriveVehicle",(event)->{
+		
+		PropertyChangeListener distancesListener = (event)->{
 			updateTotalDistances(db.getTotalDistances());
-		});
-		db.addPropertyChangeListener("resetDistances",(event)->{
-			updateTotalDistances(db.getTotalDistances());
-		});
+		};
+		db.addPropertyChangeListener("restoreMemento",distancesListener);
+		db.addPropertyChangeListener("testDriveVehicle",distancesListener);
+		db.addPropertyChangeListener("resetDistances",distancesListener);
+		
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(dataPanel,BorderLayout.CENTER);
 		
@@ -209,15 +225,20 @@ public class MainFrame extends JFrame {
 	}
 	
 	private VehicleSelectButton currentVehicle = null;
-	private PropertyChangeListener listener = (event) -> {updateToString();};
+	private PropertyChangeListener revalidateListener = (event) -> {updateToString();};
 	private String defaultUpdateString = "try hovering over the vehicle...";
+	private List<String> properties = Arrays.asList("revalidate", "changeFlags", "resetDistances", "testDriveVehicle");
 	private void updateToString() {
-		if(currentVehicle!=null)
-			currentVehicle.removePropertyChangeListener("revalidate",listener);
+		if(currentVehicle!=null) {
+			for(String property:properties)
+				currentVehicle.removePropertyChangeListener(property,revalidateListener);
+		}
 		VehicleSelectButton vS = dataPanel.getVehicleSelectButton();
 		if(vS!=null) {
-			vS.addPropertyChangeListener("revalidate",listener);
-			toStringTextArea.setText(vS.getVehicle()!=null ? "current vehicle: " + vS.getVehicle().toString() : defaultUpdateString);
+			currentVehicle = vS;
+			for(String property:properties)
+				currentVehicle.addPropertyChangeListener(property,revalidateListener);
+			toStringTextArea.setText(vS.getVehicle()!=null ? "current vehicle: " + currentVehicle.getVehicle().toString() : defaultUpdateString);
 		}
 		else {
 			toStringTextArea.setText(defaultUpdateString);

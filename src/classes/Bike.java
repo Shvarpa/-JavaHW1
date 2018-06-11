@@ -2,7 +2,6 @@
 
 package classes;
 
-import interfaces.IVehicle;
 import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {

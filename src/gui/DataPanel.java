@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.ButtonGroup;
@@ -103,14 +105,13 @@ public class DataPanel extends JScrollPane implements ActionListener {
 		});
 		
 		// TODO: improve actions, meanwhile just resets the window components for each operation
-		db.addPropertyChangeListener("addVehicle",(event)->{refresh();});
-		db.addPropertyChangeListener("buyVehicle",(event)->{refresh();});
+		PropertyChangeListener refreshListner = (event)->{refresh();};
+		for(String property:Arrays.asList("addVehicle", "buyVehicle", "restoreMemento"))
+			db.addPropertyChangeListener(property,refreshListner);
 		
-		db.addPropertyChangeListener("testDriveVehicle",(event)->{clearSelection();});
-		db.addPropertyChangeListener("resetDistances",(event)->{clearSelection();});
-		db.addPropertyChangeListener("changeFlags",(event)->{clearSelection();});
-		
-		db.addPropertyChangeListener("restoreMemento", (event)->{refresh();});
+		PropertyChangeListener clearListner = (event)->{clearSelection();};
+		for(String property:Arrays.asList("resetDistances", "changeFlags"))
+			db.addPropertyChangeListener(property,clearListner);		
 	}
 
 	public void addActionListener(ActionListener l) {

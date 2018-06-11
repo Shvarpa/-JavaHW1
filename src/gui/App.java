@@ -10,7 +10,7 @@ public class App {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JFrame app = new MainFrame();
+				JFrame app = MainFrame.getInstance();
 				app.setSize(500, 300);
 				app.setLocationRelativeTo(null);;
 				app.setVisible(true);				

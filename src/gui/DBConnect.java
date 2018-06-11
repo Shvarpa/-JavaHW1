@@ -3,6 +3,7 @@
 package gui;
 
 import java.util.Collection;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,22 +28,52 @@ public class DBConnect extends JComponent {
 	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
 	private TransactionLock transactionLock = new TransactionLock();
 	
-	abstract class DBThread extends SwingWorker<DBConnect.Status,Object>{		
+	abstract class DBThread implements Runnable{
+		///made for overriding SwingWorker methods not made for overriding
+		private DBThread self = this;
+		private SwingWorker<DBConnect.Status,Object> thread = new SwingWorker<DBConnect.Status,Object>(){
+			@Override
+			protected Status doInBackground() throws Exception {
+				return self.doInBackground();
+			}
+			@Override
+			protected void done() {
+				self.done();
+			}
+		};
 		public Status getStatus() {
 			try {
-				return get();
+				return thread.get();
 			} catch (InterruptedException | ExecutionException e) {
 				return Status.ABORT;
 			}
 		}
+		abstract protected DBConnect.Status doInBackground();
+		protected void done() {}
+		public void run() {thread.execute();}
 	}
 	
 	long getWaitTime() {
 		return (long)Utilities.getRand(3000, 8000);
 	}
 
-	static volatile DBConnect self = null;
+	private static volatile DBConnect self = null;
 	private Database db;
+	private DBConnect() {
+		db = new Database();
+	}
+	public static DBConnect getConnection() {
+		if (self == null) {
+			synchronized (DBConnect.class) {
+				if (self == null) {
+					self = new DBConnect();
+				}
+			}
+		}
+		return self;
+	}
+	
+	
 	private Stack<Database> mementos = new FixedStack<Database>(3);
 	public void saveMemento() {
 		mementos.push(db.clone());
@@ -60,13 +91,10 @@ public class DBConnect extends JComponent {
 	public boolean hasMementos() {
 		return !mementos.isEmpty();
 	}
-	private DBConnect() {
-		db = new Database();
-	}
-	
+		
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void addVehicle(IVehicle v) {
-		new AddVehicleThread(v).execute();
+		new AddVehicleThread(v).run();
 	}
 	private Lock addVehicleLock = new ReentrantLock(true); 
 	class AddVehicleThread extends DBThread{
@@ -96,7 +124,7 @@ public class DBConnect extends JComponent {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void buyVehicle(IVehicle vehicle) {
-		new buyVehicleThread(vehicle).execute();
+		new buyVehicleThread(vehicle).run();
 	}
 	
 	class buyVehicleThread extends DBThread{
@@ -142,8 +170,7 @@ public class DBConnect extends JComponent {
 	}
 	
 	private static final ExecutorService testDrivePool = Executors.newFixedThreadPool(7);
-	class TestDriveVehicleThread{
-		private TestDriveVehicleThread self =this;
+	class TestDriveVehicleThread extends DBThread{
 		private IVehicle vehicle;
 		private double distance;
 		public TestDriveVehicleThread(IVehicle vehicle, double distance) {
@@ -154,51 +181,38 @@ public class DBConnect extends JComponent {
 			db.testDriveVehicle(vehicle,distance);
 			getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
 		}
-		
-		protected void done() {
-		}
-		public DBConnect.Status getStatus(){
-			return thread.getStatus();
-		}
-		private DBThread thread = new DBThread() {
-			@Override	
-			final protected DBConnect.Status doInBackground() {
-				try {
-					if(!transactionLock.aquireTestDrive(vehicle)) {
-						JOptionPane.showMessageDialog(null,"the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
-						return Status.RETRY;
-					}
-					if(db.findVehicle(vehicle.getUniqueID())==null) {
-						transactionLock.releaseTestDrive(vehicle);
-						JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
-						return Status.STOP;
-					}
-					Thread.sleep((long)(distance*100));
-					testDriveVehicleMehod();
-					transactionLock.releaseTestDrive(vehicle);
-					JOptionPane.showMessageDialog(null, "the vehicle \n"+ vehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
-					return Status.DONE;
-					} 
-				catch (InterruptedException e) {
-					transactionLock.releaseTestDrive(vehicle);
-					JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ vehicle.toString() +"\nwas canceled");
-					return Status.ABORT;
-				}
-			}
-			@Override
-			protected void done() {
-				self.done();
-			}
-			
-		};
-		
+				
 		public void execute() {
-			testDrivePool.submit(thread);
+			testDrivePool.submit(this);
+		}
+		@Override
+		protected Status doInBackground() {
+			try {
+				if(!transactionLock.aquireTestDrive(vehicle)) {
+					JOptionPane.showMessageDialog(null,"the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
+					return Status.RETRY;
+				}
+				if(db.findVehicle(vehicle.getUniqueID())==null) {
+					transactionLock.releaseTestDrive(vehicle);
+					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
+					return Status.STOP;
+				}
+				Thread.sleep((long)(distance*100));
+				testDriveVehicleMehod();
+				transactionLock.releaseTestDrive(vehicle);
+				JOptionPane.showMessageDialog(null, "the vehicle \n"+ vehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
+				return Status.DONE;
+				} 
+			catch (InterruptedException e) {
+				transactionLock.releaseTestDrive(vehicle);
+				JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ vehicle.toString() +"\nwas canceled");
+				return Status.ABORT;
+			}
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void resetDistances() {
-		new ResetDistancesThread().execute();
+		new ResetDistancesThread().run();
 	}
 	
 	private Lock resetDistancesLock = new ReentrantLock(true); 
@@ -235,7 +249,7 @@ public class DBConnect extends JComponent {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void changeFlags(String flag) {
-		new ChangeFlagsThread(flag).execute();
+		new ChangeFlagsThread(flag).run();
 	}	
 	
 	private Lock changeFlagsLock = new ReentrantLock(true); 
@@ -288,17 +302,6 @@ public class DBConnect extends JComponent {
 		
 	public boolean isEmpty() {
 		return db.isEmpty();
-	}
-	
-	public static DBConnect getConnection() {
-		if (self == null) {
-			synchronized (DBConnect.class) {
-				if (self == null) {
-					self = new DBConnect();
-				}
-			}
-		}
-		return self;
 	}
 	
 	public boolean hasDuringTransaction() {

@@ -122,11 +122,12 @@ public class StatusReporter implements IVehicle {
 		return vehicle.getUniqueID();
 	}
 	
+	////copy restores status to default, which is in standby, this method is made for 
 	public StatusReporter(StatusReporter toCopy) {
 		this.drawings = new ArrayList<VehicleSelectButton>();
 		this.eventHandler = new PropertyChangeSupport(this);
 		setVehicle(toCopy.getVehicle().clone());
-		setStatus(toCopy.getStatus());
+		setStatus(VehicleStatus.STANDBY);
 	}
 	
 	@Override
