@@ -5,6 +5,7 @@ package classes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -23,12 +24,15 @@ public class Database {
 	private HashMap<String,ILandVehicle> landVehicleDatabase;
 	private double totalDistances = 0; 
 	private ReadWriteLock lock = new ReentrantReadWriteLock(true);
-
+	private boolean verbose = true;
+	
+	public void setVerbose(boolean verbose) {this.verbose = verbose;}
+	private void log(String data) {if(verbose) Utilities.log(data);}
 	
 	public boolean isEmpty() {
 		lock.readLock().lock();
 		if (vehicleDatabase.isEmpty()) {
-			Utilities.log("no vehicles in database, returning\n");
+			log("no vehicles in database, returning\n");
 			lock.readLock().unlock();
 			return true;
 		}
@@ -58,7 +62,7 @@ public class Database {
 				this.airVehicleDatabase.put(currVehicle.getUniqueID(),(IAirVehicle) currVehicle);
 			}
 			lock.writeLock().unlock();
-			Utilities.log("the vehicle: " + currVehicle.toString() + " was added succesfully, returning");
+			log("the vehicle: " + currVehicle.toString() + " was added succesfully, returning");
 			return true;
 		}
 		return false;
@@ -73,10 +77,10 @@ public class Database {
 			for (HashMap<String,?> hM:Arrays.asList(vehicleDatabase,seaVehicleDatabase,airVehicleDatabase,landVehicleDatabase))
 				hM.remove(currVehicle.getUniqueID());
 			lock.writeLock().unlock();
-			Utilities.log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
+			log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;
 		}
-		Utilities.log("the vehicle " + currVehicle.toString() + " doesnt exist, returning");
+		log("the vehicle " + currVehicle.toString() + " doesnt exist, returning");
 		return false;
 	}
 
@@ -87,10 +91,10 @@ public class Database {
 			vehicleDatabase.get(currVehicle.getUniqueID()).moveDistance(distance);
 			this.totalDistances+=distance;
 			lock.writeLock().unlock();
-			Utilities.log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
+			log("the vehicle: " + currVehicle.toString() + " was taken for a " + distance + "km test-drive succesfully, returning");
 			return true;
 		}
-		Utilities.log("the vehicle " + currVehicle.toString() + " doesnt exist, returning");
+		log("the vehicle " + currVehicle.toString() + " doesnt exist, returning");
 		return false;
 	}
 
@@ -99,7 +103,7 @@ public class Database {
 		totalDistances = 0;
 		lock.writeLock().unlock();
 		if (isEmpty()) {
-			Utilities.log("no vehicles to reset distance, returning");
+			log("no vehicles to reset distance, returning");
 			return false;
 		}
 		lock.writeLock().lock();
@@ -107,13 +111,13 @@ public class Database {
 			v.resetTotalDistance();
 		}
 		lock.writeLock().unlock();
-		Utilities.log("all vehicle distances were reset succesfully, returning");
+		log("all vehicle distances were reset succesfully, returning");
 		return true;
 	}
 
 	public boolean changeFlags(String flag) {
 		if (seaVehicleDatabase.isEmpty()) {
-			Utilities.log("no vehicles to change flags, returning");
+			log("no vehicles to change flags, returning");
 			return false;
 		}
 		lock.writeLock().lock();
@@ -121,7 +125,7 @@ public class Database {
 			sV.setFlag(flag);
 		}
 		lock.writeLock().unlock();
-		Utilities.log("all vehicle flags were changed to " + flag + " succesfully, returning\n");
+		log("all vehicle flags were changed to " + flag + " succesfully, returning\n");
 		return true;
 	}
 
@@ -147,16 +151,19 @@ public class Database {
 	public double getTotalDistances() {
 		return this.totalDistances;
 	}
-	
+		
 	public Database(Database toClone) {
 		synchronized (toClone) {
 			this.vehicleDatabase = new HashMap<String, IVehicle>(toClone.vehicleDatabase.size());
 			this.seaVehicleDatabase = new HashMap<String, ISeaVehicle>(toClone.seaVehicleDatabase.size());
 			this.airVehicleDatabase = new HashMap<String, IAirVehicle>(toClone.airVehicleDatabase.size());
 			this.landVehicleDatabase = new HashMap<String, ILandVehicle>(toClone.landVehicleDatabase.size());
+			this.totalDistances = toClone.totalDistances;
+			setVerbose(false);
 			for(IVehicle v:toClone.vehicleDatabase.values()) {
 				addVehicle(v.clone());
 			}
+			setVerbose(true);
 		}
 	}
 	

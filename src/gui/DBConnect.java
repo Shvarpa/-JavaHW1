@@ -3,7 +3,8 @@
 package gui;
 
 import java.util.Collection;
-import java.util.concurrent.Callable;
+import java.util.LinkedList;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +29,8 @@ public class DBConnect extends JComponent {
 	enum Status{STOP,RETRY,DONE,CANCEL,ABORT,FAILED};
 	private TransactionLock transactionLock = new TransactionLock();
 	
+	private static LinkedList<DBThread> running = new LinkedList<DBThread>();
+	public void cancelAllThreads() {while(!running.isEmpty()) running.getFirst().cancel();}
 	abstract class DBThread implements Runnable{
 		///made for overriding SwingWorker methods not made for overriding
 		private DBThread self = this;
@@ -44,13 +47,14 @@ public class DBConnect extends JComponent {
 		public Status getStatus() {
 			try {
 				return thread.get();
-			} catch (InterruptedException | ExecutionException e) {
+			} catch (InterruptedException | ExecutionException | CancellationException e) {
 				return Status.ABORT;
 			}
 		}
 		abstract protected DBConnect.Status doInBackground();
 		protected void done() {}
-		public void run() {thread.execute();}
+		public void run() {running.add(this);thread.execute();}
+		public void cancel() {thread.cancel(true);running.remove(this);}
 	}
 	
 	long getWaitTime() {
@@ -79,6 +83,7 @@ public class DBConnect extends JComponent {
 		mementos.push(db.clone());
 	}
 	public boolean restoreMemento() {
+		cancelAllThreads();
 		Database restoriee = mementos.pop();
 		if (restoriee == null) 
 			return false;
