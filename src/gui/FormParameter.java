@@ -90,7 +90,7 @@ class FormParameter<T>{
 	}
 	void restoreDefault() {
 		setText("");
-		setEnabled(false);
+		setEnabled(true);
 	}
 	@SuppressWarnings("unchecked")
 	T get() {
