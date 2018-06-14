@@ -10,6 +10,8 @@ import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import interfaces.ISeaVehicle;
@@ -169,5 +171,9 @@ public class Utilities {
 	
 	public static double getRand(double min, double max) {
 		return 	(new Random().nextDouble()*(max-min))+min;
+	}
+	
+	public static void showMessageDialog(String message) {
+		SwingUtilities.invokeLater(()->{JOptionPane.showMessageDialog(null, message);});
 	}
 }

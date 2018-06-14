@@ -12,6 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import classes.Database;
 import classes.FixedStack;
@@ -31,16 +32,19 @@ public class DBConnect extends JComponent {
 	
 	private static LinkedList<DBThread> running = new LinkedList<DBThread>();
 	public void cancelAllThreads() {while(!running.isEmpty()) running.getFirst().cancel();}
-	abstract class DBThread implements Runnable{
+	
+	abstract class DBThread{
 		///made for overriding SwingWorker methods not made for overriding
 		private DBThread self = this;
 		private SwingWorker<DBConnect.Status,Object> thread = new SwingWorker<DBConnect.Status,Object>(){
 			@Override
 			protected Status doInBackground() throws Exception {
+				running.add(self);
 				return self.doInBackground();
 			}
 			@Override
 			protected void done() {
+				running.remove(self);
 				self.done();
 			}
 		};
@@ -50,11 +54,15 @@ public class DBConnect extends JComponent {
 			} catch (InterruptedException | ExecutionException | CancellationException e) {
 				return Status.ABORT;
 			}
+			finally {
+				running.remove(self);
+			}
 		}
 		abstract protected DBConnect.Status doInBackground();
 		protected void done() {}
-		public void run() {running.add(this);thread.execute();}
-		public void cancel() {thread.cancel(true);running.remove(this);}
+		public SwingWorker<DBConnect.Status,Object> getThread() {return thread;}
+		public void cancel() {thread.cancel(true);}
+		public void execute() {thread.execute();}
 	}
 	
 	long getWaitTime() {
@@ -103,7 +111,7 @@ public class DBConnect extends JComponent {
 		
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void addVehicle(IVehicle v) {
-		new AddVehicleThread(v).run();
+		new AddVehicleThread(v).execute();
 	}
 	private Lock addVehicleLock = new ReentrantLock(true); 
 	class AddVehicleThread extends DBThread{
@@ -124,16 +132,16 @@ public class DBConnect extends JComponent {
 				});
 			} catch (InterruptedException e) {
 				addVehicleLock.unlock();
-				JOptionPane.showMessageDialog(null, "adding\n"+ vehicle.toString() +"\nwas canceled");
+				Utilities.showMessageDialog("adding\n"+ vehicle.toString() +"\nwas canceled");
 			}
 			addVehicleLock.unlock();
-			JOptionPane.showMessageDialog(null, "the vehicle:\n"+ vehicle.toString() +"\nwas added succesfully!");
+			Utilities.showMessageDialog("the vehicle:\n"+ vehicle.toString() +"\nwas added succesfully!");
 			return Status.DONE;	
 		}	
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void buyVehicle(IVehicle vehicle) {
-		new buyVehicleThread(vehicle).run();
+		new buyVehicleThread(vehicle).execute();
 	}
 	
 	class buyVehicleThread extends DBThread{
@@ -149,7 +157,7 @@ public class DBConnect extends JComponent {
 			@Override
 			final protected DBConnect.Status doInBackground() {
 				if(!transactionLock.aquireBuyVehicle(vehicle)) {
-					JOptionPane.showMessageDialog(null, "the vehicle:\n" + vehicle.toString() + "\nis during/awaiting the buying process, please try again later");
+					Utilities.showMessageDialog("the vehicle:\n" + vehicle.toString() + "\nis during/awaiting the buying process, please try again later");
 					return Status.RETRY;
 				}
 				try {
@@ -163,12 +171,12 @@ public class DBConnect extends JComponent {
 					new DBWaitDialog(getWaitTime(),()->{
 						buyVehicleMethod();
 					});
-					JOptionPane.showMessageDialog(null,"The vehicle bought succesfully!");
+					Utilities.showMessageDialog("The vehicle bought succesfully!");
 					transactionLock.releaseBuyVehicle(vehicle);
 					return Status.DONE;
 				} catch (InterruptedException e) {
 					transactionLock.releaseBuyVehicle(vehicle);
-					JOptionPane.showMessageDialog(null, "the buying process for\n"+ vehicle.toString() +"\nwas canceled");
+					Utilities.showMessageDialog("the buying process for\n"+ vehicle.toString() +"\nwas canceled");
 					return Status.ABORT;
 				}
 		}
@@ -192,36 +200,36 @@ public class DBConnect extends JComponent {
 		}
 		
 		public void execute() {
-			testDrivePool.submit(this);
+			testDrivePool.submit(this.getThread());
 		}
 		@Override
 		protected Status doInBackground() {
 			try {
 				if(!transactionLock.aquireTestDrive(vehicle)) {
-					JOptionPane.showMessageDialog(null,"the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
+					Utilities.showMessageDialog("the vehicle:\n" + vehicle.toString() + "\nis during/awaiting a test drive, please retry later");
 					return Status.RETRY;
 				}
 				if(db.findVehicle(vehicle.getUniqueID())==null) {
 					transactionLock.releaseTestDrive(vehicle);
-					JOptionPane.showMessageDialog(null,"The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
+					Utilities.showMessageDialog("The vehicle\n"+ vehicle.toString() +"\nwas bought already, closing...");
 					return Status.STOP;
 				}
 				Thread.sleep((long)(distance*100));
 				testDriveVehicleMehod();
 				transactionLock.releaseTestDrive(vehicle);
-				JOptionPane.showMessageDialog(null, "the vehicle \n"+ vehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
+				Utilities.showMessageDialog("the vehicle \n"+ vehicle.toString() +"\nwas taken for a test drive of " + distance + "km succesfully!");
 				return Status.DONE;
 				} 
 			catch (InterruptedException e) {
 				transactionLock.releaseTestDrive(vehicle);
-				JOptionPane.showMessageDialog(null, "the "+distance+" testdrive with the vehicle \n"+ vehicle.toString() +"\nwas canceled");
+				Utilities.showMessageDialog("the "+distance+" testdrive with the vehicle \n"+ vehicle.toString() +"\nwas canceled");
 				return Status.ABORT;
 			}
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void resetDistances() {
-		new ResetDistancesThread().run();
+		new ResetDistancesThread().execute();
 	}
 	
 	private Lock resetDistancesLock = new ReentrantLock(true); 
@@ -238,18 +246,18 @@ public class DBConnect extends JComponent {
 				new DBWaitDialog(getWaitTime(),()-> {
 					if(db.isEmpty()) {
 						resetDistancesLock.unlock();
-						JOptionPane.showMessageDialog(null, "the database doesnt have any vehicles, canceling!");
+						Utilities.showMessageDialog("the database doesnt have any vehicles, canceling!");
 						status = Status.FAILED;
 						return;
 					}
 					resetDistancesMethod();
 					resetDistancesLock.unlock();
-					JOptionPane.showMessageDialog(null, "all vehicles distances were reset succesfully!");
+					Utilities.showMessageDialog("all vehicles distances were reset succesfully!");
 					status = Status.DONE;
 				});
 			} catch (InterruptedException e) {
 				resetDistancesLock.unlock();
-				JOptionPane.showMessageDialog(null, "reseting all vehicle's distances was canceled");
+				Utilities.showMessageDialog("reseting all vehicle's distances was canceled");
 				status = Status.ABORT;
 			}
 			resetDistancesLock.unlock();
@@ -258,7 +266,7 @@ public class DBConnect extends JComponent {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void changeFlags(String flag) {
-		new ChangeFlagsThread(flag).run();
+		new ChangeFlagsThread(flag).execute();
 	}	
 	
 	private Lock changeFlagsLock = new ReentrantLock(true); 
@@ -279,18 +287,18 @@ public class DBConnect extends JComponent {
 				new DBWaitDialog(getWaitTime(),()->{
 					if(!db.hasSeaVehicles()) {
 						changeFlagsLock.unlock();
-						JOptionPane.showMessageDialog(null, "the database doesnt have vehicles with flags, canceling!");
+						Utilities.showMessageDialog("the database doesnt have vehicles with flags, canceling!");
 						status = Status.FAILED;
 						return;
 					}
 					changeFlagsMethod();
 					changeFlagsLock.unlock();
-					JOptionPane.showMessageDialog(null, "changing all vehicle's flags was done succesfully!");
+					Utilities.showMessageDialog("changing all vehicle's flags was done succesfully!");
 					status = Status.DONE;
 				});
 			} catch (InterruptedException e) {
 				changeFlagsLock.unlock();
-				JOptionPane.showMessageDialog(null, "changing all vehicle's flags was canceled");
+				Utilities.showMessageDialog("changing all vehicle's flags was canceled");
 				status = Status.ABORT;
 			}
 			return status;
