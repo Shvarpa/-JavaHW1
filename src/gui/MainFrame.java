@@ -4,6 +4,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
@@ -40,7 +41,7 @@ public class MainFrame extends JFrame {
 	static volatile private MainFrame self = null;
 	static public MainFrame getInstance() {
 		if (self == null) {
-			synchronized (DBConnect.class) {
+			synchronized (MainFrame.class) {
 				if (self == null) {
 					self = new MainFrame();
 				}
@@ -83,6 +84,7 @@ public class MainFrame extends JFrame {
 		
 		mementoPanel = new JPanel(new GridLayout(1,2,0,0));
 		restoreMementoButton = new JButton();
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		updateMementoCount();
 		saveMementoButton = new JButton("save");
 		mementoPanel.add(restoreMementoButton);
