@@ -53,10 +53,6 @@ public class Database {
 			lock.writeLock().lock();
 			this.vehicleDatabase.put(currVehicle.getUniqueID(),currVehicle);
 			Collection<Class<?>> interfaces = currVehicle.getInterfaces();
-			System.err.println(interfaces);
-			for(Class<?> inter:interfaces) {
-				System.err.println(inter.getSimpleName());
-			}
 			if (interfaces.contains(ISeaVehicle.class)) {
 				this.seaVehicleDatabase.put(currVehicle.getUniqueID(),(ISeaVehicle) currVehicle);
 			} 
