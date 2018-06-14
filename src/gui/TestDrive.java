@@ -32,6 +32,7 @@ public class TestDrive extends JDialog {
 	
 	public TestDrive(IVehicle curr) {
 		this.currVehicle = curr;
+		db.addPropertyChangeListener("restoreMemento",(event)->{dispose();});
 		setTitle("Test Drive");
 		setBounds(100, 100, 350, 150);
 		setLayout(new BorderLayout());
