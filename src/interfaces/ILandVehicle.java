@@ -4,15 +4,15 @@ import java.util.Arrays;
 
 import classes.StringRange;
 
-public interface ILandVehicle {
+public interface ILandVehicle extends IVehicle{
 	
 	public static StringRange possibleRoadType = new StringRange(Arrays.asList("Dirt", "Constructed"));
 
-	public static boolean checkRoadTypeInput(String roadType) {
+	public static Boolean checkRoadTypeInput(String roadType) {
         return ILandVehicle.possibleRoadType.containsIgnoreCaps(roadType);
     }
     
-	public static boolean equals(ILandVehicle self,Object other) {
+	public static Boolean equals(ILandVehicle self,Object other) {
     	if (other instanceof ILandVehicle) {
     		return self.getRoadType().equalsIgnoreCase(((ILandVehicle)other).getRoadType()) && self.getWheels()==((ILandVehicle)other).getWheels();
     	}
@@ -23,6 +23,6 @@ public interface ILandVehicle {
     	return "has " + self.getWheels() + " wheels, can ride on " + possibleRoadType.FixCaps(self.getRoadType()) + " roads.";
     }
     
-    public int getWheels();
+    public Integer getWheels();
     public String getRoadType();
 }

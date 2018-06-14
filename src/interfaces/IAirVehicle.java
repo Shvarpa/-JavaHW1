@@ -6,13 +6,13 @@ import java.util.Arrays;
 
 import classes.StringRange;
 
-public interface IAirVehicle {
+public interface IAirVehicle extends IVehicle{
     public static StringRange possibleVehicleUse = new StringRange(Arrays.asList("Army", "Civilian"));
-    public static boolean checkVehicleUseInput(String vehicleUse) {
+    public static Boolean checkVehicleUseInput(String vehicleUse) {
         return IAirVehicle.possibleVehicleUse.containsIgnoreCaps(vehicleUse);
     }
         
-	public static boolean equals(IAirVehicle self,Object other) {
+	public static Boolean equals(IAirVehicle self,Object other) {
     	if (other instanceof IAirVehicle) {
     		return self.getVehicleUse().equalsIgnoreCase(((IAirVehicle)other).getVehicleUse()) ;
     	}

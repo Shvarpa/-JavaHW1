@@ -9,13 +9,13 @@ import classes.StringRange;
 public interface NonMotorized {
 	static StringRange possibleEnergyRating=new StringRange(Arrays.asList("A","B","C"));
 		
-	static boolean checkEnergyRatingInput(String energyRating) {
+	static Boolean checkEnergyRatingInput(String energyRating) {
 		return NonMotorized.possibleEnergyRating.containsIgnoreCaps(energyRating);
 	}
 	
 	static String toString(NonMotorized self) {return "Energy source:"+self.getEnergySource()+", Energy rating:"+self.getEnergyRating()+".";}
 	
-	static boolean equals(NonMotorized self,Object other) {
+	static Boolean equals(NonMotorized self,Object other) {
 		if (other instanceof NonMotorized) {
 			return self.getEnergyRating().equals(((NonMotorized)other).getEnergyRating()) && self.getEnergySource().equalsIgnoreCase(((NonMotorized)other).getEnergySource());
 		}

@@ -1,27 +1,28 @@
 package classes;
 
-import gui.VehicleSelectButton;
-import interfaces.IVehicle;
+import java.util.Collection;
 
-public class IconDraw implements IVehicle {
+import gui.VehicleSelectButton;
+import interfaces.Commercial;
+import interfaces.IAirVehicle;
+import interfaces.ILandVehicle;
+import interfaces.ISeaVehicle;
+import interfaces.IVehicle;
+import interfaces.Motorized;
+import interfaces.NonMotorized;
+
+public class IconDraw extends VehicleDelegator {
 	
-	private IVehicle vehicle;
 	private String picturePath;
-	
 	public IconDraw(IVehicle v,String p) {
-		setVehicle(v);
+		super(v);
 		setPicturePath(p);
 	}
 	
-	private void setVehicle(IVehicle v) {
-		this.vehicle = v;
-	}
-	public IVehicle getVehicle() {
-		return vehicle;
-	}
 	private void setPicturePath(String p) {
 		this.picturePath = p;
 	}
+	
 	public String getPicturePath() {
 		return picturePath;
 	}
@@ -29,53 +30,13 @@ public class IconDraw implements IVehicle {
 	
 	@Override
 	public VehicleSelectButton draw() {
-		VehicleSelectButton drawing = vehicle.draw();
+		VehicleSelectButton drawing = getVehicle().draw();
 		drawing.setImage(picturePath);
 		return drawing;
 	}
 
-	@Override
-	public String getModel() {
-		return vehicle.getModel();
-	}
-
-	@Override
-	public double getTotalDistance() {
-		return vehicle.getTotalDistance();
-	}
-
-	@Override
-	public int getSeats() {
-		return vehicle.getSeats();
-	}
-
-	@Override
-	public float getSpeed() {
-		return vehicle.getSpeed();
-	}
-
-	@Override
-	public void resetTotalDistance() {
-		vehicle.resetTotalDistance();
-	}
-
-	@Override
-	public boolean moveDistance(double distance) {
-		return vehicle.moveDistance(distance);
-	}
-
-	@Override
-	public String toString() {
-		return vehicle.toString();
-	}
-	
-	@Override
-	public String getUniqueID() {
-		return vehicle.getUniqueID();
-	}
-	
 	public IconDraw(IconDraw toCopy) {
-		setVehicle(toCopy.getVehicle().clone());
+		super(toCopy.getVehicle().clone());
 		setPicturePath(toCopy.getPicturePath());
 	}
 	

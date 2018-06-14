@@ -48,16 +48,22 @@ public class Database {
 	
 	
 	public boolean addVehicle(IVehicle currVehicle) {
+		log(currVehicle.toString());
 		if (currVehicle != null) {
 			lock.writeLock().lock();
 			this.vehicleDatabase.put(currVehicle.getUniqueID(),currVehicle);
-			if (currVehicle instanceof ISeaVehicle) {
+			Collection<Class<?>> interfaces = currVehicle.getInterfaces();
+			System.err.println(interfaces);
+			for(Class<?> inter:interfaces) {
+				System.err.println(inter.getSimpleName());
+			}
+			if (interfaces.contains(ISeaVehicle.class)) {
 				this.seaVehicleDatabase.put(currVehicle.getUniqueID(),(ISeaVehicle) currVehicle);
 			} 
-			if (currVehicle instanceof ILandVehicle) {
+			if (interfaces.contains(ILandVehicle.class)) {
 				this.landVehicleDatabase.put(currVehicle.getUniqueID(),(ILandVehicle) currVehicle);
 			}
-			if (currVehicle instanceof IAirVehicle) {
+			if (interfaces.contains(IAirVehicle.class)) {
 				this.airVehicleDatabase.put(currVehicle.getUniqueID(),(IAirVehicle) currVehicle);
 			}
 			lock.writeLock().unlock();
@@ -74,7 +80,8 @@ public class Database {
 		if (contains) {
 			lock.writeLock().lock();
 			for (HashMap<String,?> hM:Arrays.asList(vehicleDatabase,seaVehicleDatabase,airVehicleDatabase,landVehicleDatabase))
-				hM.remove(currVehicle.getUniqueID());
+				while(hM.containsKey(currVehicle.getUniqueID()))
+					hM.remove(currVehicle.getUniqueID());
 			lock.writeLock().unlock();
 			log("the vehicle: " + currVehicle.toString() + " was bought succesfully, returning");
 			return true;

@@ -2,6 +2,9 @@
 
 package classes;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import interfaces.IAirVehicle;
 
 public abstract class AirVehicle extends Vehicle implements IAirVehicle{
@@ -39,4 +42,11 @@ public abstract class AirVehicle extends Vehicle implements IAirVehicle{
     }
     @Override
     public abstract AirVehicle clone();
+    
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(IAirVehicle.class);
+		return interfaces;
+	}
 }

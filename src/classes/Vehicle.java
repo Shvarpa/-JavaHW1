@@ -2,9 +2,12 @@
 
 package classes;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
 
 import gui.VehicleSelectButton;
+import interfaces.IAirVehicle;
 import interfaces.IVehicle;
 
 public abstract class Vehicle implements IVehicle{
@@ -41,7 +44,7 @@ public abstract class Vehicle implements IVehicle{
 	}
 	
 	@Override
-	public double getTotalDistance() {
+	public Double getTotalDistance() {
 		return this.totalDistance;
 	}
 
@@ -50,7 +53,7 @@ public abstract class Vehicle implements IVehicle{
 	}
 	
 	@Override
-	public int getSeats() {
+	public Integer getSeats() {
 		return this.seats;
 	}
 
@@ -63,7 +66,7 @@ public abstract class Vehicle implements IVehicle{
 	}
 	
 	@Override
-	public float getSpeed() {
+	public Float getSpeed() {
 		return this.speed;
 	}
 
@@ -80,7 +83,7 @@ public abstract class Vehicle implements IVehicle{
 	}
 	
 	@Override
-	public boolean moveDistance(double distance) {
+	public Boolean moveDistance(double distance) {
 		if (distance > 0) {
 			totalDistance += distance;
 			return true;
@@ -117,4 +120,11 @@ public abstract class Vehicle implements IVehicle{
 	}
 	
 	abstract public Vehicle clone();
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = new HashSet<Class<?>>();
+		interfaces.add(IVehicle.class);
+		return interfaces;
+	}
 }

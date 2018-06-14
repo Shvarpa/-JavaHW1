@@ -2,8 +2,13 @@
 
 package classes;
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
+import interfaces.IVehicle;
 import interfaces.Motorized;
 
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{
@@ -28,14 +33,14 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 	}
 
 	/////////////////////////////////////////////////////////get////////////////////////////////////////////////////////////////////////////////////////////
-	public int getWheels() {return wheels;}
+	public Integer getWheels() {return wheels;}
 	public String getRoadType() {return AmphibiousVehicle.defaultRoadType;}
 	
-	public boolean getWithWindDiraction() {return withWindDiraction;}
+	public Boolean getWithWindDiraction() {return withWindDiraction;}
 	public String getFlag() {return flag;}
 
-	public double getAvgFuelConsumption() {return avgFuelConsumption;}
-	public double getAvgMotorLifespan() {return avgMotorLifespan;}
+	public Double getAvgFuelConsumption() {return avgFuelConsumption;}
+	public Double getAvgMotorLifespan() {return avgMotorLifespan;}
 
 	/////////////////////////////////////////////////////////set////////////////////////////////////////////////////////////////////////////////////////////
 	private void setWheels(int wheels) {this.wheels=wheels;}
@@ -66,5 +71,14 @@ public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehic
 	@Override
 	public AmphibiousVehicle clone() {
 		return new AmphibiousVehicle(this);
+	}
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(ILandVehicle.class);
+		interfaces.add(ISeaVehicle.class);
+		interfaces.add(Motorized.class);
+		return interfaces;
 	}
 }

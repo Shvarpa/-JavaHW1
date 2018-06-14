@@ -1,5 +1,8 @@
 package classes;
 
+import java.util.Collection;
+
+import interfaces.IAirVehicle;
 import interfaces.Motorized;
 
 public class ElectricBike extends LandVehicle implements Motorized {
@@ -19,12 +22,12 @@ public class ElectricBike extends LandVehicle implements Motorized {
 	}
 
 	@Override
-	public double getAvgFuelConsumption() {
+	public Double getAvgFuelConsumption() {
 		return ElectricBike.defaultAvgFuelConsumption;
 	}
 
 	@Override
-	public double getAvgMotorLifespan() {
+	public Double getAvgMotorLifespan() {
 		return this.avgMotorLifespan;
 	}
 	
@@ -43,5 +46,12 @@ public class ElectricBike extends LandVehicle implements Motorized {
 	@Override
 	public ElectricBike clone() {
 		return new ElectricBike(this);
+	}
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(Motorized.class);
+		return interfaces;
 	}
 }

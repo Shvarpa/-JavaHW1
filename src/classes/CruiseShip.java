@@ -3,7 +3,11 @@
 package classes;
 
 import interfaces.Motorized;
+
+import java.util.Collection;
+
 import interfaces.Commercial;
+import interfaces.IAirVehicle;
 
 public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	
@@ -21,8 +25,8 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 
 	public String getLicence() {return defaultLicence;}
 	
-	public double getAvgFuelConsumption() {return avgFuelConsumption;}
-	public double getAvgMotorLifespan() {return avgMotorLifespan;}
+	public Double getAvgFuelConsumption() {return avgFuelConsumption;}
+	public Double getAvgMotorLifespan() {return avgMotorLifespan;}
 	
 	private void setAvgFuelConsumption(double avgFuelConsumption) {this.avgFuelConsumption=avgFuelConsumption;}
 	private void setAvgMotorLifespan(double avgMotorLifespan) {this.avgMotorLifespan=avgMotorLifespan;}
@@ -43,5 +47,13 @@ public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	@Override
 	public CruiseShip clone() {
 		return new CruiseShip(this);
+	}
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(Motorized.class);
+		interfaces.add(Commercial.class);
+		return interfaces;
 	}
 }

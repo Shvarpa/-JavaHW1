@@ -2,7 +2,10 @@
 
 package classes;
 
+import java.util.Collection;
+
 import interfaces.Commercial;
+import interfaces.IAirVehicle;
 import interfaces.Motorized;
 
 public class Jeep extends LandVehicle implements Commercial, Motorized {
@@ -25,7 +28,7 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
 		return Jeep.defaultLicence;
 	}
 
-	public double getAvgFuelConsumption() {
+	public Double getAvgFuelConsumption() {
 		return this.avgFuelConsumption;
 	}
 
@@ -33,7 +36,7 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
 		this.avgFuelConsumption = avgFuelConsumption;
 	}
 
-	public double getAvgMotorLifespan() {
+	public Double getAvgMotorLifespan() {
 		return avgMotorLifespan;
 	}
 
@@ -57,5 +60,13 @@ public class Jeep extends LandVehicle implements Commercial, Motorized {
 	@Override
 	public Jeep clone() {
 		return new Jeep(this);
+	}
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(Commercial.class);
+		interfaces.add(Motorized.class);
+		return interfaces;
 	}
 }

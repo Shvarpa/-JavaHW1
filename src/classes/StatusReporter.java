@@ -2,12 +2,19 @@ package classes;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import gui.VehicleSelectButton;
+import interfaces.Commercial;
+import interfaces.IAirVehicle;
+import interfaces.ILandVehicle;
+import interfaces.ISeaVehicle;
 import interfaces.IVehicle;
+import interfaces.Motorized;
+import interfaces.NonMotorized;
 
-public class StatusReporter implements IVehicle {
+public class StatusReporter extends VehicleDelegator{
 	
 	public enum VehicleStatus{
 		BUY,TEST_DRIVE,STANDBY;
@@ -21,43 +28,37 @@ public class StatusReporter implements IVehicle {
 		}
 	};
 
-	private IVehicle vehicle;
 	private VehicleStatus status;
 	private List<VehicleSelectButton> drawings;
 	private PropertyChangeSupport eventHandler;
 	
 	public StatusReporter(IVehicle vehicle, VehicleStatus status) {
+		super(vehicle);
 		if (vehicle instanceof StatusReporter) {
 			StatusReporter other = (StatusReporter)vehicle;
 			other.setStatus(status);
-			clone(other);
+			replaceSelf(other);
 			updateDrawings();
 		}
 		else {
-			setVehicle(vehicle);
 			setStatus(status);
 			this.drawings = new ArrayList<VehicleSelectButton>();
 			this.eventHandler = new PropertyChangeSupport(this);
 		}
 	}
 	
-	private void setVehicle(IVehicle v) {
-		this.vehicle = v;
-	}
-	public IVehicle getVehicle() {
-		return vehicle;
-	}
 	private void setStatus(VehicleStatus s) {
 		this.status = s;
 	}
+	
 	public VehicleStatus getStatus() {
 		return status;
 	}
 	
 	///intended shallow clone of other StatusReporter
-	private void clone(StatusReporter other) {
+	private void replaceSelf(StatusReporter other) {
 		this.drawings = other.drawings;
-		setVehicle(other.vehicle);
+		setVehicle(other.getVehicle());
 		setStatus(other.status);
 		this.eventHandler = other.eventHandler;
 	}
@@ -72,7 +73,7 @@ public class StatusReporter implements IVehicle {
 	
 	@Override
 	public VehicleSelectButton draw() {
-		VehicleSelectButton drawing = vehicle.draw();
+		VehicleSelectButton drawing = getVehicle().draw();
 		updateDrawing(drawing);
 		drawings.add(drawing);
 		eventHandler.addPropertyChangeListener("statusUpdate",(event)->{
@@ -82,51 +83,16 @@ public class StatusReporter implements IVehicle {
 	}
 	
 	@Override
-	public String getModel() {
-		return vehicle.getModel();
-	}
-
-	@Override
-	public double getTotalDistance() {
-		return vehicle.getTotalDistance();
-	}
-
-	@Override
-	public int getSeats() {
-		return vehicle.getSeats();
-	}
-
-	@Override
-	public float getSpeed() {
-		return vehicle.getSpeed();
-	}
-
-
-	@Override
-	public void resetTotalDistance() {
-		vehicle.resetTotalDistance();
-	}
-
-	@Override
-	public boolean moveDistance(double distance) {
-		return vehicle.moveDistance(distance);
-	}
-	
-	@Override
 	public String toString() {
-		return vehicle.toString() + " " +  status + ".";
+		return getVehicle().toString() + " " +  status + ".";
 	}
 	
-	@Override
-	public String getUniqueID() {
-		return vehicle.getUniqueID();
-	}
 	
 	////copy restores status to default, which is in standby, this method is made for clone purposes only
 	public StatusReporter(StatusReporter toCopy) {
+		super(toCopy.getVehicle().clone());
 		this.drawings = new ArrayList<VehicleSelectButton>();
 		this.eventHandler = new PropertyChangeSupport(this);
-		setVehicle(toCopy.getVehicle().clone());
 		setStatus(VehicleStatus.STANDBY);
 	}
 	

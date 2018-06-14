@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.Collection;
+
 import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
@@ -44,7 +46,7 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 
 	// ILandVehicle
 	@Override
-	public int getWheels() {
+	public Integer getWheels() {
 		return this.wheels;
 	}
 
@@ -55,7 +57,7 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 
 	// ISeaVehicle
 	@Override
-	public boolean getWithWindDiraction() {
+	public Boolean getWithWindDiraction() {
 		return this.withWindDiraction;
 	}
 
@@ -77,12 +79,12 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 
 	// Motorized
 	@Override
-	public double getAvgFuelConsumption() {
+	public Double getAvgFuelConsumption() {
 		return this.avgFuelConsumption;
 	}
 
 	@Override
-	public double getAvgMotorLifespan() {
+	public Double getAvgMotorLifespan() {
 		return this.avgMotorLifespan;
 
 	}
@@ -108,5 +110,15 @@ public class HybridPlane extends Vehicle implements ILandVehicle, ISeaVehicle, I
 	@Override
 	public HybridPlane clone() {
 		return new HybridPlane(this);
+	}
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(ILandVehicle.class);
+		interfaces.add(ISeaVehicle.class);
+		interfaces.add(IAirVehicle.class);
+		interfaces.add(Motorized.class);
+		return interfaces;
 	}
 }

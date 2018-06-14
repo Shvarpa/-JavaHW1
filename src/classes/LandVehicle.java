@@ -3,6 +3,9 @@
 package classes;
 
 
+import java.util.Collection;
+
+import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 public abstract class LandVehicle extends Vehicle implements ILandVehicle{
     private int wheels;
@@ -28,7 +31,7 @@ public abstract class LandVehicle extends Vehicle implements ILandVehicle{
         return false;
     }
 
-    public int getWheels() {
+    public Integer getWheels() {
         return this.wheels;
     }
 
@@ -55,4 +58,11 @@ public abstract class LandVehicle extends Vehicle implements ILandVehicle{
     }
     @Override
     abstract public LandVehicle clone();
+    
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(ILandVehicle.class);
+		return interfaces;
+	}
 }

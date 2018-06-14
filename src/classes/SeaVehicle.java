@@ -2,13 +2,16 @@
 
 package classes;
 
+import java.util.Collection;
+
+import interfaces.IAirVehicle;
 import interfaces.ISeaVehicle;
 
 public abstract class SeaVehicle extends Vehicle implements ISeaVehicle {
 	private boolean withWindDiraction;
 	private String flag;
 	
-	public boolean getWithWindDiraction() {return this.withWindDiraction;}
+	public Boolean getWithWindDiraction() {return this.withWindDiraction;}
 	
 	private void setWithWindDiraction(boolean withWindDiraction) {this.withWindDiraction=withWindDiraction;}
 
@@ -37,4 +40,11 @@ public abstract class SeaVehicle extends Vehicle implements ISeaVehicle {
 	
 	@Override
 	abstract public SeaVehicle clone();
+	
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(ISeaVehicle.class);
+		return interfaces;
+	}
 }

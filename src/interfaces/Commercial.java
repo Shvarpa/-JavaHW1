@@ -11,7 +11,7 @@ public interface Commercial {
 	static final StringRange possibleLicences= new StringRange(Arrays.asList("MINI","LIMIT","UNLIMIT"));
 	
 	static String toString(Commercial self) {return "has "+self.getLicence()+" licence.";}
-	static boolean equals(Commercial self,Object other) {
+	static Boolean equals(Commercial self,Object other) {
 		if (other instanceof Commercial) {
 			return self.getLicence().equals(((Commercial)other).getLicence());
 		}
@@ -19,7 +19,7 @@ public interface Commercial {
 	}
 	
 	
-	static boolean checkLicenseInput(String Licence) {
+	static Boolean checkLicenseInput(String Licence) {
 		return Commercial.possibleLicences.containsIgnoreCaps(Licence);
 	}
 	

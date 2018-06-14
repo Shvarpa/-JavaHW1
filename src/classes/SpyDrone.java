@@ -2,6 +2,8 @@
 
 package classes;
 
+import java.util.Collection;
+
 public class SpyDrone extends Drone {
 	
 	public final static String defaultModel="Classified";
@@ -22,5 +24,4 @@ public class SpyDrone extends Drone {
     public SpyDrone clone() {
     	return new SpyDrone(this);
     }
-    
 }

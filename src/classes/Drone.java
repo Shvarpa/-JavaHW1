@@ -2,6 +2,9 @@
 
 package classes;
 
+import java.util.Collection;
+
+import interfaces.IAirVehicle;
 import interfaces.NonMotorized;
 
 public abstract class Drone extends AirVehicle implements NonMotorized {
@@ -50,4 +53,11 @@ public abstract class Drone extends AirVehicle implements NonMotorized {
     	setEnergyRating(toCopy.getEnergyRating());
     	setEnergySource(toCopy.getEnergySource());
     }
+    
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(NonMotorized.class);
+		return interfaces;
+	}
 }

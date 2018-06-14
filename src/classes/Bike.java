@@ -2,6 +2,9 @@
 
 package classes;
 
+import java.util.Collection;
+
+import interfaces.IAirVehicle;
 import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {
@@ -37,4 +40,11 @@ public class Bike extends LandVehicle implements NonMotorized {
     public Bike clone() {
     	return new Bike(this);
     }
+    
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(NonMotorized.class);
+		return interfaces;
+	}
 }

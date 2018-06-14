@@ -2,6 +2,9 @@
 
 package classes;
 
+import java.util.Collection;
+
+import interfaces.IAirVehicle;
 import interfaces.Motorized;
 
 public class Frigate extends SeaVehicle implements Motorized {   
@@ -13,11 +16,11 @@ public class Frigate extends SeaVehicle implements Motorized {
         super(model, seats, speed, withWindDiraction, Frigate.defaultFlag);
     }
 
-    public double getAvgFuelConsumption() {
+    public Double getAvgFuelConsumption() {
         return Frigate.defaultAvgFuelConsumption;
     }
 
-    public double getAvgMotorLifespan() {
+    public Double getAvgMotorLifespan() {
         return Frigate.defaultAvgMotorLifespan;
     }
 
@@ -36,5 +39,12 @@ public class Frigate extends SeaVehicle implements Motorized {
     public Frigate clone() {
     	return new Frigate(this);
     }
+    
+	@Override
+	public Collection<Class<?>> getInterfaces(){
+		Collection<Class<?>> interfaces = super.getInterfaces();
+		interfaces.add(Motorized.class);
+		return interfaces;
+	}
 }
 
