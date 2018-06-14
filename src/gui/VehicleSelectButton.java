@@ -30,12 +30,12 @@ public class VehicleSelectButton extends JRadioButton {
 	}
 	
 	public boolean setImage(String path) {
-		ImageIcon img = ImageOpener.scaleImg(path, preferedImageSize);
+		ImageIcon img = ImageOpener.createImageIcon(path, preferedImageSize);
 		return setImage(img);
 	}
 	
 	public boolean setImage(String path, Dimension d) {
-		ImageIcon img = ImageOpener.scaleImg(path, d);
+		ImageIcon img = ImageOpener.createImageIcon(path, d);
 		return setImage(img);
 	}
 		

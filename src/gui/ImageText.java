@@ -31,11 +31,7 @@ public class ImageText{
 	}
 	
 	public void scaleImg(Dimension d)	{
-		setImg(ImageOpener.scaleImg(this.getImage(), d));
-	}
-	
-	public void scaleImg(int width,int height)	{
-		setImg(ImageOpener.scaleImg(this.getImage(), width, height));
+		setImg(ImageOpener.scaleImageIcon(this.getImage(), d));
 	}
 	
 	public void setImg(ImageIcon img) {this.img=img;}

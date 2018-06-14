@@ -12,38 +12,76 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class ImageOpener {
-
-	public static ImageIcon createImageIcon(String path) {
-		if (path == null) {
-			return null;
-		}
-		URL url = ImageOpener.class.getResource(path);
-		if (url != null) {
-			return new ImageIcon(url);
-		}
+	
+	private static URL getURL(String path) {
+		if(path==null) return null;
+		return ImageOpener.class.getResource(path);
+	}
+	private static File getFile(String path) {
+		if(path ==null) return null;
+		return new File(path);
+	}
+	
+	public static Image createImage(String path) {
 		try {
-			return new ImageIcon(ImageIO.read(new File(path)));
+			URL url = getURL(path);
+			if(url!=null)
+				return ImageIO.read(url);
+			File file = getFile(path);
+			if(file!=null)
+				return ImageIO.read(file);
+			return null;
 		} catch (IOException e) {
 			System.err.println("couldent find image in path : '" + path + "'");
 			return null;
 		}
 	}
 	
-	public static ImageIcon scaleImg(String path, Dimension d) {
-		return scaleImg(createImageIcon(path), d.width, d.height);
-	}
 	
-	public static ImageIcon scaleImg(ImageIcon icon, Dimension d) {
-		return scaleImg(icon, d.width, d.height);
+	public static Image createImage(String path, Dimension d) {
+		return scaleImage(createImage(path), d);
 	}
 
-	public static ImageIcon scaleImg(ImageIcon icon, int width, int height) {
+	public static Image scaleImage(Image image, Dimension d) {
+		if (image != null) {
+			return image.getScaledInstance(d.width, d.height, java.awt.Image.SCALE_SMOOTH); 
+		}
+		return null;
+	}
+		
+	public static ImageIcon createImageIcon(String path) {
+		try {
+			URL url = getURL(path);
+			if(url!=null)
+				return new ImageIcon(url);
+			File file = getFile(path);
+			if(file!=null)
+				return new ImageIcon(ImageIO.read(file));
+			return null;
+		} catch (IOException e) {
+			System.err.println("couldent find image in path : '" + path + "'");
+			return null;
+		}	}
+		
+	public static ImageIcon createImageIcon(String path, Dimension d) {
+		return scaleImageIcon(createImageIcon(path), d,Image.SCALE_SMOOTH);
+	}
+	
+	public static ImageIcon scaleImageIcon(ImageIcon icon, Dimension d) {
+		return scaleImageIcon(icon, d, Image.SCALE_SMOOTH);
+	}
+	
+	public static ImageIcon scaleImageIcon(ImageIcon icon, Dimension d, int hint) {
 		if (icon != null) {
 			Image image = icon.getImage(); // transform it
-			Image convertedImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH); // scale it the
-																										// smooth way
+			Image convertedImage = image.getScaledInstance(d.width, d.height, hint); // scale it the																						// smooth way
 			icon = new ImageIcon(convertedImage); // transform it back
 		}
 		return icon;
+	}
+	
+	public static ImageIcon createGIF(String path, float ratio) {
+		ImageIcon gif = createImageIcon(path);
+		return scaleImageIcon(gif, new Dimension((int)(gif.getIconWidth()*ratio),(int)(gif.getIconHeight()*ratio)) , Image.SCALE_DEFAULT);
 	}
 }

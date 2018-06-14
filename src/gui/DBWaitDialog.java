@@ -5,8 +5,11 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+
+import gui.Images.ImageOpener;
 
 public class DBWaitDialog extends JDialog{
 	private static final long serialVersionUID = 1L;	
@@ -23,9 +26,16 @@ public class DBWaitDialog extends JDialog{
 	private void showSelf(long waitMillis, Runnable code) throws InterruptedException{
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+//		setIconImage();
 		setTitle("Update");
 		setLayout(new GridBagLayout());
-		add(new JLabel("Updating database… Please wait"),new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(20, 20, 20, 20), 0, 0));
+		ImageIcon gif = ImageOpener.createGIF("\\Icons\\loading.gif",(float) 0.5);
+		if(gif != null) {
+			JLabel image = new JLabel();
+			image.setIcon(gif);
+			add(image,new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(20, 20, 20, 20), 0, 0));
+		}
+		add(new JLabel("Updating database… Please wait"),new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(20, 20, 20, 20), 0, 0));
 		pack();
 		setVisible(true);
 		try {

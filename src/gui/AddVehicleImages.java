@@ -76,7 +76,7 @@ public class AddVehicleImages extends JPanel {
 					{
 						fileRadio.setSelected(true);
 						filePath = uploadedPictureFile.getAbsolutePath();
-						ImageIcon fileImage = ImageOpener.scaleImg(ImageOpener.createImageIcon(filePath), new Dimension(80, 60));
+						ImageIcon fileImage = ImageOpener.scaleImageIcon(ImageOpener.createImageIcon(filePath), new Dimension(80, 60));
 						fileButton.setIcon(fileImage);
 						fileButton.setText("");
 						revalidate();
