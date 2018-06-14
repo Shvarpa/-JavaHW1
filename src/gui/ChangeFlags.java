@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -43,7 +42,7 @@ public class ChangeFlags extends JDialog {
 			if (flag == null)
 				return;
 			if (!db.hasSeaVehicles()) {
-				JOptionPane.showMessageDialog(null, "all sea vehicles were bought, cant change flags");
+				Utilities.showMessageDialog("all sea vehicles were bought, cant change flags");
 				dispose();
 				return;
 			}
