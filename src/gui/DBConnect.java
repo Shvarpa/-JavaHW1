@@ -81,6 +81,7 @@ public class DBConnect extends JComponent {
 	private Stack<Database> mementos = new FixedStack<Database>(3);
 	public void saveMemento() {
 		mementos.push(db.clone());
+		firePropertyChange("saveMemento", null, null);
 	}
 	public boolean restoreMemento() {
 		cancelAllThreads();
@@ -95,6 +96,9 @@ public class DBConnect extends JComponent {
 	}
 	public boolean hasMementos() {
 		return !mementos.isEmpty();
+	}
+	public int getMementoCount() {
+		return mementos.size();
 	}
 		
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +190,7 @@ public class DBConnect extends JComponent {
 			db.testDriveVehicle(vehicle,distance);
 			getConnection().firePropertyChange("testDriveVehicle", vehicle, vehicle.getTotalDistance());
 		}
-				
+		
 		public void execute() {
 			testDrivePool.submit(this);
 		}

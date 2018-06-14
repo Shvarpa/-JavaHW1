@@ -96,7 +96,7 @@ public class TestDrive extends JDialog {
 							return;
 						}
 					}
-				}.execute();
+				}.run();
 			});
 		});
 		cancelButton.addActionListener((event)->{dispose();});

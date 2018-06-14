@@ -33,4 +33,8 @@ public class FixedStack<E> implements Stack<E>{
 		return stack.isEmpty();
 	}
 	
+	@Override
+	public int size() {
+		return stack.size();
+	}
 }

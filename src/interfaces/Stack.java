@@ -5,4 +5,5 @@ public interface Stack<E>{
 	public E pop();
 	public E peek();
 	public boolean isEmpty();
+	public int size();
 }

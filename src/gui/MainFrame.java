@@ -82,7 +82,8 @@ public class MainFrame extends JFrame {
 		currentDbButton = new JButton("Current Database view");
 		
 		mementoPanel = new JPanel(new GridLayout(1,2,0,0));
-		restoreMementoButton = new JButton("restore");
+		restoreMementoButton = new JButton();
+		updateMementoCount();
 		saveMementoButton = new JButton("save");
 		mementoPanel.add(restoreMementoButton);
 		mementoPanel.add(saveMementoButton);
@@ -166,13 +167,20 @@ public class MainFrame extends JFrame {
 		});
 		centerPanel = new JPanel();
 		totalDistancesLabel = new JLabel(baseTotalDistances);
-		
+		totalDistancesLabel.setForeground(Color.DARK_GRAY);
 		PropertyChangeListener distancesListener = (event)->{
-			updateTotalDistances(db.getTotalDistances());
+			updateTotalDistances();
 		};
 		db.addPropertyChangeListener("restoreMemento",distancesListener);
 		db.addPropertyChangeListener("testDriveVehicle",distancesListener);
 		db.addPropertyChangeListener("resetDistances",distancesListener);
+		
+		
+		PropertyChangeListener mementoCountListener = (event)->{
+			updateMementoCount();
+		};
+		db.addPropertyChangeListener("restoreMemento",mementoCountListener);
+		db.addPropertyChangeListener("saveMemento", mementoCountListener);
 		
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(dataPanel,BorderLayout.CENTER);
@@ -249,8 +257,27 @@ public class MainFrame extends JFrame {
 		toStringTextArea.setText(text);
 	}
 	
-	private void updateTotalDistances(double distance) {
-		totalDistancesPanel.setVisible(true);
-		totalDistancesLabel.setText(baseTotalDistances + Double.toString(distance));
+	private void updateTotalDistances() {
+		Double distance = db.getTotalDistances();
+		if(distance!=null) {
+			totalDistancesLabel.setText(baseTotalDistances + Double.toString(distance));
+			if(distance!=0)
+				totalDistancesPanel.setVisible(true);
+			else
+				totalDistancesPanel.setVisible(false);
+		}
+	}
+	
+	private String baseRestoreMemento = "restore";
+	private void updateMementoCount() {
+		int count = db.getMementoCount();
+		if(count>0) {
+			restoreMementoButton.setText(baseRestoreMemento + " ("+count+")");
+			restoreMementoButton.setEnabled(true);
+		}
+		else {
+			restoreMementoButton.setText(baseRestoreMemento);
+			restoreMementoButton.setEnabled(false);
+		}
 	}
 }
