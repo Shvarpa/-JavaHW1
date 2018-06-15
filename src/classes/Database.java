@@ -4,7 +4,6 @@ package classes;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -75,7 +74,7 @@ public class Database {
 		lock.readLock().unlock();
 		if (contains) {
 			lock.writeLock().lock();
-			for (HashMap<String,?> hM:Arrays.asList(vehicleDatabase,seaVehicleDatabase,airVehicleDatabase,landVehicleDatabase))
+			for (LinkedHashMap<String,?> hM:Arrays.asList(vehicleDatabase,seaVehicleDatabase,airVehicleDatabase,landVehicleDatabase))
 				while(hM.containsKey(currVehicle.getUniqueID()))
 					hM.remove(currVehicle.getUniqueID());
 			lock.writeLock().unlock();
@@ -144,10 +143,7 @@ public class Database {
 	}
 	
 	public Collection<IVehicle> getVehicles() {
-		lock.readLock().lock();
-		HashMap<String,IVehicle> result = vehicleDatabase;
-		lock.readLock().unlock();
-		return result.values();
+		return vehicleDatabase.values();
 	}
 	
 	public double getTotalDistances() {
