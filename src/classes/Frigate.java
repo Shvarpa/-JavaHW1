@@ -3,8 +3,6 @@
 package classes;
 
 import java.util.Collection;
-
-import interfaces.IAirVehicle;
 import interfaces.Motorized;
 
 public class Frigate extends SeaVehicle implements Motorized {   

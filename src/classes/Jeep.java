@@ -5,7 +5,6 @@ package classes;
 import java.util.Collection;
 
 import interfaces.Commercial;
-import interfaces.IAirVehicle;
 import interfaces.Motorized;
 
 public class Jeep extends LandVehicle implements Commercial, Motorized {

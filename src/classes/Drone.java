@@ -3,8 +3,6 @@
 package classes;
 
 import java.util.Collection;
-
-import interfaces.IAirVehicle;
 import interfaces.NonMotorized;
 
 public abstract class Drone extends AirVehicle implements NonMotorized {

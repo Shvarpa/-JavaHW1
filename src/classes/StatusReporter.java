@@ -2,17 +2,10 @@ package classes;
 
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 import gui.VehicleSelectButton;
-import interfaces.Commercial;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
 import interfaces.IVehicle;
-import interfaces.Motorized;
-import interfaces.NonMotorized;
+
 
 public class StatusReporter extends VehicleDelegator{
 	

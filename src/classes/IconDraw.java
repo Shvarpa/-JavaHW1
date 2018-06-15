@@ -1,15 +1,8 @@
 package classes;
 
-import java.util.Collection;
-
 import gui.VehicleSelectButton;
-import interfaces.Commercial;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
 import interfaces.IVehicle;
-import interfaces.Motorized;
-import interfaces.NonMotorized;
+
 
 public class IconDraw extends VehicleDelegator {
 	

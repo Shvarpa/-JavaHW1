@@ -29,7 +29,8 @@ public class DBWaitDialog extends JDialog{
 //		setIconImage();
 		setTitle("Update");
 		setLayout(new GridBagLayout());
-		ImageIcon gif = ImageOpener.createGIF("\\Icons\\loading.gif",(float) 0.5);
+//		ImageIcon gif = ImageOpener.createGIF("\\Icons\\loading.gif",(float) 0.5);
+		ImageIcon gif = ImageOpener.createImageIcon("\\Icons\\loading.gif");
 		if(gif != null) {
 			JLabel image = new JLabel();
 			image.setIcon(gif);

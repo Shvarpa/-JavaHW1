@@ -3,7 +3,6 @@
 package classes;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import interfaces.IAirVehicle;
 

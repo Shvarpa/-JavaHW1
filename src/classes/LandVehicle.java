@@ -2,11 +2,9 @@
 
 package classes;
 
-
 import java.util.Collection;
-
-import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
+
 public abstract class LandVehicle extends Vehicle implements ILandVehicle{
     private int wheels;
     private String roadType;

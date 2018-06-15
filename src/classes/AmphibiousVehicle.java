@@ -3,12 +3,8 @@
 package classes;
 
 import java.util.Collection;
-import java.util.HashSet;
-
-import interfaces.IAirVehicle;
 import interfaces.ILandVehicle;
 import interfaces.ISeaVehicle;
-import interfaces.IVehicle;
 import interfaces.Motorized;
 
 public class AmphibiousVehicle extends Vehicle implements ILandVehicle,ISeaVehicle,Motorized{

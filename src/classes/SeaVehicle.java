@@ -3,8 +3,6 @@
 package classes;
 
 import java.util.Collection;
-
-import interfaces.IAirVehicle;
 import interfaces.ISeaVehicle;
 
 public abstract class SeaVehicle extends Vehicle implements ISeaVehicle {

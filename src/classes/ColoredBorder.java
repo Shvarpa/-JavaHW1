@@ -1,18 +1,10 @@
 package classes;
 
 import java.awt.Color;
-import java.util.Collection;
-
 import javax.swing.BorderFactory;
-
 import gui.VehicleSelectButton;
-import interfaces.Commercial;
-import interfaces.IAirVehicle;
-import interfaces.ILandVehicle;
-import interfaces.ISeaVehicle;
 import interfaces.IVehicle;
-import interfaces.Motorized;
-import interfaces.NonMotorized;
+
 
 public class ColoredBorder extends VehicleDelegator {
 	private static int borderThickness = 3;

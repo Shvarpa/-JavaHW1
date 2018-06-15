@@ -5,9 +5,7 @@ package classes;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
-
 import gui.VehicleSelectButton;
-import interfaces.IAirVehicle;
 import interfaces.IVehicle;
 
 public abstract class Vehicle implements IVehicle{

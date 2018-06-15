@@ -3,8 +3,6 @@
 package classes;
 
 import java.util.Collection;
-
-import interfaces.IAirVehicle;
 import interfaces.NonMotorized;
 
 public class Bike extends LandVehicle implements NonMotorized {

@@ -3,11 +3,8 @@
 package classes;
 
 import interfaces.Motorized;
-
 import java.util.Collection;
-
 import interfaces.Commercial;
-import interfaces.IAirVehicle;
 
 public class CruiseShip extends SeaVehicle implements Motorized, Commercial{
 	

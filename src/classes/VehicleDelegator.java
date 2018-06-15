@@ -82,76 +82,87 @@ public abstract class VehicleDelegator implements IVehicle,ISeaVehicle,IAirVehic
 	@Override
 	public String getLicence() {
 		if (vehicle instanceof Commercial)
-			return ((Commercial) vehicle).getLicence();
+			if (getInterfaces().contains(Commercial.class))
+				return ((Commercial) vehicle).getLicence();
 		return null;
 	}
 
 	@Override
 	public String getEnergyRating() {
 		if (vehicle instanceof NonMotorized)
-			return ((NonMotorized) vehicle).getEnergyRating();
+			if (getInterfaces().contains(NonMotorized.class))
+				return ((NonMotorized) vehicle).getEnergyRating();
 		return null;
 	}
 
 	@Override
 	public String getEnergySource() {
 		if (vehicle instanceof NonMotorized)
-			return ((NonMotorized) vehicle).getEnergySource();
+			if (vehicle.getInterfaces().contains(NonMotorized.class))
+				return ((NonMotorized) vehicle).getEnergySource();
 		return null;
 	}
 
 	@Override
 	public Double getAvgFuelConsumption() {
 		if (vehicle instanceof Motorized)
-			return ((Motorized) vehicle).getAvgFuelConsumption();
+			if (getInterfaces().contains(Motorized.class))
+				return ((Motorized) vehicle).getAvgFuelConsumption();
 		return null;
 	}
 
 	@Override
 	public Double getAvgMotorLifespan() {
 		if (vehicle instanceof Motorized)
-			return ((Motorized) vehicle).getAvgMotorLifespan();
+			if (getInterfaces().contains(Motorized.class))
+				return ((Motorized) vehicle).getAvgMotorLifespan();
 		return null;
 	}
 
 	@Override
 	public Integer getWheels() {
 		if (vehicle instanceof ILandVehicle)
-			return ((ILandVehicle) vehicle).getWheels();
+			if (vehicle.getInterfaces().contains(ILandVehicle.class))
+				return ((ILandVehicle) vehicle).getWheels();
 		return null;
 	}
 
 	@Override
 	public String getRoadType() {
 		if (vehicle instanceof ILandVehicle)
-			return ((ILandVehicle) vehicle).getRoadType();
+			if (getInterfaces().contains(ILandVehicle.class))
+				return ((ILandVehicle) vehicle).getRoadType();
 		return null;
 	}
 
 	@Override
 	public String getVehicleUse() {
 		if (vehicle instanceof IAirVehicle)
-			return ((IAirVehicle) vehicle).getVehicleUse();
+			if (getInterfaces().contains(IAirVehicle.class))
+				return ((IAirVehicle) vehicle).getVehicleUse();
 		return null;
 	}
 
 	@Override
 	public Boolean getWithWindDiraction() {
 		if (vehicle instanceof ISeaVehicle)
-			return ((ISeaVehicle) vehicle).getWithWindDiraction();
+			if (getInterfaces().contains(ISeaVehicle.class))
+				return ((ISeaVehicle) vehicle).getWithWindDiraction();
 		return null;
 	}
 
 	@Override
 	public String getFlag() {
 		if (vehicle instanceof ISeaVehicle)
-			return ((ISeaVehicle) vehicle).getFlag();
+			if (getInterfaces().contains(ISeaVehicle.class))
+				return ((ISeaVehicle) vehicle).getFlag();
 		return null;
 	}
 
 	@Override
 	public void setFlag(String flag) {
 		if (vehicle instanceof ISeaVehicle)
-			((ISeaVehicle) vehicle).setFlag(flag);
+			if (getInterfaces().contains(ISeaVehicle.class))
+				((ISeaVehicle) vehicle).setFlag(flag);
 	}
 }

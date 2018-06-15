@@ -5,6 +5,7 @@ package classes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -17,10 +18,10 @@ import interfaces.IVehicle;
 
 public class Database {
 	
-	private HashMap<String,IVehicle> vehicleDatabase;
-	private HashMap<String,ISeaVehicle> seaVehicleDatabase;
-	private HashMap<String,IAirVehicle> airVehicleDatabase;
-	private HashMap<String,ILandVehicle> landVehicleDatabase;
+	private LinkedHashMap<String,IVehicle> vehicleDatabase;
+	private LinkedHashMap<String,ISeaVehicle> seaVehicleDatabase;
+	private LinkedHashMap<String,IAirVehicle> airVehicleDatabase;
+	private LinkedHashMap<String,ILandVehicle> landVehicleDatabase;
 	private double totalDistances = 0; 
 	private ReadWriteLock lock = new ReentrantReadWriteLock(true);
 	private boolean verbose = true;
@@ -48,7 +49,6 @@ public class Database {
 	
 	
 	public boolean addVehicle(IVehicle currVehicle) {
-		log(currVehicle.toString());
 		if (currVehicle != null) {
 			lock.writeLock().lock();
 			this.vehicleDatabase.put(currVehicle.getUniqueID(),currVehicle);
@@ -133,10 +133,10 @@ public class Database {
 
 
 	public Database() {
-		vehicleDatabase = new HashMap<String, IVehicle>();
-		seaVehicleDatabase = new HashMap<String, ISeaVehicle>();
-		airVehicleDatabase = new HashMap<String, IAirVehicle>();
-		landVehicleDatabase = new HashMap<String, ILandVehicle>();
+		vehicleDatabase = new LinkedHashMap<String, IVehicle>();
+		seaVehicleDatabase = new LinkedHashMap<String, ISeaVehicle>();
+		airVehicleDatabase = new LinkedHashMap<String, IAirVehicle>();
+		landVehicleDatabase = new LinkedHashMap<String, ILandVehicle>();
 	}
 	
 	public IVehicle findVehicle(String vehicleID) {
@@ -156,10 +156,10 @@ public class Database {
 		
 	public Database(Database toClone) {
 		synchronized (toClone) {
-			this.vehicleDatabase = new HashMap<String, IVehicle>(toClone.vehicleDatabase.size());
-			this.seaVehicleDatabase = new HashMap<String, ISeaVehicle>(toClone.seaVehicleDatabase.size());
-			this.airVehicleDatabase = new HashMap<String, IAirVehicle>(toClone.airVehicleDatabase.size());
-			this.landVehicleDatabase = new HashMap<String, ILandVehicle>(toClone.landVehicleDatabase.size());
+			this.vehicleDatabase = new LinkedHashMap<String, IVehicle>(toClone.vehicleDatabase.size());
+			this.seaVehicleDatabase = new LinkedHashMap<String, ISeaVehicle>(toClone.seaVehicleDatabase.size());
+			this.airVehicleDatabase = new LinkedHashMap<String, IAirVehicle>(toClone.airVehicleDatabase.size());
+			this.landVehicleDatabase = new LinkedHashMap<String, ILandVehicle>(toClone.landVehicleDatabase.size());
 			this.totalDistances = toClone.totalDistances;
 			setVerbose(false);
 			for(IVehicle v:toClone.vehicleDatabase.values()) {

@@ -2,8 +2,6 @@
 
 package classes;
 
-import java.util.Collection;
-
 public class PlayDrone extends Drone {
 
 	public final static String defaultModel = "Toy";

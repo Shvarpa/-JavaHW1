@@ -2,8 +2,6 @@
 
 package classes;
 
-import java.util.Collection;
-
 public class SpyDrone extends Drone {
 	
 	public final static String defaultModel="Classified";
